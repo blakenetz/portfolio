@@ -1,0 +1,34 @@
+{
+  "name": "portfolio",
+  "version": "2.0.0",
+  "description": "personal portfolio site",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --config webpack.config.js",
+    "build": "webpack --config build/webpack.config.dev.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blakeface/portfolio.git"
+  },
+  "keywords": [
+    "portfolio"
+  ],
+  "author": "blake <blake.netzeband@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blakeface/portfolio/issues"
+  },
+  "homepage": "https://github.com/blakeface/portfolio#readme",
+  "dependencies": {
+    "css-loader": "^1.0.0",
+    "vue": "^2.5.16",
+    "vue-loader": "^15.2.4",
+    "vue-template-compiler": "^2.5.16"
+  },
+  "devDependencies": {
+    "webpack": "^4.16.0",
+    "webpack-cli": "^3.0.8"
+  }
+}

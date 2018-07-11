@@ -40,7 +40,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin([{
       from: 'assets/images',
-      to: 'dist/assets/images',
+      to: 'assets/images',
       toType: 'dir'
     }])
   ]

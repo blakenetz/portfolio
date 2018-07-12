@@ -9,6 +9,8 @@
 </template>
 
 <script>
+	// global style
+	import '../assets/stylesheets/global.css'
 	// components
 	import welcome from './components/welcome.vue'
 	import projects from './components/projects.vue'

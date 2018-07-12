@@ -11,6 +11,7 @@ See it live in action on the internet at [Blake Netzeband . com](https://www.bla
 * Split all .css files from .vue file. Split .js files when sensible (i.e. projects.vue)
 * Everything in assets/images/ are directly copied to dist/
 * CSS in assets/stylesheets uses vue-style-loader
+* global included in App.vue
 * Shape of data object is defined on top of data file
 * Name of data files is *componentName*-*subComponentName*.js
 * npm commands:

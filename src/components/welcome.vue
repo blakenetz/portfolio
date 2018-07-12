@@ -9,3 +9,5 @@
 <script type="text/javascript">
 	export default {}
 </script>
+
+<style src="assets/stylesheets/welcome.css"></style>

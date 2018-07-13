@@ -3,12 +3,27 @@ import paper from 'paper'
 export default {
 	data () {
 		return {
-			paper: null //paperObject
+			paper: null, //paperObject
+			scaleFactor: 1,
+			positionX: 0,
+			positionY: 0,
 		}
 	},
+
+	methods: {
+		setScale: function(faceWidth) {
+			this.scaleFactor = (window.innerWidth / 3.5) / faceWidth
+		},
+		setPosition: function() {
+			this.positionX = window.innerWidth / 3.5
+			this.positionY = window.innerHeight / 2
+		},
+	},
+
 	created() {
 		paper.install(window) // unfortunately need to attach paper to global scope
 	},
+
 	mounted() {
 		this.paper = paper.setup('paper-canvas')
 
@@ -75,8 +90,17 @@ export default {
 		head.sendToBack();
 		head.scale(1.05, 1.35)
 
+		// FACE - GROUP ALL ITEMS
+		const face = new Group({
+			children: [head, nose, eyes, glasses],
+		})
+		this.setPosition()
+		face.position = new Point(this.positionX, this.positionY)
+		this.setScale(face.bounds.width)
+		face.scale(this.scaleFactor, this.scaleFactor)
+
 		// ANIMATE
-		this.paper.view.onFrame = function(e) {
+		this.paper.view.onFrame = (e) => {
 			// eyes
 			for (var i = eyes.children.length - 1; i >= 0; i--) {
 				for (var j = eyes.children[i].segments.length - 1; j >= 0; j--) {
@@ -88,6 +112,14 @@ export default {
 			for (var i = head.segments.length - 1; i >= 0; i--) {
 				head.segments[i].point.x += Math.random() * 0.4 - 0.2
 			}
+		}
+		// ON RESIZE
+		this.paper.view.onResize = (e) => {
+			this.setPosition()
+			face.position = new Point(this.positionX, this.positionY)
+
+			this.setScale(face.bounds.width)
+			face.scale(this.scaleFactor, this.scaleFactor)
 		}
 	}
 }

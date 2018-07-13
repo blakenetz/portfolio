@@ -11,7 +11,7 @@ canvas {
 .welcome-text {
 	position: absolute;
 	right: 0;
-	top: 0;
+	bottom: 0;
 	background-color: transparent;
 }
 
@@ -21,7 +21,7 @@ h1, h2 {
 	margin: 0;
 	padding: 15px;
 	background: white;
-	margin-top: 15vh;
+	margin-bottom: 20vh;
 }
 
 h1 {

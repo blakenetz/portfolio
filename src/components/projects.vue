@@ -94,3 +94,4 @@
 </template>
 
 <script type="text/javascript" src="./projects.js"></script>
+<style src="../../assets/stylesheets/projects.css" scoped></style>

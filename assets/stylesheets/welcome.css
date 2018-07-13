@@ -1,12 +1,16 @@
 section {
 	height: 100vh;
 	background-color: pink;
-	display: flex;/*
-	justify-content: flex-end;*/
 }
 
 canvas {
 	width: 100%;
+}
+
+.welcome-text {
+	position: absolute;
+	right: 0;
+	top: 0;
 }
 
 h1, h2 {

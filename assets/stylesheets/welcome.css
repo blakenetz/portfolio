@@ -13,6 +13,9 @@ canvas {
 	right: 0;
 	bottom: 0;
 	background-color: transparent;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
 }
 
 h1, h2 {
@@ -21,12 +24,14 @@ h1, h2 {
 	margin: 0;
 	padding: 15px;
 	background: white;
-	margin-bottom: 20vh;
+	width: fit-content;
 }
 
 h1 {
 	font-size: 6vw;
+	margin-bottom: 12vh;
 }
 h2 {
 	font-size: 4vw;
+	margin-bottom: 20vh;
 }

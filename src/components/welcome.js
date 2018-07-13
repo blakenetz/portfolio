@@ -87,7 +87,6 @@ export default {
 			radius: glasses.bounds.width / 2.2,
 			fillColor: '#8AFEE1'
 		})
-		head.sendToBack();
 		head.scale(1.05, 1.35)
 
 		// FACE - GROUP ALL ITEMS

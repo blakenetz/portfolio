@@ -44,7 +44,7 @@ export default {
 
 		// NOSE
 		const nose = new Path({
-			strokeColor: '#5DFDD5',
+			strokeColor: '#FFFFFF',
 			strokeWidth: 7,
 		});
 		nose.add(
@@ -65,13 +65,28 @@ export default {
 			}
 		)
 
+		// HEAD
+		const head = new Path.RegularPolygon({
+			center: [glasses.bounds.center.x, glasses.bounds.center.y + glasses.bounds.height/3],
+			sides: 30,
+			radius: glasses.bounds.width / 2.2,
+			fillColor: '#8AFEE1'
+		})
+		head.sendToBack();
+		head.scale(1.05, 1.35)
+
 		// ANIMATE
 		this.paper.view.onFrame = function(e) {
+			// eyes
 			for (var i = eyes.children.length - 1; i >= 0; i--) {
 				for (var j = eyes.children[i].segments.length - 1; j >= 0; j--) {
 					eyes.children[i].segments[j].point.x += Math.random() * 0.4 - 0.2
 				}
 				eyes.children[i].rotate(0.1);
+			}
+			// head
+			for (var i = head.segments.length - 1; i >= 0; i--) {
+				head.segments[i].point.x += Math.random() * 0.4 - 0.2
 			}
 		}
 	}

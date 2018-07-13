@@ -4,13 +4,15 @@ section {
 }
 
 canvas {
-	width: 100%;
+	width: 100vw;
+	height: 100vh;
 }
 
 .welcome-text {
 	position: absolute;
 	right: 0;
 	top: 0;
+	background-color: transparent;
 }
 
 h1, h2 {
@@ -22,3 +24,9 @@ h1, h2 {
 	margin-top: 15vh;
 }
 
+h1 {
+	font-size: 6vw;
+}
+h2 {
+	font-size: 4vw;
+}

@@ -59,8 +59,4 @@ export default {
 			}
 		},
 	},
-
-	mounted() {
-		this.paper = paper.setup('paper-canvas-welcome')
-	}
 }

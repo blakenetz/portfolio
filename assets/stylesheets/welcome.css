@@ -1,7 +1,12 @@
 section {
 	height: 100vh;
 	width: unset;
-	background-color: #ffc0cb;
+	background: -moz-linear-gradient(315deg, #ffc0cb 50%, #FFF);
+  background: -webkit-gradient(linear, 315deg, #ffc0cb 50%, #FFF);
+  background: -webkit-linear-gradient(315deg, #ffc0cb 50%, #FFF);
+  background: -o-linear-gradient(315deg, #ffc0cb 50%, #FFF);
+  background: -ms-linear-gradient(315deg, #ffc0cb 50%, #FFF);
+  background: linear-gradient(315deg, #ffc0cb 50%, #FFF);
 }
 
 canvas {

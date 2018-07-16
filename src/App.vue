@@ -3,7 +3,6 @@
 		<welcome />
 		<projects :data="data" :maxBoxCount="maxBoxCount" />
 		<skills :data="skillData" />
-		<contact />
 
 	</main>
 </template>
@@ -15,7 +14,6 @@
 	import welcome from './components/welcome.vue'
 	import projects from './components/projects.vue'
 	import skills from './components/skills.vue'
-	import contact from './components/contact.vue'
 	// data - projects
 	import liveProjects from './components/data/project-live.js'
 	import schoolProjects from './components/data/project-school.js'
@@ -55,7 +53,6 @@
 			welcome,
 			projects,
 			skills,
-			contact,
 		},
 		data () {
 			return {

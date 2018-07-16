@@ -1,6 +1,6 @@
 <template>
 	<section class="welcome">
-		<canvas id="paper-canvas" resize="true"></canvas>
+		<canvas id="paper-canvas-welcome" resize="true"></canvas>
 		<div class="welcome-text">
 			<h1>Blake Netzeband</h1>
 			<h2>Web Developer</h2>

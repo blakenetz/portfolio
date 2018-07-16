@@ -25,7 +25,7 @@ const liveProjects = {
 	1: {
 		name: 'Portfolio',
 		description: "You're looking at it...",
-		specs: 'Vue, Webpack, SCSS, Image compression tools, ScrollReveal',
+		specs: 'Vue, Webpack 4, Paper.js, ScrollReveal, Image compression tools',
 		links: {
 			github: 'https://github.com/blakeface/portfolio',
 		}

@@ -12,7 +12,7 @@ export default {
 
 	methods: {
 		setScale: function(faceWidth) {
-			this.scaleFactor = (window.innerWidth / 3.5) / faceWidth
+			this.scaleFactor = (window.innerWidth / 2.5) / faceWidth
 		},
 		setPosition: function() {
 			this.positionX = window.innerWidth / 3.5
@@ -25,7 +25,7 @@ export default {
 	},
 
 	mounted() {
-		this.paper = paper.setup('paper-canvas')
+		this.paper = paper.setup('paper-canvas-welcome')
 
 		// GLASSES
 		const leftGlass = new Path.Circle({
@@ -103,13 +103,13 @@ export default {
 			// eyes
 			for (var i = eyes.children.length - 1; i >= 0; i--) {
 				for (var j = eyes.children[i].segments.length - 1; j >= 0; j--) {
-					eyes.children[i].segments[j].point.x += Math.random() * 0.4 - 0.2
+					eyes.children[i].segments[j].point.x += Math.random() * 0.6 - 0.3
 				}
 				eyes.children[i].rotate(0.1);
 			}
 			// head
 			for (var i = head.segments.length - 1; i >= 0; i--) {
-				head.segments[i].point.x += Math.random() * 0.4 - 0.2
+				head.segments[i].point.x += Math.random() * 0.6 - 0.3
 			}
 		}
 		// ON RESIZE

@@ -1,11 +1,12 @@
 section {
 	height: 100vh;
-	background-color: pink;
+	width: unset;
+	background-color: #ffc0cb;
 }
 
 canvas {
-	width: 100vw;
 	height: 100vh;
+	width: 100vw;
 }
 
 .welcome-text {

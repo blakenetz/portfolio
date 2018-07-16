@@ -54,7 +54,7 @@ export default {
 			children: [rightEye, leftEye],
 			strokeColor: 'white',
 			strokeWidth: 20,
-			fillColor: 'navy',
+			fillColor: '#507E84',
 		})
 
 		// NOSE

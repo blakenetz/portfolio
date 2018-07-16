@@ -3,6 +3,7 @@
 		<canvas id="paper-canvas-skills" resize="true"></canvas>
 		<div class="skills-header">
 			<h2>Skills</h2>
+			<p>(Feel free to click around...)</p>
 		</div>
 
 		<div class="skills-row">
@@ -78,13 +79,6 @@
 	</section>
 </template>
 
-<script type="text/javascript">
-	export default {
-		props: ['data'],
-		mounted() {
-			this.paper = paper.setup('paper-canvas-skills')
-		}
-	}
-</script>
+<script type="text/javascript" src="./skills.js"></script>
 
 <style src="../../assets/stylesheets/skills.css" scoped></style>

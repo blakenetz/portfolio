@@ -1,4 +1,5 @@
 import paper from 'paper'
+import ScrollReveal from 'scrollreveal'
 
 export default {
 	props: {
@@ -15,6 +16,18 @@ export default {
 			targetedRowID: null,
 			targetedProject: null,
 		}
+	},
+
+	created() {
+		window.sr = ScrollReveal();
+	},
+
+	mounted() {
+		sr.reveal('.project-square', {
+				duration: 1000,
+				delay: 250,
+				origin: 'right'
+			}, 50)
 	},
 
 	methods: {

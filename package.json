@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/blakeface/portfolio#readme",
   "dependencies": {
-    "css-loader": "^1.0.0",
     "paper": "^0.11.5",
+    "scrollreveal": "^3.4.0",
     "vue": "^2.5.16",
     "vue-loader": "^15.2.4",
     "vue-template-compiler": "^2.5.16"
@@ -32,6 +32,7 @@
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
+    "css-loader": "^1.0.0",
     "copy-webpack-plugin": "^4.5.2",
     "html-webpack-plugin": "^3.2.0",
     "vue-style-loader": "^4.1.0",

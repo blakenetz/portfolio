@@ -2,8 +2,11 @@
 	<section class="skills">
 		<canvas id="paper-canvas-skills" resize="true"></canvas>
 		<div class="skills-header">
-			<h2>Skills</h2>
-			<p>(Feel free to click around...)</p>
+			<div class="skills-text">
+				<h2>Skills</h2>
+				<p id="skills-tip">(Feel free to click around...)</p>
+			</div>
+			<img src="/assets/images/hand.png" alt="a retro-styled image of a pointing hand">
 		</div>
 
 		<div class="skills-row">

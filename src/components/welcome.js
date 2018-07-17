@@ -21,7 +21,8 @@ export default {
 	},
 
 	created() {
-		paper.install(window) // unfortunately need to attach paper to global scope
+		// unfortunately need to attach paper to global scope
+		paper.install(window)
 	},
 
 	mounted() {
@@ -83,7 +84,7 @@ export default {
 		// HEAD
 		const head = new Path.RegularPolygon({
 			center: [glasses.bounds.center.x, glasses.bounds.center.y + glasses.bounds.height/3],
-			sides: 30,
+			sides: 25,
 			radius: glasses.bounds.width / 2.2,
 			fillColor: '#8AFEE1'
 		})
@@ -103,14 +104,17 @@ export default {
 			// eyes
 			for (var i = eyes.children.length - 1; i >= 0; i--) {
 				for (var j = eyes.children[i].segments.length - 1; j >= 0; j--) {
-					eyes.children[i].segments[j].point.x += Math.random() * 0.6 - 0.3
+					eyes.children[i].segments[j].point.x += Math.random() * 1 - 0.5
 				}
 				eyes.children[i].rotate(0.1);
 			}
 			// head
 			for (var i = head.segments.length - 1; i >= 0; i--) {
-				head.segments[i].point.x += Math.random() * 0.6 - 0.3
+				head.segments[i].point.x += Math.random() * 10 - 5
 			}
+			if (e.count % 20 === 0)
+					head.smooth();
+
 		}
 		// ON RESIZE
 		this.paper.view.onResize = (e) => {

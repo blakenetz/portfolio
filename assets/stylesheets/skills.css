@@ -23,6 +23,16 @@ p {
 	width: fit-content;
 }
 
+.skills-header {
+	display: flex;
+	flex-flow: row nowrap;
+	width: fit-content;
+}
+
+img {
+	padding-top: 20px;
+}
+
 .skills-row {
 	display: flex;
 	flex-flow: row wrap;
@@ -37,6 +47,19 @@ h2, h3, li {
 
 .svg-wrapper {
 	text-align: center;
+}
+
+@media (max-width: 490px) {
+	svg {
+		width: 85%;
+		height: 100px;
+	}
+}
+@media (max-width: 405px) {
+	svg {
+		width: 85%;
+		height: 80px;
+	}
 }
 
 .icons {
@@ -57,4 +80,18 @@ h2, h3, li {
 
 .icons i:hover {
 	text-decoration: line-through #8AFEE1;
+}
+
+.animate {
+	animation-name: spinaway;
+	animation-duration: 2s;
+	animation-fill-mode: forwards;
+}
+@keyframes spinaway {
+	from {}
+	to {
+		transform: translate(100vw, -50vh) rotate(450deg);
+		opacity: 0;
+	}
+
 }

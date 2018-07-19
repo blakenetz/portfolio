@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: [
     './src/main.js'
   ],
@@ -36,6 +36,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
+      inject: true
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'error.html',
+      template: 'error.html',
       inject: true
     }),
     new CopyWebpackPlugin([{

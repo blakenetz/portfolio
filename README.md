@@ -19,3 +19,7 @@ See it live in action on the internet at [Blake Netzeband . com](https://www.bla
 $ npm run dev
 $ npm run build
 ```
+
+## Stuff I could do better...
+* Codespliting - main.js is too big
+* Shrink png files even more? idk look into this because they're already compressed

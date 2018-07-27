@@ -62,14 +62,6 @@
 								id="gtm-twitter"
 								aria-hidden="true"></i>
 			</a>
-			<a href="https://www.facebook.com/blakenetz"
-					class="gtm-contact"
-					target="_blank"
-					rel="noopener noreferrer">
-						<i class="fa fa-facebook fa-2x gtm-contact"
-								id="gtm-facebook"
-								aria-hidden="true"></i>
-			</a>
 			<a href="https://angel.co/blake-netzeband"
 					class="gtm-contact"
 					target="_blank"

@@ -12,7 +12,7 @@ export default {
 		this.paper = paper.setup('paper-canvas-skills')
 
 		const clickShape = new Path({
-			strokeColor: '#8AFEE1',
+			strokeColor: 'rgba(138, 254, 225, 0.5)',
 			strokeWidth: 15,
 			strokeCap: 'round',
 		});
@@ -25,7 +25,7 @@ export default {
 			clickShape.strokeColor.hue = Math.random() * 360;
 		}
 
-		sr.reveal('.skills-header', {
+		sr.reveal('.skills-sr', {
 			origin: 'right',
 			duration: 2000,
 			distance: '100%',

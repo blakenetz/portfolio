@@ -1,12 +1,16 @@
 <template>
 	<section class="skills">
+
 		<canvas id="paper-canvas-skills" resize="true"></canvas>
+
 		<div class="skills-header">
-			<div class="skills-text">
-				<h2>Skills</h2>
-				<p id="skills-tip">(Feel free to click around...)</p>
+			<div class="skills-sr">
+				<div class="skills-text">
+					<h2>Skills</h2>
+					<p id="skills-tip">(Feel free to click around...)</p>
+				</div>
+				<img src="/assets/images/hand.png" alt="a retro-styled image of a pointing hand">
 			</div>
-			<img src="/assets/images/hand.png" alt="a retro-styled image of a pointing hand">
 		</div>
 
 		<div class="skills-row">
@@ -38,12 +42,12 @@
 								id="gtm-github"
 								aria-hidden="true"></i>
 			</a>
-			<a href="mailto:blake.netzeband@gmail.com"
+			<a href="https://medium.com/@blakeface"
 					class="gtm-contact"
 					target="_blank"
 					rel="noopener noreferrer">
-						<i class="fa fa-envelope fa-2x gtm-contact"
-								id="gtm-email"
+						<i class="fa fa-medium fa-2x gtm-contact"
+								id="gtm-twitter"
 								aria-hidden="true"></i>
 			</a>
 			<a href="https://www.linkedin.com/in/blakenetz"
@@ -54,20 +58,12 @@
 								id="gtm-linkedin"
 								aria-hidden="true"></i>
 			</a>
-			<a href="https://twitter.com/blakenetz"
+			<a href="mailto:blake.netzeband@gmail.com"
 					class="gtm-contact"
 					target="_blank"
 					rel="noopener noreferrer">
-						<i class="fa fa-twitter fa-2x gtm-contact"
-								id="gtm-twitter"
-								aria-hidden="true"></i>
-			</a>
-			<a href="https://angel.co/blake-netzeband"
-					class="gtm-contact"
-					target="_blank"
-					rel="noopener noreferrer">
-						<i class="fa fa-angellist fa-2x gtm-contact"
-								id="gtm-angellist"
+						<i class="fa fa-envelope fa-2x gtm-contact"
+								id="gtm-email"
 								aria-hidden="true"></i>
 			</a>
 		</div>

@@ -79,16 +79,12 @@ h2, h3, li {
 	align-items: center;
 	justify-content: center;
 	position: relative;
-	z-index: 2;
+	z-index: 10;
 }
 
 .icons i {
 	color: #FFF;
-  padding: 0.7em;
-}
-
-.icons i:hover {
-	text-decoration: line-through #8AFEE1;
+  margin: 0.7em;
 }
 
 .animate {

@@ -39,19 +39,19 @@
 
 				<div class="project-links" :style="{ 'color': 'rgb(' + projects.rgb + ')' }">
 					<a class="link is-hidden" id="github" href="" target="_blank" rel="noopener noreferrer">
-						<i class="fa fa-github-square fa-2x" aria-hidden="true"></i>
+						<i class="hover fa fa-github-square fa-2x" aria-hidden="true"></i>
 					</a>
 					<a class="link is-hidden" id="url" href="" target="_blank" rel="noopener noreferrer">
-						<i class="fa fa-desktop fa-2x" aria-hidden="true"></i>
+						<i class="hover fa fa-desktop fa-2x" aria-hidden="true"></i>
 					</a>
 					<a class="link is-hidden" id="youtube" href="" target="_blank" rel="noopener noreferrer">
-						<i class="fa fa-youtube-square fa-2x" aria-hidden="true"></i>
+						<i class="hover fa fa-youtube-square fa-2x" aria-hidden="true"></i>
 					</a>
 					<a class="link is-hidden" id="pics" href="" target="_blank" rel="noopener noreferrer">
-						<i class="fa fa-camera-retro fa-2x" aria-hidden="true"></i>
+						<i class="hover fa fa-camera-retro fa-2x" aria-hidden="true"></i>
 					</a>
 					<a class="link is-hidden" id="linkedin" href="" target="_blank" rel="noopener noreferrer">
-						<i class="fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
+						<i class="hover fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
 					</a>
 				</div>
 			</div>

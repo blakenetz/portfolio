@@ -38,7 +38,7 @@
 					class="gtm-contact"
 					target="_blank"
 					rel="noopener noreferrer">
-						<i class="fa fa-github fa-2x gtm-contact"
+						<i class="hover fa fa-github fa-2x gtm-contact"
 								id="gtm-github"
 								aria-hidden="true"></i>
 			</a>
@@ -46,7 +46,7 @@
 					class="gtm-contact"
 					target="_blank"
 					rel="noopener noreferrer">
-						<i class="fa fa-medium fa-2x gtm-contact"
+						<i class="hover fa fa-medium fa-2x gtm-contact"
 								id="gtm-twitter"
 								aria-hidden="true"></i>
 			</a>
@@ -54,7 +54,7 @@
 					class="gtm-contact"
 					target="_blank"
 					rel="noopener noreferrer">
-						<i class="fa fa-linkedin fa-2x gtm-contact"
+						<i class="hover fa fa-linkedin fa-2x gtm-contact"
 								id="gtm-linkedin"
 								aria-hidden="true"></i>
 			</a>
@@ -62,7 +62,7 @@
 					class="gtm-contact"
 					target="_blank"
 					rel="noopener noreferrer">
-						<i class="fa fa-envelope fa-2x gtm-contact"
+						<i class="hover fa fa-envelope fa-2x gtm-contact"
 								id="gtm-email"
 								aria-hidden="true"></i>
 			</a>

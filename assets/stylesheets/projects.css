@@ -102,9 +102,6 @@ h3 {
 .project-links a {
 	color: white;
 }
-.project-links i:hover {
-	text-decoration: line-through #8AFEE1;
-}
 
 .projects-footer {
 	width: 100%;

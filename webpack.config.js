@@ -46,6 +46,11 @@ module.exports = {
       from: 'assets/images',
       to: 'assets/images',
       toType: 'dir'
+    }]),
+    new CopyWebpackPlugin([{
+      from: 'assets/third-party',
+      to: 'assets/third-party',
+      toType: 'dir'
     }])
   ]
 }

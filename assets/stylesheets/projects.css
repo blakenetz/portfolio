@@ -1,16 +1,16 @@
 section {
-	background: -moz-linear-gradient(315deg, #F4EBC3 50%, #FFF);
-  background: -webkit-gradient(linear, 315deg, #F4EBC3 50%, #FFF);
-  background: -webkit-linear-gradient(315deg, #F4EBC3 50%, #FFF);
-  background: -o-linear-gradient(315deg, #F4EBC3 50%, #FFF);
-  background: -ms-linear-gradient(315deg, #F4EBC3 50%, #FFF);
-  background: linear-gradient(315deg, #F4EBC3 50%, #FFF);
+	background: -moz-linear-gradient(315deg, #f4ebc3 50%, #fff);
+	background: -webkit-gradient(linear, 315deg, #f4ebc3 50%, #fff);
+	background: -webkit-linear-gradient(315deg, #f4ebc3 50%, #fff);
+	background: -o-linear-gradient(315deg, #f4ebc3 50%, #fff);
+	background: -ms-linear-gradient(315deg, #f4ebc3 50%, #fff);
+	background: linear-gradient(315deg, #f4ebc3 50%, #fff);
 }
 
 h2 {
-	font-family: 'Monoton';
+	font-family: "Monoton";
 	font-size: 5em;
-  font-weight: 100;
+	font-weight: 100;
 	margin: 0;
 	padding-left: 20px;
 }
@@ -31,9 +31,9 @@ h3 {
 	height: 8em;
 	width: 8em;
 	display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  text-align: right;
+	align-items: flex-end;
+	justify-content: flex-end;
+	text-align: right;
 	z-index: 5;
 }
 .project-square:hover {
@@ -57,23 +57,24 @@ h3 {
 }
 
 .project-details {
-
 	padding: 20px;
-	background-image: url('/assets/images/space.png');
+	background-image: url("/assets/images/space.png");
 	background-size: cover;
 	font-weight: 700;
-	text-shadow: 1px 1px 2px black;
 	word-spacing: 0.3em;
 }
 .project-details h3 {
 	margin-top: 0;
 	font-size: 1.7em;
+	background-color: #ffffff;
 }
 .project-details h4 {
+	background-color: #ffffff;
 	margin-bottom: 0;
 	font-size: 1.5em;
 }
 .project-details p {
+	background-color: #ffffff;
 	margin-top: 0;
 	font-size: 1.1em;
 }
@@ -81,8 +82,8 @@ h3 {
 #work-in-progress .specs {
 	width: 70%;
 }
-#just-for-fun .specs
-, #just-for-fun .project-description {
+#just-for-fun .specs,
+#just-for-fun .project-description {
 	width: 50%;
 }
 

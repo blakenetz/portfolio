@@ -14,13 +14,14 @@
 
 const wipProjects = {
 	0: {
-		name: 'Sundance Water',
-		description: 'Marketing site for Sundance Water (a Kinetico Water Systems dealer).',
-		specs: 'React, ES6, Webpack, Node.js, Express, SCSS, Nodemail, Extract-text-webpack-plugin, Bulma, Aphrodite, React Animations, Jump.js',
+		name: "Sundance Water",
+		description: "Marketing site for Sundance Water (a Kinetico Water Systems dealer).",
+		specs:
+			"React, ES6, Webpack, Node.js, Express, SCSS, Nodemail, Extract-text-webpack-plugin, Bulma, Aphrodite, React Animations, Jump.js",
 		links: {
-			github: 'https://github.com/blakeface/sundance-water',
-		}
-	}
-}
+			github: "https://github.com/blakeface/sundance-water",
+		},
+	},
+};
 
-export default wipProjects
+export default wipProjects;

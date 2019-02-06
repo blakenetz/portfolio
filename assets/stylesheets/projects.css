@@ -100,6 +100,11 @@ h3 {
 	background-position: 0% 100%;
 }
 
+.project-links {
+	position: relative;
+	z-index: 10;
+}
+
 .project-links a {
 	color: white;
 }

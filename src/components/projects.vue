@@ -2,7 +2,7 @@
 	<section class="projects">
 		<h2>Projects</h2>
 
-		<div class="project-row" v-for="(projects, rowI) in data">
+		<div class="project-row" v-for="(projects, rowI) in data" :key="projects.displayName">
 			<h3>{{projects.displayName}}</h3>
 
 			<div class="row-container">
@@ -54,6 +54,9 @@
 					</a>
 					<a class="link is-hidden" id="linkedin" href target="_blank" rel="noopener noreferrer">
 						<i class="hover fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
+					</a>
+					<a class="link is-hidden" id="behance" href target="_blank" rel="noopener noreferrer">
+						<i class="hover fa fa-behance-square fa-2x" aria-hidden="true"></i>
 					</a>
 				</div>
 			</div>

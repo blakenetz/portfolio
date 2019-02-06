@@ -5,3 +5,4 @@ package-lock.json
 dist/
 
 assets/third-party/
+.vscode/

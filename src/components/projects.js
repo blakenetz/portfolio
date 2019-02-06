@@ -1,21 +1,17 @@
-import paper from 'paper'
-import ScrollReveal from 'scrollreveal'
+import paper from "paper";
+import ScrollReveal from "scrollreveal";
 
 export default {
 	props: {
-		data: {
-			type: Object
-		},
-		maxBoxCount: {
-			type: Number
-		},
+		data: Object,
+		maxBoxCount: Number,
 	},
 
-	data () {
+	data() {
 		return {
 			targetedRowID: null,
 			targetedProject: null,
-		}
+		};
 	},
 
 	created() {
@@ -23,53 +19,55 @@ export default {
 	},
 
 	mounted() {
-		sr.reveal('.project-square', {
+		sr.reveal(
+			".project-square",
+			{
 				duration: 1000,
 				delay: 250,
-				origin: 'right'
-			}, 50)
+				origin: "right",
+			},
+			50
+		);
 	},
 
 	methods: {
-		getColor: function (rgb, i) {
-			return 'rgba(' + rgb + ',' + (1 - (i / this.maxBoxCount)) + ')'
+		getColor: function(rgb, i) {
+			return "rgba(" + rgb + "," + (1 - i / this.maxBoxCount) + ")";
 		},
 		getGhostCount(i) {
-			return this.maxBoxCount - Object.keys(this.data[i].data).length
+			return this.maxBoxCount - Object.keys(this.data[i].data).length;
 		},
 		getRowId(i) {
-			return this.data[i].displayName.toLowerCase().replace(/\s/g, '-')
+			return this.data[i].displayName.toLowerCase().replace(/\s/g, "-");
 		},
 		getProjectId(rowI, projI) {
-			return this.data[rowI].data[projI].name.toLowerCase().replace(/\s/g, '-')
+			return this.data[rowI].data[projI].name.toLowerCase().replace(/\s/g, "-");
 		},
-		handleClick: function (rowI, i) {
-			this.targetedProject = this.data[rowI].data[i]
-			this.targetedRowID = rowI
-			this.updateDetailSection( document.querySelector('#' + this.getRowId(rowI)) )
+		handleClick: function(rowI, i) {
+			this.targetedProject = this.data[rowI].data[i];
+			this.targetedRowID = rowI;
+			this.updateDetailSection(document.querySelector("#" + this.getRowId(rowI)));
 		},
-		updateDetailSection: function (el) {
+		updateDetailSection: function(el) {
 			// update name, description and specs (if project has specs)
-			el.querySelector('.project-title').innerHTML = this.targetedProject.name
-			el.querySelector('.project-description').innerHTML = this.targetedProject.description
+			el.querySelector(".project-title").innerHTML = this.targetedProject.name;
+			el.querySelector(".project-description").innerHTML = this.targetedProject.description;
 			if (this.targetedProject.specs) {
-				el.querySelector('.project-specs').innerHTML = this.targetedProject.specs
-			}
-			else {
-				el.querySelectorAll('.specs').forEach((el) => el.classList.add('is-hidden'))
+				el.querySelector(".project-specs").innerHTML = this.targetedProject.specs;
+			} else {
+				el.querySelectorAll(".specs").forEach(el => el.classList.add("is-hidden"));
 			}
 			// update links
-			const domLinks = el.querySelectorAll('.link')
+			const domLinks = el.querySelectorAll(".link");
 			const projectLinks = Object.keys(this.targetedProject.links);
 			for (var i = domLinks.length - 1; i >= 0; i--) {
 				if (projectLinks.indexOf(domLinks[i].id) != -1) {
-					domLinks[i].setAttribute('href', this.targetedProject.links[domLinks[i].id])
-					domLinks[i].classList.remove('is-hidden')
-				}
-				else {
-					domLinks[i].classList.add('is-hidden')
+					domLinks[i].setAttribute("href", this.targetedProject.links[domLinks[i].id]);
+					domLinks[i].classList.remove("is-hidden");
+				} else {
+					domLinks[i].classList.add("is-hidden");
 				}
 			}
 		},
 	},
-}
+};

@@ -9,7 +9,7 @@
 				<div
 					v-for="(project, i) in projects.data"
 					:key="projects.displayName + '-' + i"
-					class="project-square gtm-project"
+					class="project-square"
 					:id="getProjectId(rowI, i)"
 					@click="handleClick(rowI, i)"
 					@keyup.space.prevent="handleClick(rowI, i)"

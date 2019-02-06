@@ -22,8 +22,26 @@ module.exports = {
 				use: "babel-loader",
 			},
 			{
-				test: /\.css$/,
-				use: ["vue-style-loader", "css-loader"],
+				test: /\.s?css$/,
+				use: [
+					{ loader: "vue-style-loader" },
+					{
+						loader: "css-loader",
+						options: {
+							importLoaders: true,
+						},
+					},
+					{
+						loader: "postcss-loader",
+						options: {
+							plugins: () => [
+								require("autoprefixer")({
+									browsers: "ie >= 11",
+								}),
+							],
+						},
+					},
+				],
 			},
 		],
 	},

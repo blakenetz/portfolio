@@ -10,10 +10,10 @@ canvas {
 }
 
 h2 {
-	font-family: 'Monoton';
+	font-family: "Monoton";
 	font-size: 5em;
-  font-weight: 100;
-  margin: 0;
+	font-weight: 100;
+	margin: 0;
 	padding-left: 20px;
 	width: fit-content;
 }
@@ -51,7 +51,9 @@ img {
 	margin-right: auto;
 }
 
-h2, h3, li {
+h2,
+h3,
+li {
 	position: relative;
 }
 
@@ -84,8 +86,8 @@ h2, h3, li {
 }
 
 .icons i {
-	color: #FFF;
-  margin: 0.7em;
+	color: #fff;
+	margin: 0.7em;
 }
 
 .animate {
@@ -95,10 +97,10 @@ h2, h3, li {
 	position: absolute;
 }
 @keyframes spinaway {
-	from {}
+	from {
+	}
 	to {
 		transform: translate(100vw, -50vh) rotate(450deg);
 		opacity: 0;
 	}
-
 }

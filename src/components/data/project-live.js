@@ -47,7 +47,7 @@ const liveProjects = {
 	2: {
 		name: "BETSOL",
 		description:
-			"I created some neat websites for Kaiser Permanente. I mean to say, I did the whole enchilada, from designing a suite of prototypes to deploying on an old Windows server (I know, not my first choice either). Take a gander at my Behance profile for some of my mockups",
+			"I created some neat websites for a client who requested not to be named. For these sites, I did the whole enchilada, from designing a suite of prototypes to deploying on an old Windows server (I know, not my first choice either). Take a gander at my Behance profile for some of my mockups",
 		specs:
 			"React, React Router, Redux, Material-UI, Webpack, Node, Express, Postgres, Docker, Adobe XD",
 		links: {

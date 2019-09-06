@@ -8,18 +8,18 @@ module.exports = {
 	devServer: {
 		hot: true,
 		watchOptions: {
-			poll: true,
-		},
+			poll: true
+		}
 	},
 	module: {
 		rules: [
 			{
 				test: /\.vue$/,
-				use: "vue-loader",
+				use: "vue-loader"
 			},
 			{
 				test: /\.js$/,
-				use: "babel-loader",
+				use: "babel-loader"
 			},
 			{
 				test: /\.s?css$/,
@@ -28,22 +28,18 @@ module.exports = {
 					{
 						loader: "css-loader",
 						options: {
-							importLoaders: true,
-						},
+							importLoaders: true
+						}
 					},
 					{
 						loader: "postcss-loader",
 						options: {
-							plugins: () => [
-								require("autoprefixer")({
-									browsers: "ie >= 11",
-								}),
-							],
-						},
-					},
-				],
-			},
-		],
+							plugins: () => [require("autoprefixer")]
+						}
+					}
+				]
+			}
+		]
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
@@ -51,19 +47,19 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			filename: "index.html",
 			template: "index.html",
-			inject: true,
+			inject: true
 		}),
 		new HtmlWebpackPlugin({
 			filename: "error.html",
 			template: "error.html",
-			inject: true,
+			inject: true
 		}),
 		new CopyWebpackPlugin([
 			{
 				from: "assets/images",
 				to: "assets/images",
-				toType: "dir",
-			},
-		]),
-	],
+				toType: "dir"
+			}
+		])
+	]
 };

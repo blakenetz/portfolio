@@ -61,7 +61,7 @@
 import { defineComponent } from 'vue'
 import ScrollReveal from 'scrollreveal'
 
-import { liveProjects, schoolProjects, funProjects } from '../assets/data/projects'
+import { liveProjects, schoolProjects, funProjects, clientProjects } from '../assets/data/projects'
 
 
 interface Data {
@@ -79,14 +79,19 @@ interface ProjectSectionData {
 
 const data: Data[] = [
   {
+    displayName: 'Clients + Employers',
+    data: clientProjects,
+    rgb: '208, 143, 140',
+  },
+  {
     displayName: 'In The Wild',
     data: liveProjects,
-    rgb: '208, 143, 140',
+    rgb: '78, 111, 133',
   },
   {
     displayName: 'Escuela',
     data: schoolProjects,
-    rgb: '78, 111, 133',
+    rgb: "81, 145, 114",
   },
   {
     displayName: 'Just For Fun',
@@ -95,10 +100,12 @@ const data: Data[] = [
   },
 ]
 
-const minBoxCount = 8 // hard coded for now. not really needed to loop through every project
+
+const minBoxCount = 7 // hard coded for now. not really needed to loop through every project
 const maxBoxCount = window.innerWidth / 128 > minBoxCount
   ? (window.innerWidth - 64) / 128 // (window - padding) / projectSquare
   : minBoxCount
+
 
 export default defineComponent({
   name: 'ProjectsSection',
@@ -134,7 +141,7 @@ export default defineComponent({
       )
     },
     getRowId(i: number) {
-      return this.data[i].displayName.toLowerCase().replace(/\s/g, '-')
+      return this.data[i].displayName.toLowerCase().replace(/[^0-9a-z\s]/gi, '').replace(/\s/g, '-')
     },
     getProjectId(rowI: number, projI: number) {
       return this.data[rowI].data[projI].name.toLowerCase().replace(/\s/g, '-')
@@ -142,8 +149,8 @@ export default defineComponent({
     handleClick: function (rowI: number, i: number) {
       this.targetedProject = this.data[rowI].data[i]
       this.targetedRowID = rowI
-
       const el = document.querySelector<HTMLElement>('#' + this.getRowId(rowI))
+      console.log('click', { el })
       if (el) {
         this.updateDetailSection(el)
       }

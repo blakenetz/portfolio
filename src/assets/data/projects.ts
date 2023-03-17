@@ -42,16 +42,43 @@ export const liveProjects: ProjectData[] = [
 			github: "https://github.com/blakeface/portfolio",
 		},
 	},
+];
+
+export const clientProjects: ProjectData[] = [
 	{
-		name: "SurveyGizmo",
-		description:
-			"I dedicated 2 beautiful years as a CX developer. Outside of app development (specs listed below), I assisted with usability tests, building test suites, increasing site accessibility (WCAG AAA compliant), and mentored. 🤗",
-		specs:
-			"PHP, Elastic Search, MySQL, jQuery, Backbone.js, R, Ruby, Capybara, PhantomJS, Puppeteer",
+		name: "Discover Card",
+		description: "Built an internal UI library and CI/CD pipeline",
+		specs: "React, Typescript, Vite, Jenkins, Mentorship",
 		links: {
-			url: "https://www.surveygizmo.com/",
-			linkedin: "https://www.linkedin.com/company/712662",
-			youtube: "https://www.youtube.com/user/SurveyGizmo/playlists",
+			url: "https://technology.discover.com/",
+		},
+	},
+	{
+		name: "onWater",
+		description:
+			"Deployed the front, back, and mobile sites. Also served as the defacto tech lead",
+		specs: "React, React Native, Typescript, GCP, PostGIS",
+		links: {
+			url: "https://onwaterapp.com/",
+		},
+	},
+	{
+		name: "The Signatry",
+		description:
+			"Brought on rescue a behind schedule/borderline failing project 🫣",
+		specs: "React, Typescript, GCP",
+		links: {
+			url: "https://thesignatry.com/",
+		},
+	},
+	{
+		name: "Spire Digital",
+		description: "Building a neat stuff with a 100% TS stack!",
+		specs:
+			"React, React Native, React Router, Webpack, Node, Express, Postgres, Open Layers, Typescript, and the list goes on...",
+		links: {
+			url: "https://www.spiredigital.com/",
+			linkedin: "https://www.linkedin.com/company/spire-digital-/",
 		},
 	},
 	{
@@ -66,12 +93,15 @@ export const liveProjects: ProjectData[] = [
 		},
 	},
 	{
-		name: "Spire Digital",
-		description: "Building a neat stuff with a 100% Javascript stack!",
-		specs: "React, React Router, Webpack, Node, Express, Postgres, Open Layers",
+		name: "SurveyGizmo",
+		description:
+			"I dedicated 2 beautiful years as a CX developer. Outside of app development (specs listed below), I assisted with usability tests, building test suites, increasing site accessibility (WCAG AAA compliant), and mentored. 🤗",
+		specs:
+			"PHP, Elastic Search, MySQL, jQuery, Backbone.js, R, Ruby, Capybara, PhantomJS, Puppeteer",
 		links: {
-			url: "https://www.spiredigital.com/",
-			linkedin: "https://www.linkedin.com/company/spire-digital-/",
+			url: "https://www.surveygizmo.com/",
+			linkedin: "https://www.linkedin.com/company/712662",
+			youtube: "https://www.youtube.com/user/SurveyGizmo/playlists",
 		},
 	},
 ];

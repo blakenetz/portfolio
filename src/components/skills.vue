@@ -8,7 +8,7 @@
           <h2>Skills</h2>
           <p id="skills-tip">(Feel free to click around...)</p>
         </div>
-        <img src="images/hand.png" alt="a retro-styled image of a pointing hand" />
+        <img src="/images/hand.png" alt="a retro-styled image of a pointing hand" />
       </div>
     </section>
 

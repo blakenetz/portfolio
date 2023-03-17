@@ -3,10 +3,12 @@
 	"version": "2.0.0",
 	"description": "personal portfolio site",
 	"main": "main.js",
-	"scripts": {
-		"build": "webpack --config webpack.config.js --mode production",
-		"start": "webpack-dev-server --config webpack.config.js --mode development"
-	},
+	"type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/blakeface/portfolio.git"
@@ -23,22 +25,12 @@
 	"dependencies": {
 		"paper": "^0.12.0",
 		"scrollreveal": "^4.0.5",
-		"vue": "^2.5.16",
-		"vue-loader": "^15.2.4",
-		"vue-template-compiler": "^2.5.16"
+		"vue": "^3.2.47"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.2.2",
-		"@babel/preset-env": "^7.3.1",
-		"autoprefixer": "^9.4.7",
-		"babel-loader": "^8.0.5",
-		"copy-webpack-plugin": "^5.0.4",
-		"css-loader": "^3.2.0",
-		"html-webpack-plugin": "^3.2.0",
-		"postcss-loader": "^3.0.0",
-		"vue-style-loader": "^4.1.0",
-		"webpack": "^4.29.2",
-		"webpack-cli": "^3.0.8",
-		"webpack-dev-server": "^3.1.14"
+		"@vitejs/plugin-vue": "^4.1.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.2.0",
+    "vue-tsc": "^1.2.0"
 	}
 }

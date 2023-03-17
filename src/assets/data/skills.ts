@@ -1,9 +1,9 @@
-const skills = {
-	0: {
+export const skills: SkillData[] = [
+	{
 		category: "Frontend + SDK + Libraries",
 		skills: ["React", "jQuery", "Vue", "Angular", "Webpack", "SCSS + SASS"],
 	},
-	1: {
+	{
 		category: "Backend + Deployment",
 		skills: [
 			"PHP",
@@ -17,7 +17,7 @@ const skills = {
 			"Firebase",
 		],
 	},
-	2: {
+	{
 		category: "Otra",
 		skills: [
 			"SVN + Git",
@@ -25,9 +25,7 @@ const skills = {
 			"Google Analytics + GTM",
 			"Agile",
 			"Bash",
-			"Fantastic cook + baker",
+			"Fantastic cook ;)",
 		],
 	},
-};
-
-export default skills;
+];

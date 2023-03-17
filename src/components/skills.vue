@@ -8,10 +8,7 @@
           <h2>Skills</h2>
           <p id="skills-tip">(Feel free to click around...)</p>
         </div>
-        <img
-          src="~/assets/images/hand.png"
-          alt="a retro-styled image of a pointing hand"
-        />
+        <img src="images/hand.png" alt="a retro-styled image of a pointing hand" />
       </div>
       <p class="skills-text">
         There's 2 ways to go about this section. I could either list every bit
@@ -49,42 +46,16 @@
     <div class="svg-wrapper">
       <svg width="500" height="150" viewBox="0 0 500 150">
         <defs>
-          <pattern
-            id="pattern"
-            x="0"
-            y="5"
-            width="500"
-            height="15"
-            patternUnits="userSpaceOnUse"
-          >
-            <line
-              x1="0"
-              y1="0"
-              x2="500"
-              y2="0"
-              stroke-width="10"
-              stroke="black"
-            ></line>
+          <pattern id="pattern" x="0" y="5" width="500" height="15" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="500" y2="0" stroke-width="10" stroke="black"></line>
           </pattern>
         </defs>
-        <ellipse
-          cx="250"
-          cy="180"
-          rx="250"
-          ry="150"
-          fill="url(#pattern)"
-        ></ellipse>
+        <ellipse cx="250" cy="180" rx="250" ry="150" fill="url(#pattern)"></ellipse>
       </svg>
     </div>
 
     <div class="icons">
-      <a
-        v-for="link in links"
-        :key="link.href"
-        :href="link.href"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a v-for="link in links" :key="link.href" :href="link.href" target="_blank" rel="noopener noreferrer">
         <i class="hover fa fa-2x" :class="link.icon" aria-hidden="true"></i>
       </a>
     </div>
@@ -94,8 +65,9 @@
 <script lang="ts">
 import paper from 'paper'
 import { defineComponent } from 'vue'
+import ScrollReveal from 'scrollreveal'
 
-import data from '~/assets/data/skills-skills'
+import { skills } from '../assets/data/skills'
 
 interface SkillsDataType {
   data: SkillData[]
@@ -126,42 +98,46 @@ const links: SkillLink[] = [
   },
 ]
 
-const scope = new paper.PaperScope()
-scope.setup('paper-canvas-skills')
+
+
 
 export default defineComponent({
   name: 'SkillsSection',
+  props: {
+    scope: { type: paper.PaperScope, required: true }
+  },
 
   data(): SkillsDataType {
     return {
-      data,
+      data: skills,
       links,
       path: null,
     }
   },
 
   mounted() {
-    scope.activate()
+    this.scope.setup('paper-canvas-skills')
+    this.scope.activate()
 
-    this.path = new scope.Path({
+    this.path = new this.scope.Path({
       strokeColor: 'rgba(138, 254, 225, 0.5)',
       strokeWidth: 15,
       strokeCap: 'round',
     })
 
-    scope.view.onClick = (e: paper.MouseEvent) => {
+    this.scope.view.onClick = (e: paper.MouseEvent) => {
       if (this.path) {
         this.path.add(e.point)
       }
     }
 
-    scope.view.onDoubleClick = (_e: paper.MouseEvent) => {
+    this.scope.view.onDoubleClick = (_e: paper.MouseEvent) => {
       if (this.path?.strokeColor) {
         this.path.strokeColor.hue = Math.random() * 360
       }
     }
 
-    this.$ScrollReveal().reveal(
+    ScrollReveal().reveal(
       '.skills-sr',
       {
         origin: 'right',
@@ -182,4 +158,4 @@ export default defineComponent({
 })
 </script>
 
-<style src="~/assets/stylesheets/skills.css" scoped></style>
+<style src="../assets/stylesheets/skills.css" scoped></style>

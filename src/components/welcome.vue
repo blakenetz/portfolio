@@ -9,67 +9,69 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import paper from 'paper'
-import { defineComponent } from 'vue'
 
-paper.setup('paper-canvas-welcome')
 
 type OnFrameEvent = {
-  count: number
-  time: number
-  delta: number
-}
+  count: number;
+  time: number;
+  delta: number;
+};
 
 export default defineComponent({
-  name: 'WelcomeSection',
+  name: "WelcomeSection",
+  props: {
+    scope: { type: paper.PaperScope, required: true }
+  },
   data() {
     return {
-      paper: null,
       scaleFactor: 1,
       positionX: 0,
       positionY: 0,
-    }
+    };
   },
 
   mounted() {
+    this.scope.setup('paper-canvas-welcome')
     // GLASSES
-    const leftGlass = new paper.Path.Circle({
+    const leftGlass = new this.scope.Path.Circle({
       center: [100, 150],
       radius: 50,
-    })
-    const rightGlass = leftGlass.clone()
-    rightGlass.position.x += rightGlass.bounds.width * 1.5
-    const bridge = new paper.Path.Arc({
+    });
+    const rightGlass = leftGlass.clone();
+    rightGlass.position.x += rightGlass.bounds.width * 1.5;
+    const bridge = new this.scope.Path.Arc({
       from: [leftGlass.bounds.rightCenter.x, leftGlass.bounds.rightCenter.y],
       through: [
         leftGlass.bounds.rightCenter.x * 1.33,
         leftGlass.bounds.rightCenter.y * 0.99,
       ],
       to: [rightGlass.bounds.leftCenter.x, rightGlass.bounds.leftCenter.y],
-    })
-    const glasses = new paper.Group({
+    });
+    const glasses = new this.scope.Group({
       children: [rightGlass, bridge, leftGlass],
-      strokeColor: '#303a49',
+      strokeColor: "#303a49",
       strokeWidth: 10,
-    })
+    });
 
     // EYES
-    const leftEye = leftGlass.clone()
-    leftEye.scale(0.5)
-    const rightEye = rightGlass.clone()
-    rightEye.scale(0.5)
-    const eyes = new paper.Group({
+    const leftEye = leftGlass.clone();
+    leftEye.scale(0.5);
+    const rightEye = rightGlass.clone();
+    rightEye.scale(0.5);
+    const eyes = new this.scope.Group({
       children: [rightEye, leftEye],
-      strokeColor: 'white',
+      strokeColor: "white",
       strokeWidth: 20,
-      fillColor: '#507E84',
-    })
+      fillColor: "#507E84",
+    });
 
     // NOSE
-    const nose = new paper.Path({
-      strokeColor: '#FFFFFF',
+    const nose = new this.scope.Path({
+      strokeColor: "#FFFFFF",
       strokeWidth: 7,
-    })
+    });
     nose.add(
       {
         // top of nose
@@ -86,65 +88,65 @@ export default defineComponent({
         x: leftGlass.bounds.leftCenter.x + leftGlass.bounds.width / 2,
         y: rightGlass.bounds.leftCenter.y + leftGlass.bounds.height,
       }
-    )
+    );
 
     // HEAD
-    const head = new paper.Path.RegularPolygon({
+    const head = new this.scope.Path.RegularPolygon({
       center: [
         glasses.bounds.center.x,
         glasses.bounds.center.y + glasses.bounds.height / 3,
       ],
       sides: 25,
       radius: glasses.bounds.width / 2.2,
-      fillColor: '#8AFEE1',
-    })
-    head.scale(1.05, 1.35)
+      fillColor: "#8AFEE1",
+    });
+    head.scale(1.05, 1.35);
 
     // FACE - GROUP ALL ITEMS
-    const face = new paper.Group({
+    const face = new this.scope.Group({
       children: [head, nose, eyes, glasses],
-    })
-    this.setPosition()
-    face.position = new paper.Point(this.positionX, this.positionY)
-    this.setScale(face.bounds.width)
-    face.scale(this.scaleFactor, this.scaleFactor)
+    });
+    this.setPosition();
+    face.position = new this.scope.Point(this.positionX, this.positionY);
+    this.setScale(face.bounds.width);
+    face.scale(this.scaleFactor, this.scaleFactor);
 
     // ANIMATE
-    paper.view.onFrame = (e: OnFrameEvent) => {
+    this.scope.view.onFrame = (e: OnFrameEvent) => {
       // eyes
       for (let i = eyes.children.length - 1; i >= 0; i--) {
-        const { segments } = eyes.children[i] as paper.Path
+        const { segments } = eyes.children[i] as paper.Path;
 
         for (let j = segments.length - 1; j >= 0; j--) {
-          segments[j].point.x += Math.random() * 1 - 0.5
+          segments[j].point.x += Math.random() * 1 - 0.5;
         }
-        eyes.children[i].rotate(0.1)
+        eyes.children[i].rotate(0.1);
       }
       // head
       for (let i = head.segments.length - 1; i >= 0; i--) {
-        head.segments[i].point.x += Math.random() * 10 - 5
+        head.segments[i].point.x += Math.random() * 10 - 5;
       }
-      if (e.count % 20 === 0) head.smooth()
-    }
+      if (e.count % 20 === 0) head.smooth();
+    };
     // ON RESIZE
-    paper.view.onResize = () => {
-      this.setPosition()
-      face.position = new paper.Point(this.positionX, this.positionY)
+    this.scope.view.onResize = () => {
+      this.setPosition();
+      face.position = new this.scope.Point(this.positionX, this.positionY);
 
-      this.setScale(face.bounds.width)
-      face.scale(this.scaleFactor, this.scaleFactor)
-    }
+      this.setScale(face.bounds.width);
+      face.scale(this.scaleFactor, this.scaleFactor);
+    };
   },
 
   methods: {
     setScale: function (faceWidth: number) {
-      this.scaleFactor = window.innerWidth / 2.5 / faceWidth
+      this.scaleFactor = window.innerWidth / 2.5 / faceWidth;
     },
     setPosition: function () {
-      this.positionX = window.innerWidth / 3.5
-      this.positionY = window.innerHeight / 2
+      this.positionX = window.innerWidth / 3.5;
+      this.positionY = window.innerHeight / 2;
     },
   },
-})
+});
 </script>
-<style src="~/assets/welcome.css" scoped></style>
+<style src="../assets/stylesheets/welcome.css" scoped></style>

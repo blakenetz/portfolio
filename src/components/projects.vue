@@ -2,108 +2,49 @@
   <section class="projects">
     <h2>Projects</h2>
 
-    <div
-      v-for="(projects, rowI) in data"
-      :key="projects.displayName"
-      class="project-row"
-    >
+    <div v-for="(projects, rowI) in data" :key="projects.displayName" class="project-row">
       <h3>{{ projects.displayName }}</h3>
 
       <div class="row-container">
-        <div
-          v-for="(project, i) in projects.data"
-          :id="getProjectId(rowI, i)"
-          :key="projects.displayName + '-' + i"
-          class="project-square"
-          :style="{ background: getColor(projects.rgb, i) }"
-          tabindex="1"
-          @click="handleClick(rowI, i)"
-          @keyup.space.prevent="handleClick(rowI, i)"
-        >
+        <div v-for="(project, i) in projects.data" :id="getProjectId(rowI, i)" :key="projects.displayName + '-' + i"
+          class="project-square" :style="{ background: getColor(projects.rgb, i) }" tabindex="1"
+          @click="handleClick(rowI, i)" @keyup.space.prevent="handleClick(rowI, i)">
           <p>{{ project.name }}</p>
         </div>
 
-        <div
-          v-for="(box, i) in getGhostCount(rowI)"
-          :key="'ghost-' + i"
-          class="project-square ghost"
-          :style="{
-            background: getColor(
-              projects.rgb,
-              maxBoxCount - getGhostCount(rowI) + i
-            ),
-          }"
-        ></div>
+        <div v-for="(box, i) in getGhostCount(rowI)" :key="'ghost-' + i" class="project-square ghost" :style="{
+          background: getColor(
+            projects.rgb,
+            maxBoxCount - getGhostCount(rowI) + i
+          ),
+        }"></div>
       </div>
 
-      <div
-        v-show="targetedRowID == rowI"
-        :id="getRowId(rowI)"
-        class="project-details"
-        :style="{ color: 'rgb(' + projects.rgb + ')' }"
-      >
+      <div v-show="targetedRowID == rowI" :id="getRowId(rowI)" class="project-details"
+        :style="{ color: 'rgb(' + projects.rgb + ')' }">
         <h3 class="project-title"></h3>
         <p class="project-description"></p>
 
         <h4 class="specs">Built with:</h4>
         <p class="project-specs specs"></p>
 
-        <div
-          class="project-links"
-          :style="{ color: 'rgb(' + projects.rgb + ')' }"
-        >
-          <a
-            id="github"
-            class="link is-hidden"
-            href=""
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+        <div class="project-links" :style="{ color: 'rgb(' + projects.rgb + ')' }">
+          <a id="github" class="link is-hidden" href="" target="_blank" rel="noopener noreferrer">
             <i class="hover fa fa-github-square fa-2x" aria-hidden="true"></i>
           </a>
-          <a
-            id="url"
-            class="link is-hidden"
-            href=""
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a id="url" class="link is-hidden" href="" target="_blank" rel="noopener noreferrer">
             <i class="hover fa fa-desktop fa-2x" aria-hidden="true"></i>
           </a>
-          <a
-            id="youtube"
-            class="link is-hidden"
-            href=""
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a id="youtube" class="link is-hidden" href="" target="_blank" rel="noopener noreferrer">
             <i class="hover fa fa-youtube-square fa-2x" aria-hidden="true"></i>
           </a>
-          <a
-            id="pics"
-            class="link is-hidden"
-            href=""
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a id="pics" class="link is-hidden" href="" target="_blank" rel="noopener noreferrer">
             <i class="hover fa fa-camera-retro fa-2x" aria-hidden="true"></i>
           </a>
-          <a
-            id="linkedin"
-            class="link is-hidden"
-            href=""
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a id="linkedin" class="link is-hidden" href="" target="_blank" rel="noopener noreferrer">
             <i class="hover fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
           </a>
-          <a
-            id="behance"
-            class="link is-hidden"
-            href=""
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a id="behance" class="link is-hidden" href="" target="_blank" rel="noopener noreferrer">
             <i class="hover fa fa-behance-square fa-2x" aria-hidden="true"></i>
           </a>
         </div>
@@ -111,20 +52,17 @@
     </div>
 
     <div class="projects-footer">
-      <img
-        src="~/assets/images/mountain.png"
-        alt="distressed image of mountain"
-      />
+      <img src="/images/mountain.png" alt="distressed image of mountain" />
     </div>
   </section>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import ScrollReveal from 'scrollreveal'
 
-import liveProjects from '~/assets/data/project-live'
-import schoolProjects from '~/assets/data/project-school'
-import funProjects from '~/assets/data/project-fun'
+import { liveProjects, schoolProjects, funProjects } from '../assets/data/projects'
+
 
 interface Data {
   displayName: string
@@ -158,10 +96,9 @@ const data: Data[] = [
 ]
 
 const minBoxCount = 8 // hard coded for now. not really needed to loop through every project
-const maxBoxCount =
-  process.client && window.innerWidth / 128 > minBoxCount
-    ? (window.innerWidth - 64) / 128 // (window - padding) / projectSquare
-    : minBoxCount
+const maxBoxCount = window.innerWidth / 128 > minBoxCount
+  ? (window.innerWidth - 64) / 128 // (window - padding) / projectSquare
+  : minBoxCount
 
 export default defineComponent({
   name: 'ProjectsSection',
@@ -176,7 +113,7 @@ export default defineComponent({
   },
 
   mounted() {
-    this.$ScrollReveal().reveal(
+    ScrollReveal().reveal(
       '.project-square',
       {
         duration: 1000,
@@ -243,4 +180,4 @@ export default defineComponent({
   },
 })
 </script>
-<style src="~/assets/stylesheets/projects.css" scoped></style>
+<style src="../assets/stylesheets/projects.css" scoped></style>

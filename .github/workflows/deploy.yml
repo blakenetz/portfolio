@@ -29,4 +29,5 @@ jobs:
           bucket-region: ${{ secrets.S3_BUCKET_REGION }}
           dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
           no-cache: true
-          private: true
+          private: false
+          delete-removed: true

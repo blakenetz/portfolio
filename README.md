@@ -1,5 +1,9 @@
 # Portfolio
 
-A quick and fun recap of me
+My chunk of the internet.
 
-Live at <https://blakenetzeband.com>
+Live at [blakenetzeband . com](https://blakenetzeband.com)
+
+## Specs
+
+- Remix

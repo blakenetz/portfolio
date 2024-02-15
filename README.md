@@ -1,28 +1,38 @@
-# PORTFOLIO
+# Welcome to Remix!
 
-Look at all the cool stuff I've done.
+- [Remix Docs](https://remix.run/docs)
 
-Built with Webpack 4 and Vue.js
+## Development
 
-See it live in action on the internet at [Blake Netzeband . com](https://www.blakenetzeband.com)
+From your terminal:
 
-## Notes to future self and anyone who reads this:
-
-- Uses Hot Module Loading
-- Split all .css files from .vue file. Split .js files when sensible (i.e. projects.vue)
-- Everything in assets/images/ are directly copied to dist/
-- CSS in assets/stylesheets uses vue-style-loader
-- global included in App.vue
-- Shape of data object is defined on top of data file
-- Name of data files is _componentName_-_subComponentName_.js
-- yarn commands:
-
-```
-$ yarn run dev
-$ yarn run build
+```sh
+npm run dev
 ```
 
-## Stuff I could do better...
+This starts your app in development mode, rebuilding assets on file changes.
 
-- Codespliting - main.js is too big
-- Shrink png files even more? idk look into this because they're already compressed
+## Deployment
+
+First, build your app for production:
+
+```sh
+npm run build
+```
+
+Then run the app in production mode:
+
+```sh
+npm start
+```
+
+Now you'll need to pick a host to deploy it to.
+
+### DIY
+
+If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
+
+Make sure to deploy the output of `remix build`
+
+- `build/`
+- `public/build/`

@@ -35,7 +35,7 @@ function paperInit(el: HTMLCanvasElement) {
   const glasses = new paper.Group({
     children: [rightGlass, bridge, leftGlass],
     strokeColor: "#303a49",
-    strokeWidth: 10,
+    strokeWidth: 5,
   });
 
   // EYES
@@ -53,7 +53,7 @@ function paperInit(el: HTMLCanvasElement) {
   // NOSE
   const nose = new paper.Path({
     strokeColor: "#FFFFFF",
-    strokeWidth: 7,
+    strokeWidth: 3.5,
   });
   nose.add(
     {
@@ -73,6 +73,10 @@ function paperInit(el: HTMLCanvasElement) {
     }
   );
 
+  console.log(
+    glasses.bounds.center.x,
+    glasses.bounds.center.y + glasses.bounds.height / 3
+  );
   // HEAD
   const head = new paper.Path.RegularPolygon({
     center: [
@@ -83,7 +87,7 @@ function paperInit(el: HTMLCanvasElement) {
     radius: glasses.bounds.width / 2.2,
     fillColor: "#8AFEE1",
   });
-  head.scale(1.05, 1.35);
+  head.scale(scaleFactor, scaleFactor);
 
   // FACE - GROUP ALL ITEMS
   const face = new paper.Group({
@@ -92,10 +96,11 @@ function paperInit(el: HTMLCanvasElement) {
   setPosition();
   face.position = new paper.Point(positionX, positionY);
   setScale(face.bounds.width);
-  face.scale(scaleFactor, scaleFactor);
+  // face.scale(scaleFactor, scaleFactor);
 
   // ANIMATE
   paper.view.onFrame = (e) => {
+    if (e.count % 2 !== 0) return;
     // eyes
     eyes.children.forEach((eye) => {
       eye.segments.forEach((segment) => {
@@ -111,7 +116,6 @@ function paperInit(el: HTMLCanvasElement) {
   };
   // ON RESIZE
   paper.view.onResize = () => {
-    console.log("resize");
     setPosition();
     face.position = new paper.Point(positionX, positionY);
 
@@ -130,7 +134,7 @@ export default function Welcome() {
 
   return (
     <section className="welcome">
-      <canvas ref={ref} />
+      <canvas ref={ref} data-paper-resize="true" />
       <div className="welcome-text">
         <h1>Blake Netzeband</h1>
         <h2>Web Developer</h2>

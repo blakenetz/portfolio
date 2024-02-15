@@ -9,6 +9,8 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
+import styles from "~/styles/root.css";
+
 export const meta: MetaFunction = () => [
   { title: "BLAKE NETZEBAND" },
   {
@@ -26,13 +28,12 @@ export const meta: MetaFunction = () => [
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  { rel: "stylesheet", href: styles },
   // fonts
   {
     href: "https://fonts.googleapis.com/css?family=Poiret+One|Monoton|Rajdhani:400,700",
-    rel: "preload",
-    as: "font",
-    type: "font/woff2",
-    crossorigin: "anonymous",
+    rel: "stylesheet",
+    fetchpriority: "high",
   },
   //  about
   {

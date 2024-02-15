@@ -1,5 +1,5 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -9,8 +9,31 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
+export const meta: MetaFunction = () => [
+  { title: "BLAKE NETZEBAND" },
+  {
+    name: "description",
+    content: "Hi! I'm Blake and this is my chunk of the internet",
+  },
+  // search engine, etc
+  { name: "referrer", content: "origin-when-crossorigin" },
+  { name: "robots", content: "index, follow" },
+  { name: "googlebot", content: "index, follow" },
+  // general
+  { name: "subject", content: "portfolio" },
+  { name: "rating", content: "General" },
+];
+
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  //  about
+  {
+    rel: "license",
+    href: "https://github.com/blakeface/portfolio/blob/master/LICENSE",
+  },
+  { rel: "me", href: "https://www.blakenetzeband.com", type: "text/html" },
+  { rel: "me", href: "mailto:blake.netzeband@gmail.com" },
+  { rel: "index", href: "https://www.blakenetzeband.com" },
 ];
 
 export default function App() {

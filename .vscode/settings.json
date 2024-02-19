@@ -1,6 +1,6 @@
 {
-  "cSpell.words": ["mantine"],
+  "cSpell.words": ["gsap", "mantine"],
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": "explicit"
   }
 }

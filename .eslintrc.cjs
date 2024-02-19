@@ -19,6 +19,19 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
+  
+
+  rules: {
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": ["warn"],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/no-named-as-default": 0,
+    "import/prefer-default-export": 0
+  },
+
+  ignorePatterns: ["**/archive/**/*"],
+  plugins: ["simple-import-sort"],
 
   // Base config
   extends: ["eslint:recommended"],
@@ -81,13 +94,5 @@ module.exports = {
     },
   ],
 
-  rules: {
-    "no-unused-vars": "warn",
-    "@typescript-eslint/no-unused-vars": ["warn"],
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
-  },
-
-  ignorePatterns: ["**/archive/**/*"],
-  plugins: ["simple-import-sort"],
+  
 };

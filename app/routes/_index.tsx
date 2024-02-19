@@ -1,4 +1,5 @@
 import type { LinksFunction } from "@remix-run/node";
+
 import Welcome from "~/components/welcome";
 import styles from "~/styles/welcome.css";
 

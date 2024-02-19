@@ -80,4 +80,14 @@ module.exports = {
       },
     },
   ],
+
+  rules: {
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": ["warn"],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  },
+
+  ignorePatterns: ["**/archive/**/*"],
+  plugins: ["simple-import-sort"],
 };

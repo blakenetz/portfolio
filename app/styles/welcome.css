@@ -1,50 +1,11 @@
-/* Scale canvas with resize attribute to full size */
-/* http://paperjs.org/tutorials/getting-started/working-with-paper-js/#canvas-configuration */
-html,
-body {
-  height: 100%;
-}
-canvas[resize] {
-  width: 100%;
-  height: 100%;
-}
-
-section {
-  height: 100vh;
-  width: unset;
-  background: linear-gradient(315deg, #ffc0cb 50%, #fff);
-}
-
-canvas {
-  height: 100vh;
-  width: 100%;
-}
-
-.welcome-text {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  background-color: transparent;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-h1,
-h2 {
-  font-family: "Poiret One", sarif;
-  text-align: right;
-  margin: 0;
-  padding: 15px;
-  background: white;
-  width: fit-content;
-}
-
-h1 {
-  font-size: 6vw;
-  margin-bottom: 12vh;
-}
-h2 {
-  font-size: 4vw;
-  margin-bottom: 20vh;
+#welcome {
+  background: linear-gradient(
+    171deg,
+    var(--mantine-color-red-1),
+    var(--mantine-color-grape-1) 29%,
+    var(--mantine-color-pink-1) 71%
+  );
+  min-height: 100vh;
+  min-width: 100vw;
+  padding: var(--mantine-spacing-md);
 }

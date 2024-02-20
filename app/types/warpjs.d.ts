@@ -4,7 +4,7 @@ declare module "warpjs" {
   export type Transformer = (points: Points) => Points;
 
   export default class Warp {
-    constructor(element: HTMLElement);
+    constructor(element: Element);
     transform(transformer: Transformer): void;
     interpolate(arg: number): void;
   }

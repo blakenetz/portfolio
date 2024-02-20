@@ -1,20 +1,19 @@
 #welcome {
   background: linear-gradient(
-    171deg,
-    var(--mantine-color-red-1),
+    160deg,
+    var(--mantine-color-yellow-1),
     var(--mantine-color-grape-1),
     var(--mantine-color-teal-1),
-    var(--mantine-color-pink-1)
+    var(--mantine-color-pink-1),
+    var(--mantine-color-cyan-1)
   );
   background-size: 200% 200%;
   height: 100vh;
   width: 100vw;
-  padding: var(--mantine-spacing-md);
+  animation: gradient 5s ease infinite;
+  padding: var(--mantine-spacing-xl);
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  animation: gradient 10s ease infinite;
 }
 
 @keyframes gradient {
@@ -29,33 +28,16 @@
   }
 }
 
-.line {
-  width: 100vw;
-}
-.left,
-.right {
-  width: 50vw;
-  overflow: hidden;
-  display: inline-block;
-}
-.left {
-  color: pink;
-  transform: skew(0deg, -15deg);
-}
-.right {
-  color: black;
-  transform: skew(0deg, 15deg);
-}
 .content {
-  width: 100vw;
-  text-align: center;
-}
-.right .content {
-  transform: translate(-50vw);
-}
-
-span {
-  display: inline-block;
-  font-size: 10vw;
-  transition: ease-out 0.6s;
+  padding: var(--mantine-spacing-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  mix-blend-mode: screen;
+  background: #fff;
+  color: #000;
+  height: 100%;
+  max-width: var(--mantine-breakpoint-xl);
+  flex: 1;
 }

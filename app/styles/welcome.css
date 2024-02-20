@@ -13,11 +13,11 @@
 #welcome {
   background: linear-gradient(
     160deg,
-    var(--mantine-color-yellow-2),
-    var(--mantine-color-grape-2),
-    var(--mantine-color-teal-2),
-    var(--mantine-color-pink-2),
-    var(--mantine-color-cyan-2)
+    var(--mantine-color-yellow-3),
+    var(--mantine-color-grape-3),
+    var(--mantine-color-teal-3),
+    var(--mantine-color-pink-3),
+    var(--mantine-color-cyan-3)
   );
   background-size: 200% 200%;
   height: 100vh;
@@ -43,6 +43,31 @@
   flex: 1;
 }
 
-path {
-  fill: var(--mantine-color-black);
+.center {
+  max-width: var(--mantine-breakpoint-xs);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.chunk {
+  display: flex;
+  gap: var(--mantine-spacing-xs);
+}
+
+.top,
+.middle {
+  flex-direction: column;
+}
+.middle {
+  flex-basis: 45%;
+  gap: var(--mantine-spacing-sm);
+}
+.middle p,
+.middle a {
+  font-weight: 700;
+}
+.middle a {
+  text-decoration: underline;
 }

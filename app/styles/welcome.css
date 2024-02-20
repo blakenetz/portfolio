@@ -13,11 +13,11 @@
 #welcome {
   background: linear-gradient(
     160deg,
-    var(--mantine-color-yellow-1),
-    var(--mantine-color-grape-1),
-    var(--mantine-color-teal-1),
-    var(--mantine-color-pink-1),
-    var(--mantine-color-cyan-1)
+    var(--mantine-color-yellow-2),
+    var(--mantine-color-grape-2),
+    var(--mantine-color-teal-2),
+    var(--mantine-color-pink-2),
+    var(--mantine-color-cyan-2)
   );
   background-size: 200% 200%;
   height: 100vh;

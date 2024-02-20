@@ -41,3 +41,16 @@
   max-width: var(--mantine-breakpoint-xl);
   flex: 1;
 }
+
+svg circle {
+  fill: #00fbd1;
+  mix-blend-mode: multiply;
+}
+
+svg path {
+  fill: #d867ff;
+  mix-blend-mode: multiply;
+}
+svg path:nth-of-type(odd) {
+  fill: #fffa2a;
+}

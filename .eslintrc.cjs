@@ -23,7 +23,11 @@ module.exports = {
 
   rules: {
     "no-unused-vars": "warn",
-    "@typescript-eslint/no-unused-vars": ["warn"],
+    "@typescript-eslint/no-unused-vars": ["warn", {
+      "argsIgnorePattern": "^_",
+      "varsIgnorePattern": "^_",
+      "caughtErrorsIgnorePattern": "^_"
+    }],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "import/no-named-as-default": 0,

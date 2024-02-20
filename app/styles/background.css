@@ -1,28 +1,6 @@
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
 #background {
-  background: linear-gradient(
-    160deg,
-    var(--mantine-color-yellow-3),
-    var(--mantine-color-grape-3),
-    var(--mantine-color-teal-3),
-    var(--mantine-color-pink-3),
-    var(--mantine-color-cyan-3)
-  );
-  background-size: 200% 200%;
   height: 100vh;
   width: 100vw;
-  animation: gradient 5s ease infinite;
   padding: var(--mantine-spacing-xl);
   display: flex;
   justify-content: center;
@@ -35,7 +13,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  mix-blend-mode: screen;
   background: #fff;
   color: #000;
   height: 100%;

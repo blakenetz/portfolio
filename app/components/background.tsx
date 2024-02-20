@@ -7,7 +7,11 @@ export default function Welcome({
   ...props
 }: PropsWithChildren<HTMLAttributes<HTMLElement>>) {
   return (
-    <section id="background" {...props}>
+    <section
+      id="background"
+      className={[props.className, "gradient-background"].join(" ").trim()}
+      {...props}
+    >
       <div className="main">{children}</div>
     </section>
   );

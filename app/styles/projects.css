@@ -1,0 +1,17 @@
+.repos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-sm);
+}
+
+.outline {
+  padding: calc(var(--mantine-spacing-xs) / 4);
+}
+
+.repo {
+  padding: var(--mantine-spacing-xs);
+}
+
+.repo img {
+  height: var(--mantine-font-size-md);
+}

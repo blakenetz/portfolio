@@ -15,3 +15,8 @@
 .repo img {
   height: var(--mantine-font-size-md);
 }
+
+.meta {
+  display: flex;
+  gap: var(--mantine-spacing-xs);
+}

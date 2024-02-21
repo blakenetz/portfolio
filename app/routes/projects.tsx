@@ -1,9 +1,11 @@
-import { Anchor, Paper, Text, Title } from "@mantine/core";
+import { Anchor, Divider, Paper, Text, Title, Tooltip } from "@mantine/core";
 import { LinksFunction } from "@remix-run/node";
 import { redirect, useLoaderData } from "@remix-run/react";
+import { IconGitFork } from "@tabler/icons-react";
 import { Octokit } from "octokit";
 
 import Background from "~/components/background";
+import Language from "~/components/language";
 import styles from "~/styles/projects.css";
 import { format, parseEmojis } from "~/utils/projects";
 
@@ -13,11 +15,7 @@ export async function loader() {
   const octokit = new Octokit({
     auth: process.env.GITHUB_AUTH_TOKEN,
   });
-  const { data: emojis } = await octokit.request("GET /emojis", {
-    headers: {
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  });
+  const { data: emojis } = await octokit.request("GET /emojis");
   const response = await octokit.request("GET /users/{username}/repos", {
     username: "blakenetz",
     sort: "updated",
@@ -28,6 +26,8 @@ export async function loader() {
     redirect("/");
   }
 
+  console.log(response.data);
+
   return response.data.map((data) => ({
     name: parseEmojis(data.name, emojis),
     description: parseEmojis(data.description, emojis),
@@ -35,6 +35,7 @@ export async function loader() {
     created_at: data.created_at,
     updated_at: data.updated_at,
     language: data.language,
+    forked: data.fork,
   }));
 }
 
@@ -53,11 +54,18 @@ export default function Projects() {
             className="outline gradient-background"
           >
             <Paper className="repo">
-              <Title
-                order={4}
-                component="p"
-                dangerouslySetInnerHTML={{ __html: repo.name! }}
-              />
+              <div>
+                <Title
+                  order={4}
+                  component="p"
+                  dangerouslySetInnerHTML={{ __html: repo.name! }}
+                />
+                {repo.forked && (
+                  <Tooltip label="This repo was forked">
+                    <IconGitFork />
+                  </Tooltip>
+                )}
+              </div>
               {repo.description && (
                 <Text dangerouslySetInnerHTML={{ __html: repo.description }} />
               )}
@@ -68,8 +76,18 @@ export default function Projects() {
               >
                 View on Github
               </Anchor>
-              <Text>{`Created: ${format(repo.created_at!)}`}</Text>
-              <Text>{`Updated: ${format(repo.updated_at!)}`}</Text>
+              <div className="meta">
+                {repo.language && (
+                  <>
+                    <Language language={repo.language} />
+                    <Divider orientation="vertical" />
+                  </>
+                )}
+
+                <Text>{`Created ${format(repo.created_at!)}`}</Text>
+                <Divider orientation="vertical" />
+                <Text>{`Updated ${format(repo.updated_at!)}`}</Text>
+              </div>
             </Paper>
           </Paper>
         ))}

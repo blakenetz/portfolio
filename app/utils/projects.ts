@@ -4,8 +4,9 @@ const formatter = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
 });
 
-export function format(date: string) {
-  return formatter.format(new Date(date));
+export function format(value: string) {
+  const date = new Date(value);
+  return formatter.format(date);
 }
 
 const reg = /(:[\w\-+]+:)/g;

@@ -1,42 +1,30 @@
-import { Anchor, Divider, Paper, Text, Title, Tooltip } from "@mantine/core";
-import { LinksFunction } from "@remix-run/node";
-import { redirect, useLoaderData } from "@remix-run/react";
+import {
+  Anchor,
+  Divider,
+  Flex,
+  Paper,
+  Text,
+  Title,
+  Tooltip,
+} from "@mantine/core";
+import { LinksFunction, redirect } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { IconGitFork } from "@tabler/icons-react";
-import { Octokit } from "octokit";
 
+import { getRepos } from "~/api/projects.server";
 import Background from "~/components/background";
 import Language from "~/components/language";
 import styles from "~/styles/projects.css";
-import { format, parseEmojis } from "~/utils/projects";
+import { format } from "~/utils/projects";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export async function loader() {
-  const octokit = new Octokit({
-    auth: process.env.GITHUB_AUTH_TOKEN,
-  });
-  const { data: emojis } = await octokit.request("GET /emojis");
-  const response = await octokit.request("GET /users/{username}/repos", {
-    username: "blakenetz",
-    sort: "updated",
-    per_page: 5,
-  });
+  const { status, data } = await getRepos();
 
-  if (response.status !== 200) {
-    redirect("/");
-  }
+  if (status !== 200) redirect("/");
 
-  console.log(response.data);
-
-  return response.data.map((data) => ({
-    name: parseEmojis(data.name, emojis),
-    description: parseEmojis(data.description, emojis),
-    html_url: data.html_url,
-    created_at: data.created_at,
-    updated_at: data.updated_at,
-    language: data.language,
-    forked: data.fork,
-  }));
+  return data;
 }
 
 export default function Projects() {
@@ -54,18 +42,18 @@ export default function Projects() {
             className="outline gradient-background"
           >
             <Paper className="repo">
-              <div>
+              <Flex>
+                {repo.fork && (
+                  <Tooltip label="This repo was forked">
+                    <IconGitFork />
+                  </Tooltip>
+                )}
                 <Title
                   order={4}
                   component="p"
                   dangerouslySetInnerHTML={{ __html: repo.name! }}
                 />
-                {repo.forked && (
-                  <Tooltip label="This repo was forked">
-                    <IconGitFork />
-                  </Tooltip>
-                )}
-              </div>
+              </Flex>
               {repo.description && (
                 <Text dangerouslySetInnerHTML={{ __html: repo.description }} />
               )}

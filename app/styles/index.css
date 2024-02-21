@@ -1,25 +1,5 @@
-.main {
-  mix-blend-mode: screen;
-}
-
-.center {
-  max-width: var(--mantine-breakpoint-xs);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-}
-
-.content {
-  display: flex;
-  gap: var(--mantine-spacing-xs);
-}
-
 .column {
   flex-direction: column;
-}
-
-.middle {
   flex-basis: 45%;
   gap: var(--mantine-spacing-sm);
 }

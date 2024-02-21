@@ -9,9 +9,8 @@
     background-position: 0% 50%;
   }
 }
-
-.gradient-background {
-  background: linear-gradient(
+:root {
+  --bg-gradient: linear-gradient(
     160deg,
     var(--mantine-color-yellow-3),
     var(--mantine-color-grape-3),
@@ -19,6 +18,6 @@
     var(--mantine-color-pink-3),
     var(--mantine-color-cyan-3)
   );
-  background-size: 200% 200%;
-  animation: gradient 5s ease infinite;
+  --bg-size: 200% 200%;
+  --bg-animation: gradient 2s ease infinite;
 }

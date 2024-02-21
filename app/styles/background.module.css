@@ -1,0 +1,62 @@
+.background {
+  min-height: 100vh;
+  width: 100vw;
+  padding: var(--mantine-spacing-xl);
+  display: flex;
+  justify-content: center;
+  position: relative;
+  /* animation */
+  background: var(--bg-gradient);
+  background-size: var(--bg-size);
+  animation: var(--bg-animation);
+}
+
+.main {
+  padding: var(--mantine-spacing-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  color: #000;
+  max-width: var(--mantine-breakpoint-xl);
+  flex: 1;
+  position: relative;
+}
+
+.center {
+  max-width: var(--mantine-breakpoint-xs);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  gap: var(--mantine-spacing-xl);
+}
+
+.content {
+  display: flex;
+  gap: var(--mantine-spacing-xs);
+}
+.column {
+  flex-direction: column;
+}
+
+.mix {
+  mix-blend-mode: screen;
+}
+
+.links a {
+  position: relative;
+}
+.links a:focus-visible {
+  outline: none;
+}
+.links a:focus-visible::after,
+.links a:hover::after {
+  content: "";
+  border-bottom: 4px solid var(--mantine-color-black);
+  position: absolute;
+  left: -10%;
+  top: 50%;
+  width: 120%;
+}

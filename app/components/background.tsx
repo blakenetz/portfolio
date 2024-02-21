@@ -1,18 +1,35 @@
-import "~/styles/background.css";
-
 import { HTMLAttributes, PropsWithChildren } from "react";
 
-export default function Welcome({
+import Header from "~/components/header";
+import Links from "~/components/links";
+import styles from "~/styles/background.module.css";
+
+interface BackgroundProps extends HTMLAttributes<HTMLElement> {
+  /**
+   * Additional content is shown for index page
+   */
+  index?: boolean;
+}
+
+export default function Background({
   children,
+  index,
   ...props
-}: PropsWithChildren<HTMLAttributes<HTMLElement>>) {
+}: PropsWithChildren<BackgroundProps>) {
   return (
     <section
-      id="background"
-      className={[props.className, "gradient-background"].join(" ").trim()}
       {...props}
+      className={[props.className, styles.background, props.className]
+        .join(" ")
+        .trim()}
     >
-      <div className="main">{children}</div>
+      <div className={[styles.main, index ? styles.mix : null].join(" ")}>
+        <div className={styles.center}>
+          {index && <Header />}
+          {children}
+          {index && <Links />}
+        </div>
+      </div>
     </section>
   );
 }

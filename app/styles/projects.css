@@ -14,7 +14,7 @@
   font-size: var(--mantine-font-size-sm);
 }
 
-.home {
-  position: absolute;
-  right: var(--mantine-spacing-lg);
+.body {
+  flex-direction: column;
+  gap: var(--mantine-spacing-xl);
 }

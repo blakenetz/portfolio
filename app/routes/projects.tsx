@@ -1,7 +1,6 @@
-import { ActionIcon, Tooltip } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { LinksFunction, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { Link, useLoaderData, useSubmit } from "@remix-run/react";
-import { IconHome } from "@tabler/icons-react";
+import { useLoaderData, useSubmit } from "@remix-run/react";
 
 import { getRepos } from "~/api/projects.server";
 import Background from "~/components/background";
@@ -31,20 +30,7 @@ export default function Projects() {
         <Header />
       </div>
 
-      <Tooltip label="Go home">
-        <ActionIcon
-          component={Link}
-          to="/"
-          aria-label="Go home"
-          variant="gradient"
-          className="home"
-          gradient={{ from: "grape", to: "cyan", deg: 160 }}
-        >
-          <IconHome />
-        </ActionIcon>
-      </Tooltip>
-
-      <div>
+      <Flex className="body">
         <Repos data={personal.data} submit={submit} title="Personal projects" />
         <Repos
           data={work.data}
@@ -52,7 +38,7 @@ export default function Projects() {
           title="Work projects"
           subtitle="The following are typically CI items, POC, etc. and are aren't suited for production"
         />
-      </div>
+      </Flex>
 
       <div className="burn">
         <Links />

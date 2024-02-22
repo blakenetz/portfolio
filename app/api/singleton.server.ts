@@ -72,7 +72,7 @@ class Api {
   }
 
   async request(username: string, sort: Sort) {
-    const opts = { username, sort, per_page: 5 };
+    const opts = { username, sort, per_page: 6 };
 
     if (process.env.NODE_ENV === "development") {
       const key = [username, sort].join(":");

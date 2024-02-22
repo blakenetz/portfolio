@@ -22,7 +22,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Projects() {
-  const [personal, _work] = useLoaderData<typeof loader>();
+  const [personal, work] = useLoaderData<typeof loader>();
   const submit = useSubmit();
 
   return (
@@ -45,6 +45,12 @@ export default function Projects() {
       </Tooltip>
 
       <Repos data={personal.data} submit={submit} title="Personal projects" />
+      <Repos
+        data={work.data}
+        submit={submit}
+        title="Work projects"
+        subtitle="The following are typically CI items, POC, etc. and are aren't suited for production"
+      />
 
       <div className="burn">
         <Links />

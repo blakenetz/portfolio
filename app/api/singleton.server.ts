@@ -4,9 +4,7 @@ import type { Storage } from "unstorage";
 import { createStorage } from "unstorage";
 import fsDriver from "unstorage/drivers/fs";
 
-import { OctoResponse, Sort, UserScope } from "./projects";
-
-type Emojis = { [key: string]: string };
+import { EmojiData, OctoResponse, Sort, UserScope } from "./projects";
 
 type UserName<T> = T extends "personal"
   ? string
@@ -14,13 +12,23 @@ type UserName<T> = T extends "personal"
   ? string[]
   : never;
 
-const endpoint = "GET /users/{username}/repos";
+type StorageItem<T> = T extends "GET /users/{username}/repos"
+  ? OctoResponse
+  : T extends "GET /emojis"
+  ? EmojiData
+  : never;
+
+const endpoints = ["GET /users/{username}/repos", "GET /emojis"] as const;
+type Endpoint = (typeof endpoints)[number];
+
+type ReposItem = StorageItem<(typeof endpoints)[0]>;
+type EmojisItem = StorageItem<(typeof endpoints)[1]>;
 
 class Api {
-  #emojis: Emojis | null;
+  #emojis: EmojiData | null;
   #octokit: Octokit;
   #usernames: { personal: UserName<"personal">; work: UserName<"work"> };
-  #storage: Storage<OctoResponse>;
+  #storage: Storage<StorageItem<Endpoint>>;
 
   constructor() {
     // create API drivers/storage
@@ -42,11 +50,17 @@ class Api {
   }
 
   private async initialize() {
-    const { data } = await this.#octokit.request("GET /emojis");
+    const key = "emojis";
+    // try cache first
+    const value = await this.#storage.getItem<EmojisItem>(key);
+    if (value) return value;
+
+    const { data } = await this.#octokit.request(endpoints[1]);
     this.#emojis = data;
+    this.#storage.setItem<EmojisItem>(key, data);
   }
 
-  getEmoji(emoji: keyof Emojis) {
+  getEmoji(emoji: keyof EmojiData) {
     if (this.#emojis) return this.#emojis[emoji];
     return null;
   }
@@ -64,17 +78,17 @@ class Api {
       const key = [username, sort].join(":");
 
       // fetch from storage
-      const value = await this.#storage.getItem(key);
+      const value = await this.#storage.getItem<ReposItem>(key);
       console.log("successfully fetched from cache: ", key);
       if (value) return value;
 
       // fetch from octokit
-      const response = await this.#octokit.request(endpoint, opts);
-      this.#storage.setItem(key, response);
+      const response = await this.#octokit.request(endpoints[0], opts);
+      this.#storage.setItem<ReposItem>(key, response);
       return response;
     }
 
-    return this.#octokit.request(endpoint, opts);
+    return this.#octokit.request(endpoints[0], opts);
   }
 }
 

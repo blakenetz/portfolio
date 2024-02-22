@@ -107,7 +107,7 @@ async function getRepoByScope(
   const data = sortData(
     repos.flatMap(({ data }) => data),
     sort
-  );
+  ).slice(4);
 
   const status = repos.every((r) => r.status % 200 < 100)
     ? 200

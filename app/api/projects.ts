@@ -8,6 +8,7 @@ export type UserScope = "work" | "personal";
 // Octokit types
 export type OctoResponse = Endpoints["GET /users/{username}/repos"]["response"];
 export type OctoData = OctoResponse["data"];
+export type EmojiData = Endpoints["GET /emojis"]["response"]["data"];
 
 // Project types
 export type RepoKeys =

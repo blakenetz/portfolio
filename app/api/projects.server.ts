@@ -2,7 +2,13 @@ import { formatDistanceToNow, isThisYear } from "date-fns";
 
 import Api from "~/api/singleton.server";
 
-import { Sort, sorts } from "./projects";
+import {
+  Data,
+  DataPoints,
+  Sort,
+  sorts,
+  UserScope as _UserScope,
+} from "./projects";
 
 const formatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
@@ -43,13 +49,23 @@ function extractUrlParams(url: string): Sort {
   return "updated";
 }
 
-export async function getRepos(request: Request) {
-  const sort = extractUrlParams(request.url);
+function parseData(responseData: Data): Pick<Data[number], DataPoints>[] {
+  return responseData.map((data) => ({
+    name: parseEmojis(data.name)!,
+    description: parseEmojis(data.description),
+    html_url: data.html_url,
+    created_at: formatDate(data.created_at!),
+    updated_at: formatDate(data.updated_at!),
+    language: data.language,
+    fork: data.fork,
+  }));
+}
 
+async function getRepoForUser(username: string, sort: Sort) {
   const response = await Api.octokit.request("GET /users/{username}/repos", {
-    username: "blakenetz",
-    per_page: 5,
+    username,
     sort,
+    per_page: 5,
   });
 
   if (response.status !== 200) {
@@ -58,14 +74,13 @@ export async function getRepos(request: Request) {
 
   return {
     ...response,
-    data: response.data.map((data) => ({
-      name: parseEmojis(data.name),
-      description: parseEmojis(data.description),
-      html_url: data.html_url,
-      created_at: formatDate(data.created_at!),
-      updated_at: formatDate(data.updated_at!),
-      language: data.language,
-      fork: data.fork,
-    })),
+    data: parseData(response.data),
   };
+}
+
+export async function getRepos(request: Request) {
+  const sort = extractUrlParams(request.url);
+  const username = Api.getUsername("personal") as string;
+
+  return getRepoForUser(username, sort);
 }

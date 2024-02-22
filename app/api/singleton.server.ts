@@ -1,18 +1,25 @@
 import { Octokit } from "octokit";
 
+import { UserScope } from "./projects";
+
 type Emojis = { [key: string]: string };
 
 class Api {
   #emojis: Emojis | null;
   #octokit: Octokit;
+  #usernames: { personal: string; work: string[] };
 
   constructor() {
     const octokit = new Octokit({
       auth: process.env.GITHUB_AUTH_TOKEN,
     });
 
-    this.#emojis = null;
     this.#octokit = octokit;
+    this.#usernames = {
+      personal: "blakenetz",
+      work: ["blake-kc", "blake-spire", "blake-discover"],
+    };
+    this.#emojis = null;
 
     this.initialize();
   }
@@ -29,6 +36,12 @@ class Api {
 
   get octokit() {
     return this.#octokit;
+  }
+
+  getUsername(scope: UserScope) {
+    return scope === "personal"
+      ? this.#usernames.personal
+      : this.#usernames.work;
   }
 }
 

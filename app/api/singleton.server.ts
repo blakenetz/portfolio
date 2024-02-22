@@ -4,10 +4,16 @@ import { UserScope } from "./projects";
 
 type Emojis = { [key: string]: string };
 
+type UserName<T> = T extends "personal"
+  ? string
+  : T extends "work"
+  ? string[]
+  : never;
+
 class Api {
   #emojis: Emojis | null;
   #octokit: Octokit;
-  #usernames: { personal: string; work: string[] };
+  #usernames: { personal: UserName<"personal">; work: UserName<"work"> };
 
   constructor() {
     const octokit = new Octokit({
@@ -38,10 +44,10 @@ class Api {
     return this.#octokit;
   }
 
-  getUsername(scope: UserScope) {
+  getUsername<T extends UserScope>(scope: T): UserName<T> {
     return scope === "personal"
-      ? this.#usernames.personal
-      : this.#usernames.work;
+      ? (this.#usernames.personal as UserName<T>)
+      : (this.#usernames.work as UserName<T>);
   }
 }
 

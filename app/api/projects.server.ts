@@ -7,7 +7,7 @@ import {
   DataPoints,
   Sort,
   sorts,
-  UserScope as _UserScope,
+  UserScope as UserScope,
 } from "./projects";
 
 const formatter = new Intl.DateTimeFormat("en-US", {
@@ -15,7 +15,6 @@ const formatter = new Intl.DateTimeFormat("en-US", {
   month: "short",
   day: "numeric",
 });
-
 function formatDate(value: string) {
   const date = new Date(value);
 
@@ -27,7 +26,6 @@ function formatDate(value: string) {
 }
 
 const reg = /(:[\w\-+]+:)/g;
-
 function parseEmojis(text: string | null) {
   if (!text) return null;
 
@@ -78,9 +76,19 @@ async function getRepoForUser(username: string, sort: Sort) {
   };
 }
 
+async function getRepoByScope(scope: UserScope, sort: Sort) {
+  if (scope === "personal") {
+    const username = Api.getUsername("personal");
+    return getRepoForUser(username, sort);
+  }
+
+  return Promise.all(
+    Api.getUsername("work").map((username) => getRepoForUser(username, sort))
+  );
+}
+
 export async function getRepos(request: Request) {
   const sort = extractUrlParams(request.url);
-  const username = Api.getUsername("personal") as string;
 
-  return getRepoForUser(username, sort);
+  return getRepoByScope("personal", sort);
 }

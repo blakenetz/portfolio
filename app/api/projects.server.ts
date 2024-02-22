@@ -3,8 +3,9 @@ import { formatDistanceToNow, isThisYear } from "date-fns";
 import Api from "~/api/singleton.server";
 
 import {
+  OctoData,
+  OctoResponse,
   RepoData,
-  RepoKeys,
   RepoResponse,
   Sort,
   sorts,
@@ -48,7 +49,7 @@ function extractUrlParams(url: string): Sort {
   return "updated";
 }
 
-function sortData(responseData: RepoData, sort: Sort) {
+function sortData(responseData: OctoData, sort: Sort) {
   const key: keyof RepoData[number] =
     sort === "created" ? "created_at" : "updated_at";
 
@@ -57,7 +58,7 @@ function sortData(responseData: RepoData, sort: Sort) {
   );
 }
 
-function parseData(responseData: RepoData): Pick<RepoData[number], RepoKeys>[] {
+function parseData(responseData: OctoData): RepoData {
   return responseData.map((data) => ({
     name: parseEmojis(data.name)!,
     description: parseEmojis(data.description),
@@ -69,13 +70,13 @@ function parseData(responseData: RepoData): Pick<RepoData[number], RepoKeys>[] {
   }));
 }
 
-async function getRepoForUser(username: string, sort: Sort) {
-  const { status, data } = await Api.octokit.request(
-    "GET /users/{username}/repos",
-    { username, sort, per_page: 5 }
-  );
+async function getRepoForUser(
+  username: string,
+  sort: Sort
+): Promise<Pick<OctoResponse, "data" | "status">> {
+  const { status, data } = await Api.request(username, sort);
 
-  if (status % 200 < 100) {
+  if (status < 200 || status > 300) {
     return { status, data: [] };
   }
 

@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["gsap", "mantine", "tabler", "warpjs"],
+  "cSpell.words": ["gsap", "mantine", "Octo", "tabler", "unstorage", "warpjs"],
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   }

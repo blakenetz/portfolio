@@ -2,6 +2,7 @@
 export default {
   ignoredRouteFiles: ["**/.*"],
   postcss: true,
+  cacheDirectory: '.cache'
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
   // publicPath: "/build/",

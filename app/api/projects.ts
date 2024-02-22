@@ -2,9 +2,14 @@ import type { Endpoints } from "@octokit/types";
 
 export const sorts = ["updated", "created"] as const;
 export type Sort = (typeof sorts)[number];
+
 export type UserScope = "work" | "personal";
-export type RepoData =
-  Endpoints["GET /users/{username}/repos"]["response"]["data"];
+
+// Octokit types
+export type OctoResponse = Endpoints["GET /users/{username}/repos"]["response"];
+export type OctoData = OctoResponse["data"];
+
+// Project types
 export type RepoKeys =
   | "name"
   | "description"
@@ -13,7 +18,5 @@ export type RepoKeys =
   | "updated_at"
   | "language"
   | "fork";
-export type RepoResponse = {
-  data: Pick<RepoData[number], RepoKeys>[];
-  status: number;
-};
+export type RepoData = Pick<OctoData[number], RepoKeys>[];
+export type RepoResponse = { data: RepoData; status: number };

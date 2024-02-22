@@ -65,6 +65,7 @@ class Api {
 
       // fetch from storage
       const value = await this.#storage.getItem(key);
+      console.log("successfully fetched from cache: ", key);
       if (value) return value;
 
       // fetch from octokit

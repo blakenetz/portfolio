@@ -1,9 +1,6 @@
 import {
   ActionIcon,
-  Anchor,
-  Divider,
   Flex,
-  Paper,
   SegmentedControl,
   SegmentedControlProps,
   Text,
@@ -18,22 +15,21 @@ import {
   useSearchParams,
   useSubmit,
 } from "@remix-run/react";
-import { IconGitFork, IconHome } from "@tabler/icons-react";
+import { IconHome } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 
 import { Sort, sorts } from "~/api/projects";
 import { getRepos } from "~/api/projects.server";
 import Background from "~/components/background";
 import Header from "~/components/header";
-import Language from "~/components/language";
 import Links from "~/components/links";
+import Repos from "~/components/repos";
 import styles from "~/styles/projects.css";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const repos = await getRepos(request);
-  console.log(repos);
 
   if (repos.every((r) => r.status === 400)) redirect("/");
 
@@ -85,51 +81,8 @@ export default function Projects() {
         <div className="burn">
           <Title>GitHub Projects</Title>
         </div>
-        <div className="flex">
-          {personal.data.map((repo) => (
-            <Paper key={repo.name} shadow="sm" withBorder className="outline">
-              <Paper className="repo">
-                <Flex>
-                  {repo.fork && (
-                    <Tooltip label="This repo was forked">
-                      <IconGitFork />
-                    </Tooltip>
-                  )}
-                  <Title
-                    order={4}
-                    component="p"
-                    dangerouslySetInnerHTML={{ __html: repo.name! }}
-                  />
-                </Flex>
-                {repo.description && (
-                  <Text
-                    dangerouslySetInnerHTML={{ __html: repo.description }}
-                    className="description"
-                  />
-                )}
-                <Anchor
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={repo.html_url}
-                >
-                  View on Github
-                </Anchor>
-                <div className="meta">
-                  {repo.language && (
-                    <>
-                      <Language language={repo.language} />
-                      <Divider orientation="vertical" />
-                    </>
-                  )}
 
-                  <Text>{`Created ${repo.created_at}`}</Text>
-                  <Divider orientation="vertical" />
-                  <Text>{`Updated ${repo.updated_at}`}</Text>
-                </div>
-              </Paper>
-            </Paper>
-          ))}
-        </div>
+        <Repos data={personal.data} />
 
         <Flex className="end">
           <Text>Sort by last</Text>

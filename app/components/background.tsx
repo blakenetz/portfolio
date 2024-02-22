@@ -2,7 +2,7 @@ import { HTMLAttributes, PropsWithChildren } from "react";
 
 import Header from "~/components/header";
 import Links from "~/components/links";
-import styles from "~/styles/background.module.css";
+import styles from "~/styles/layout.module.css";
 
 interface BackgroundProps extends HTMLAttributes<HTMLElement> {
   /**

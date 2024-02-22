@@ -5,7 +5,7 @@ import {
   IconBrandMedium,
 } from "@tabler/icons-react";
 
-import styles from "~/styles/background.module.css";
+import styles from "~/styles/layout.module.css";
 
 export default function Links() {
   return (

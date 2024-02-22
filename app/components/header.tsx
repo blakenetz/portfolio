@@ -1,6 +1,6 @@
 import { Title } from "@mantine/core";
 
-import styles from "~/styles/background.module.css";
+import styles from "~/styles/layout.module.css";
 
 export default function Header() {
   return (

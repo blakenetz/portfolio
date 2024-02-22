@@ -1,0 +1,52 @@
+.flex {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-sm);
+}
+
+.outline {
+  padding: calc(var(--mantine-spacing-xs) / 4);
+  background: var(--bg-gradient);
+  background-size: var(--bg-size);
+  animation: var(--bg-animation);
+}
+
+.repo {
+  padding: var(--mantine-spacing-xs);
+}
+
+.repo img {
+  height: var(--mantine-font-size-md);
+}
+
+.description {
+  font-size: var(--mantine-font-size-sm);
+  color: var(--mantine-color-md);
+}
+
+.meta {
+  display: flex;
+  gap: var(--mantine-spacing-xs);
+}
+.meta p {
+  font-size: var(--mantine-font-size-xs);
+}
+
+.meta .mantine-Badge-root {
+  height: var(--mantine-font-size-xs);
+  width: var(--mantine-font-size-xs);
+  padding: 0;
+}
+
+.mantine-Anchor-root {
+  font-size: var(--mantine-font-size-sm);
+}
+
+.mantine-Flex-root {
+  align-items: center;
+  gap: calc(var(--mantine-spacing-xs) / 2);
+}
+
+.end {
+  align-self: flex-end;
+}

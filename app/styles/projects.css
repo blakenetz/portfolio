@@ -4,49 +4,6 @@
   gap: var(--mantine-spacing-sm);
 }
 
-.outline {
-  padding: calc(var(--mantine-spacing-xs) / 4);
-  background: var(--bg-gradient);
-  background-size: var(--bg-size);
-  animation: var(--bg-animation);
-}
-
-.repo {
-  padding: var(--mantine-spacing-xs);
-}
-
-.repo img {
-  height: var(--mantine-font-size-md);
-}
-
-.meta {
-  display: flex;
-  gap: var(--mantine-spacing-xs);
-}
-.meta p {
-  font-size: var(--mantine-font-size-xs);
-}
-
-.meta .mantine-Badge-root {
-  height: var(--mantine-font-size-xs);
-  width: var(--mantine-font-size-xs);
-  padding: 0;
-}
-
-.mantine-Anchor-root,
-.description {
-  font-size: var(--mantine-font-size-sm);
-}
-
-.description {
-  color: var(--mantine-color-md);
-}
-
-.mantine-Flex-root {
-  align-items: center;
-  gap: calc(var(--mantine-spacing-xs) / 2);
-}
-
 .burn {
   position: relative;
   background: var(--bg-gradient);
@@ -57,10 +14,6 @@
 .burn > * {
   background: var(--mantine-color-white);
   mix-blend-mode: screen;
-}
-
-.end {
-  align-self: flex-end;
 }
 
 .home {

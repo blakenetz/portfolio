@@ -32,11 +32,12 @@ import styles from "~/styles/projects.css";
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { status, data } = await getRepos(request);
+  const repos = await getRepos(request);
+  console.log(repos);
 
-  if (status !== 200) redirect("/");
+  if (repos.every((r) => r.status === 400)) redirect("/");
 
-  return data;
+  return repos;
 }
 
 function validate(val: string | null): Sort | null {
@@ -46,7 +47,7 @@ function validate(val: string | null): Sort | null {
 }
 
 export default function Projects() {
-  const repos = useLoaderData<typeof loader>();
+  const [personal, _work] = useLoaderData<typeof loader>();
   const submit = useSubmit();
   const [searchParams] = useSearchParams();
 
@@ -85,7 +86,7 @@ export default function Projects() {
           <Title>GitHub Projects</Title>
         </div>
         <div className="flex">
-          {repos.map((repo) => (
+          {personal.data.map((repo) => (
             <Paper key={repo.name} shadow="sm" withBorder className="outline">
               <Paper className="repo">
                 <Flex>

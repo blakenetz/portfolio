@@ -3,8 +3,9 @@ import { formatDistanceToNow, isThisYear } from "date-fns";
 import Api from "~/api/singleton.server";
 
 import {
-  Data,
-  DataPoints,
+  RepoData,
+  RepoKeys,
+  RepoResponse,
   Sort,
   sorts,
   UserScope as UserScope,
@@ -47,7 +48,16 @@ function extractUrlParams(url: string): Sort {
   return "updated";
 }
 
-function parseData(responseData: Data): Pick<Data[number], DataPoints>[] {
+function sortData(responseData: RepoData, sort: Sort) {
+  const key: keyof RepoData[number] =
+    sort === "created" ? "created_at" : "updated_at";
+
+  return responseData.sort(
+    (a, b) => new Date(a[key]!).valueOf() - new Date(b[key]!).valueOf()
+  );
+}
+
+function parseData(responseData: RepoData): Pick<RepoData[number], RepoKeys>[] {
   return responseData.map((data) => ({
     name: parseEmojis(data.name)!,
     description: parseEmojis(data.description),
@@ -60,35 +70,61 @@ function parseData(responseData: Data): Pick<Data[number], DataPoints>[] {
 }
 
 async function getRepoForUser(username: string, sort: Sort) {
-  const response = await Api.octokit.request("GET /users/{username}/repos", {
-    username,
-    sort,
-    per_page: 5,
-  });
+  const { status, data } = await Api.octokit.request(
+    "GET /users/{username}/repos",
+    { username, sort, per_page: 5 }
+  );
 
-  if (response.status !== 200) {
-    return { ...response, data: [] };
+  if (status % 200 < 100) {
+    return { status, data: [] };
   }
 
   return {
-    ...response,
-    data: parseData(response.data),
+    status: 200,
+    data,
   };
 }
 
-async function getRepoByScope(scope: UserScope, sort: Sort) {
+async function getRepoByScope(
+  scope: UserScope,
+  sort: Sort
+): Promise<RepoResponse> {
   if (scope === "personal") {
     const username = Api.getUsername("personal");
-    return getRepoForUser(username, sort);
+    const response = await getRepoForUser(username, sort);
+
+    return {
+      status: response.status,
+      data: parseData(response.data),
+    };
   }
 
-  return Promise.all(
+  const repos = await Promise.all(
     Api.getUsername("work").map((username) => getRepoForUser(username, sort))
   );
+
+  const data = sortData(
+    repos.flatMap(({ data }) => data),
+    sort
+  );
+
+  const status = repos.every((r) => r.status % 200 < 100)
+    ? 200
+    : repos.every((r) => r.status % 400 < 100)
+    ? 400
+    : 206;
+
+  return {
+    status: status,
+    data: parseData(data),
+  };
 }
 
 export async function getRepos(request: Request) {
   const sort = extractUrlParams(request.url);
 
-  return getRepoByScope("personal", sort);
+  return Promise.all([
+    getRepoByScope("personal", sort),
+    getRepoByScope("work", sort),
+  ]);
 }

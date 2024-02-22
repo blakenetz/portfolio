@@ -1,4 +1,4 @@
-import { ActionIcon, Tooltip } from "@mantine/core";
+import { ActionIcon, Flex, Tooltip } from "@mantine/core";
 import { LinksFunction, LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { Link, useLoaderData, useSubmit } from "@remix-run/react";
 import { IconHome } from "@tabler/icons-react";
@@ -44,13 +44,15 @@ export default function Projects() {
         </ActionIcon>
       </Tooltip>
 
-      <Repos data={personal.data} submit={submit} title="Personal projects" />
-      <Repos
-        data={work.data}
-        submit={submit}
-        title="Work projects"
-        subtitle="The following are typically CI items, POC, etc. and are aren't suited for production"
-      />
+      <Flex className="body">
+        <Repos data={personal.data} submit={submit} title="Personal projects" />
+        <Repos
+          data={work.data}
+          submit={submit}
+          title="Work projects"
+          subtitle="The following are typically CI items, POC, etc. and are aren't suited for production"
+        />
+      </Flex>
 
       <div className="burn">
         <Links />

@@ -24,11 +24,15 @@ export default function Background({
         .trim()}
     >
       <div className={[styles.main, index ? styles.mix : null].join(" ")}>
-        <div className={styles.center}>
-          {index && <Header />}
-          {children}
-          {index && <Links />}
-        </div>
+        {index ? (
+          <div className={styles.center}>
+            <Header />
+            {children}
+            <Links />
+          </div>
+        ) : (
+          children
+        )}
       </div>
     </section>
   );

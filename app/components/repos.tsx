@@ -46,9 +46,9 @@ export default function Repos({ data, submit, title, subtitle }: ReposProps) {
 
   return (
     <section className="flex">
-      <div className="burn">
+      <div className={["burn", styles.title].join(" ")}>
         <Title order={3}>{title}</Title>
-        {subtitle && <Title order={4}>{subtitle}</Title>}
+        {subtitle && <Text>{subtitle}</Text>}
       </div>
 
       <div className="flex">

@@ -1,5 +1,7 @@
 import { Badge, Flex, MantineColor, Text } from "@mantine/core";
 
+import styles from "~/styles/repos.module.css";
+
 const colors: { [key: string]: MantineColor } = {
   TypeScript: "cyan",
   JavaScript: "teal",
@@ -15,7 +17,8 @@ function getColor(language: string): MantineColor {
 export default function Language({ language }: { language: string }) {
   return (
     <Flex>
-      <Badge color={getColor(language)} /> <Text>{language}</Text>
+      <Badge className={styles.badge} color={getColor(language)} />{" "}
+      <Text>{language}</Text>
     </Flex>
   );
 }

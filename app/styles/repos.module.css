@@ -32,10 +32,12 @@
   font-size: var(--mantine-font-size-xs);
 }
 
-.meta .mantine-Badge-root {
+.badge {
   height: var(--mantine-font-size-xs);
   width: var(--mantine-font-size-xs);
   padding: 0;
+  align-self: center;
+  margin-right: var(--mantine-spacing-xs);
 }
 
 .mantine-Anchor-root {

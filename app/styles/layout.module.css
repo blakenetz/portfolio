@@ -22,6 +22,7 @@
   max-width: var(--mantine-breakpoint-xl);
   flex: 1;
   position: relative;
+  gap: var(--mantine-spacing-lg);
 }
 
 .center {

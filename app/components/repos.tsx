@@ -45,13 +45,13 @@ export default function Repos({ data, submit, title, subtitle }: ReposProps) {
   }, []);
 
   return (
-    <section className="flex">
+    <section>
       <div className={["burn", styles.title].join(" ")}>
         <Title order={3}>{title}</Title>
         {subtitle && <Text>{subtitle}</Text>}
       </div>
 
-      <div className="flex">
+      <div className={styles.grid}>
         {data.map((repo) => (
           <Paper
             key={repo.name}

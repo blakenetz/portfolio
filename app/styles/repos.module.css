@@ -1,7 +1,19 @@
-.flex {
-  display: flex;
-  flex-direction: column;
+.grid {
+  display: grid;
   gap: var(--mantine-spacing-sm);
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: $mantine-breakpoint-md) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: $mantine-breakpoint-sm) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .outline {

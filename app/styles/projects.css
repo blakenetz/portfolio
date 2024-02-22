@@ -1,10 +1,3 @@
-.flex {
-  display: flex;
-  flex-direction: column;
-  gap: var(--mantine-spacing-sm);
-  flex: 1;
-}
-
 .burn {
   position: relative;
   background: var(--bg-gradient);
@@ -24,13 +17,4 @@
 .home {
   position: absolute;
   right: var(--mantine-spacing-lg);
-}
-
-.body {
-  gap: var(--mantine-spacing-xl);
-  flex-wrap: wrap;
-}
-
-.body > section {
-  flex-basis: calc(var(--mantine-breakpoint-sm) / 2);
 }

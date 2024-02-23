@@ -20,4 +20,8 @@
   );
   --bg-size: 200% 200%;
   --bg-animation: gradient 2s ease infinite;
+
+  @media (prefers-reduced-motion) {
+    --bg-animation: gradient 10s ease infinite;
+  }
 }

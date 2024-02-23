@@ -68,3 +68,9 @@
   top: 50%;
   width: 120%;
 }
+
+.ada {
+  position: absolute;
+  top: calc(var(--mantine-spacing-xs) / 2);
+  right: calc(var(--mantine-spacing-xs) / 2);
+}

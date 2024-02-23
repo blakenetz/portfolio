@@ -66,7 +66,7 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
             <Paper className={styles.repo}>
               <Flex>
                 {repo.fork && (
-                  <Tooltip label="This repo was forked">
+                  <Tooltip label="This repo was forked" withArrow>
                     <IconGitFork />
                   </Tooltip>
                 )}

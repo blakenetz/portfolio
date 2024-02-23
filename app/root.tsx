@@ -1,11 +1,18 @@
 import "@mantine/core/styles.css";
 
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import {
+  ColorSchemeScript,
+  CSSVariablesResolver,
+  MantineProvider,
+} from "@mantine/core";
+import { useToggle } from "@mantine/hooks";
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { Links, LiveReload, Meta, Outlet, Scripts } from "@remix-run/react";
 
 import styles from "~/styles/root.css";
+
+import ColorSchemeContext from "./styles/colorSchemeContext";
 
 export const meta: MetaFunction = () => [
   { title: "BLAKE NETZEBAND" },
@@ -41,7 +48,39 @@ export const links: LinksFunction = () => [
   { rel: "index", href: "https://www.blakenetzeband.com" },
 ];
 
+const resolver: CSSVariablesResolver = (theme) => {
+  const { colors } = theme;
+  const saturated = [
+    colors.yellow,
+    colors.grape,
+    colors.teal,
+    colors.pink,
+    colors.cyan,
+  ]
+    .map((tuple) => tuple[3])
+    .join(",");
+  const desaturated = [
+    colors.gray[7],
+    colors.gray[6],
+    colors.gray[9],
+    colors.gray[6],
+    colors.gray[9],
+  ].join(",");
+
+  return {
+    variables: {
+      "--bg-gradient": theme.other.ada
+        ? `linear-gradient(160deg, ${desaturated})`
+        : `linear-gradient(160deg, ${saturated})`,
+    },
+    light: {},
+    dark: {},
+  };
+};
+
 export default function App() {
+  const [ada, setAda] = useToggle();
+
   return (
     <html lang="en">
       <head>
@@ -52,11 +91,16 @@ export default function App() {
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>
-          <Outlet />
-          <Scripts />
-          <LiveReload />
-        </MantineProvider>
+        <ColorSchemeContext.Provider value={{ ada, toggle: setAda }}>
+          <MantineProvider
+            theme={{ other: { ada } }}
+            cssVariablesResolver={resolver}
+          >
+            <Outlet />
+            <Scripts />
+            <LiveReload />
+          </MantineProvider>
+        </ColorSchemeContext.Provider>
       </body>
     </html>
   );

@@ -1,5 +1,13 @@
 {
-  "cSpell.words": ["gsap", "mantine", "Octo", "tabler", "unstorage", "warpjs"],
+  "cSpell.words": [
+    "desaturated",
+    "gsap",
+    "mantine",
+    "Octo",
+    "tabler",
+    "unstorage",
+    "warpjs"
+  ],
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },

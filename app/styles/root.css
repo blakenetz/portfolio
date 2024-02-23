@@ -10,14 +10,6 @@
   }
 }
 :root {
-  --bg-gradient: linear-gradient(
-    160deg,
-    var(--mantine-color-yellow-3),
-    var(--mantine-color-grape-3),
-    var(--mantine-color-teal-3),
-    var(--mantine-color-pink-3),
-    var(--mantine-color-cyan-3)
-  );
   --bg-size: 200% 200%;
   --bg-animation: gradient 2s ease infinite;
 

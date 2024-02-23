@@ -19,6 +19,9 @@
 
 .repo {
   padding: var(--mantine-spacing-xs);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--mantine-spacing-xs) / 2);
 }
 
 .repo img {
@@ -55,4 +58,21 @@
 
 .anchor {
   font-size: var(--mantine-font-size-sm);
+}
+
+.icon {
+  height: var(--mantine-font-size-md);
+  width: var(--mantine-font-size-md);
+  margin-right: calc(var(--mantine-spacing-xs) / 2);
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.repos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xs);
 }

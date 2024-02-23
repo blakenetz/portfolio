@@ -20,7 +20,10 @@ export type RepoKeys =
   | "updated_at"
   | "language"
   | "fork";
-export type RepoData = Pick<OctoData[number], RepoKeys>[];
+
+export type RepoData = (Pick<OctoData[number], RepoKeys> & {
+  user?: OctoData[number]["owner"]["login"];
+})[];
 export type RepoResponse = { data: RepoData; status: number };
 
 export function getParam(scope: UserScope) {

@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { useSearchParams } from "@remix-run/react";
-import { IconGitFork } from "@tabler/icons-react";
+import { IconGitFork, IconUserCircle } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 
 import { getParam, RepoData, Sort, sorts, UserScope } from "~/api/projects";
@@ -49,7 +49,7 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
   }, []);
 
   return (
-    <section>
+    <section className={styles.repos}>
       <div className={["burn", styles.title].join(" ")}>
         <Title order={3}>{`${capitalize(name)} Projects`}</Title>
         {subtitle && <Text>{subtitle}</Text>}
@@ -82,14 +82,33 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
                   className={styles.description}
                 />
               )}
-              <Anchor
-                target="_blank"
-                rel="noopener noreferrer"
-                href={repo.html_url}
-                className={styles.anchor}
-              >
-                View on Github
-              </Anchor>
+              <div className={styles.meta}>
+                <Anchor
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={repo.html_url}
+                  className={styles.anchor}
+                >
+                  View on Github
+                </Anchor>
+                {repo.user && (
+                  <>
+                    <Divider orientation="vertical" />
+                    <Anchor
+                      className={[styles.flex, styles.anchor].join(" ")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://github.com/${repo.user}`}
+                    >
+                      <Flex className={["burn", styles.icon].join(" ")}>
+                        <IconUserCircle size="md" />
+                      </Flex>
+
+                      {repo.user}
+                    </Anchor>
+                  </>
+                )}
+              </div>
               <div className={styles.meta}>
                 {repo.language && (
                   <>

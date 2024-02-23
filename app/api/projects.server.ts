@@ -63,7 +63,7 @@ function sortData(responseData: OctoData, sort: Sort) {
   );
 }
 
-function parseData(responseData: OctoData): RepoData {
+function parseData(responseData: OctoData, includeUser?: boolean): RepoData {
   return responseData.map((data) => ({
     name: parseEmojis(data.name)!,
     description: parseEmojis(data.description),
@@ -72,6 +72,7 @@ function parseData(responseData: OctoData): RepoData {
     updated_at: formatDate(data.updated_at!),
     language: data.language,
     fork: data.fork,
+    ...(includeUser && { user: data.owner.login }),
   }));
 }
 
@@ -105,6 +106,7 @@ async function getRepoByScope(
     };
   }
 
+  // work scope
   const repos = await Promise.all(
     Api.getUsername("work").map((username) => getRepoForUser(username, sort))
   );
@@ -123,7 +125,7 @@ async function getRepoByScope(
 
   return {
     status: status,
-    data: parseData(data),
+    data: parseData(data, true),
   };
 }
 

@@ -44,7 +44,7 @@ export default function Projects() {
           />
         </Form>
 
-        <div className="burn m-lg">
+        <div className="burn button">
           <Button component={Link} to="/" variant="filled" className="home">
             Take me home
           </Button>

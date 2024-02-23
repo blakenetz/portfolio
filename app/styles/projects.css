@@ -24,6 +24,7 @@
   background-color: var(--mantine-color-black);
 }
 
-.m-lg {
+.button {
   margin: var(--mantine-spacing-lg);
+  border-radius: var(--mantine-radius-default);
 }

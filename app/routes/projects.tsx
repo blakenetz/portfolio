@@ -1,12 +1,6 @@
 import { Button } from "@mantine/core";
 import { LinksFunction, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import {
-  Form,
-  Link,
-  ScrollRestoration,
-  useLoaderData,
-  useSubmit,
-} from "@remix-run/react";
+import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 
 import { getRepos } from "~/api/projects.server";
 import Background from "~/components/background";
@@ -32,8 +26,6 @@ export default function Projects() {
 
   return (
     <>
-      <ScrollRestoration />
-
       <Background>
         <div className="burn">
           <Header />

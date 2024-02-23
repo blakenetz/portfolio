@@ -3,14 +3,7 @@ import "@mantine/core/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
-import {
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "@remix-run/react";
+import { Links, LiveReload, Meta, Outlet, Scripts } from "@remix-run/react";
 
 import styles from "~/styles/root.css";
 
@@ -61,7 +54,6 @@ export default function App() {
       <body>
         <MantineProvider>
           <Outlet />
-          <ScrollRestoration />
           <Scripts />
           <LiveReload />
         </MantineProvider>

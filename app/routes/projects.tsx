@@ -1,6 +1,10 @@
-import { Flex } from "@mantine/core";
 import { LinksFunction, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { ScrollRestoration, useLoaderData, useSubmit } from "@remix-run/react";
+import {
+  Form,
+  ScrollRestoration,
+  useLoaderData,
+  useSubmit,
+} from "@remix-run/react";
 
 import { getRepos } from "~/api/projects.server";
 import Background from "~/components/background";
@@ -33,15 +37,18 @@ export default function Projects() {
           <Header />
         </div>
 
-        <Flex className="body">
-          <Repos name="personal" data={personal.data} submit={submit} />
+        <Form
+          className="body"
+          onChange={(e) => submit(e.currentTarget)}
+          method="GET"
+        >
+          <Repos name="personal" data={personal.data} />
           <Repos
             name="work"
             data={work.data}
-            submit={submit}
             subtitle="The following are typically CI items, POC, etc. and are aren't suited for production"
           />
-        </Flex>
+        </Form>
 
         <div className="burn">
           <Links />

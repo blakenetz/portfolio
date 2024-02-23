@@ -9,7 +9,7 @@ import {
   Title,
   Tooltip,
 } from "@mantine/core";
-import { Form, SubmitFunction, useSearchParams } from "@remix-run/react";
+import { useSearchParams } from "@remix-run/react";
 import { IconGitFork } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 
@@ -29,12 +29,11 @@ function capitalize(val: string) {
 
 interface ReposProps {
   data: RepoData;
-  submit: SubmitFunction;
   name: UserScope;
   subtitle?: string;
 }
 
-export default function Repos({ data, submit, name, subtitle }: ReposProps) {
+export default function Repos({ data, name, subtitle }: ReposProps) {
   const param = getParam(name);
   const [searchParams] = useSearchParams();
 
@@ -110,22 +109,16 @@ export default function Repos({ data, submit, name, subtitle }: ReposProps) {
 
       <Flex className={styles.end}>
         <Text>Sort by last</Text>
-        <Form
-          onChange={(e) => submit(e.currentTarget)}
-          method="GET"
-          name={name}
-        >
-          <SegmentedControl
-            value={value}
-            onChange={handleChange}
-            data={[
-              { label: "Updated", value: "updated" },
-              { label: "Created", value: "created" },
-            ]}
-            size="xs"
-            name={param}
-          />
-        </Form>
+        <SegmentedControl
+          value={value}
+          onChange={handleChange}
+          data={[
+            { label: "Updated", value: "updated" },
+            { label: "Created", value: "created" },
+          ]}
+          size="xs"
+          name={param}
+        />
       </Flex>
     </section>
   );

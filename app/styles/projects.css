@@ -19,3 +19,11 @@
   flex-direction: column;
   gap: var(--mantine-spacing-xl);
 }
+
+.home {
+  background-color: var(--mantine-color-black);
+}
+
+.m-lg {
+  margin: var(--mantine-spacing-lg);
+}

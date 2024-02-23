@@ -1,6 +1,8 @@
+import { Button } from "@mantine/core";
 import { LinksFunction, LoaderFunctionArgs, redirect } from "@remix-run/node";
 import {
   Form,
+  Link,
   ScrollRestoration,
   useLoaderData,
   useSubmit,
@@ -49,6 +51,12 @@ export default function Projects() {
             subtitle="The following are typically CI items, POC, etc. and are aren't suited for production"
           />
         </Form>
+
+        <div className="burn m-lg">
+          <Button component={Link} to="/" variant="filled" className="home">
+            Take me home
+          </Button>
+        </div>
 
         <div className="burn">
           <Links />

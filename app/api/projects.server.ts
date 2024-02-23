@@ -3,13 +3,15 @@ import { formatDistanceToNow, isThisYear } from "date-fns";
 import Api from "~/api/singleton.server";
 
 import {
+  getParam,
   OctoData,
   OctoResponse,
   RepoData,
   RepoResponse,
+  scopes,
   Sort,
   sorts,
-  UserScope as UserScope,
+  UserScope,
 } from "./projects";
 
 const formatter = new Intl.DateTimeFormat("en-US", {
@@ -41,12 +43,15 @@ function parseEmojis(text: string | null) {
   });
 }
 
-function extractUrlParams(url: string): Sort {
+function extractUrlParams(url: string): Record<UserScope, Sort> {
   const { searchParams } = new URL(url);
-  const sort = searchParams.get("sort") as Sort | null;
-  if (sort && sorts.includes(sort)) return sort;
+  return scopes.reduce((acc, scope) => {
+    const param = getParam(scope);
+    const sort = searchParams.get(param) as Sort | null;
 
-  return "updated";
+    acc[scope] = sort && sorts.includes(sort) ? sort : "updated";
+    return acc;
+  }, {} as Record<UserScope, Sort>);
 }
 
 function sortData(responseData: OctoData, sort: Sort) {
@@ -54,7 +59,7 @@ function sortData(responseData: OctoData, sort: Sort) {
     sort === "created" ? "created_at" : "updated_at";
 
   return responseData.sort(
-    (a, b) => new Date(a[key]!).valueOf() - new Date(b[key]!).valueOf()
+    (a, b) => new Date(b[key]!).valueOf() - new Date(a[key]!).valueOf()
   );
 }
 
@@ -108,7 +113,7 @@ async function getRepoByScope(
   const data = sortData(
     repos.flatMap(({ data }) => data),
     sort
-  ).slice(5);
+  ).slice(0, 6);
 
   const status = repos.every((r) => r.status % 200 < 100)
     ? 200
@@ -123,10 +128,10 @@ async function getRepoByScope(
 }
 
 export async function getRepos(request: Request) {
-  const sort = extractUrlParams(request.url);
+  const { work, personal } = extractUrlParams(request.url);
 
   return Promise.all([
-    getRepoByScope("personal", sort),
-    getRepoByScope("work", sort),
+    getRepoByScope("personal", personal),
+    getRepoByScope("work", work),
   ]);
 }

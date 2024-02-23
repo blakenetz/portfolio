@@ -33,6 +33,7 @@
 .meta {
   display: flex;
   gap: var(--mantine-spacing-xs);
+  align-items: center;
 }
 .meta p {
   font-size: var(--mantine-font-size-xs);
@@ -43,18 +44,15 @@
   width: var(--mantine-font-size-xs);
   padding: 0;
   align-self: center;
-  margin-right: var(--mantine-spacing-xs);
-}
-
-.mantine-Anchor-root {
-  font-size: var(--mantine-font-size-sm);
-}
-
-.mantine-Flex-root {
-  align-items: center;
-  gap: calc(var(--mantine-spacing-xs) / 2);
+  margin-right: calc(var(--mantine-spacing-xs) / 2);
 }
 
 .end {
-  align-self: flex-end;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+}
+
+.anchor {
+  font-size: var(--mantine-font-size-sm);
 }

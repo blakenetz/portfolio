@@ -3,7 +3,8 @@ import type { Endpoints } from "@octokit/types";
 export const sorts = ["updated", "created"] as const;
 export type Sort = (typeof sorts)[number];
 
-export type UserScope = "work" | "personal";
+export const scopes = ["work", "personal"] as const;
+export type UserScope = (typeof scopes)[number];
 
 // Octokit types
 export type OctoResponse = Endpoints["GET /users/{username}/repos"]["response"];
@@ -21,3 +22,7 @@ export type RepoKeys =
   | "fork";
 export type RepoData = Pick<OctoData[number], RepoKeys>[];
 export type RepoResponse = { data: RepoData; status: number };
+
+export function getParam(scope: UserScope) {
+  return [scope, "sort"].join("-");
+}

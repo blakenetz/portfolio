@@ -13,7 +13,7 @@ import { Form, SubmitFunction, useSearchParams } from "@remix-run/react";
 import { IconGitFork } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 
-import { RepoData, Sort, sorts } from "~/api/projects";
+import { getParam, RepoData, Sort, sorts, UserScope } from "~/api/projects";
 import Language from "~/components/language";
 import styles from "~/styles/repos.module.css";
 
@@ -23,17 +23,22 @@ function validate(val: string | null): Sort | null {
   return null;
 }
 
+function capitalize(val: string) {
+  return val.charAt(0).toUpperCase() + val.slice(1);
+}
+
 interface ReposProps {
   data: RepoData;
   submit: SubmitFunction;
-  title: string;
+  name: UserScope;
   subtitle?: string;
 }
 
-export default function Repos({ data, submit, title, subtitle }: ReposProps) {
+export default function Repos({ data, submit, name, subtitle }: ReposProps) {
+  const param = getParam(name);
   const [searchParams] = useSearchParams();
 
-  const initialValue = validate(searchParams.get("sort"));
+  const initialValue = validate(searchParams.get(param));
 
   const [value, setValue] = useState(initialValue ?? "updated");
 
@@ -47,7 +52,7 @@ export default function Repos({ data, submit, title, subtitle }: ReposProps) {
   return (
     <section>
       <div className={["burn", styles.title].join(" ")}>
-        <Title order={3}>{title}</Title>
+        <Title order={3}>{`${capitalize(name)} Projects`}</Title>
         {subtitle && <Text>{subtitle}</Text>}
       </div>
 
@@ -82,6 +87,7 @@ export default function Repos({ data, submit, title, subtitle }: ReposProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 href={repo.html_url}
+                className={styles.anchor}
               >
                 View on Github
               </Anchor>
@@ -104,7 +110,11 @@ export default function Repos({ data, submit, title, subtitle }: ReposProps) {
 
       <Flex className={styles.end}>
         <Text>Sort by last</Text>
-        <Form onChange={(e) => submit(e.currentTarget)} method="GET">
+        <Form
+          onChange={(e) => submit(e.currentTarget)}
+          method="GET"
+          name={name}
+        >
           <SegmentedControl
             value={value}
             onChange={handleChange}
@@ -113,7 +123,7 @@ export default function Repos({ data, submit, title, subtitle }: ReposProps) {
               { label: "Created", value: "created" },
             ]}
             size="xs"
-            name="sort"
+            name={param}
           />
         </Form>
       </Flex>

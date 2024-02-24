@@ -82,7 +82,7 @@ class Api {
   private async initialize() {
     const key = "emojis";
     // try cache first
-    const value = this.fetchFromCache<EmojisItem>(key);
+    const value = await this.fetchFromCache<EmojisItem>(key);
     if (value) return value;
 
     const { data } = await this.#octokit.request(endpoints[1]);
@@ -122,7 +122,7 @@ class Api {
       : (this.#usernames.work as UserName<T>);
   }
 
-  async request(username: string, sort: Sort) {
+  async request(username: string, sort: Sort): Promise<OctoResponse> {
     const opts: OctoOptions = {
       username,
       sort,
@@ -132,7 +132,7 @@ class Api {
     const key = [username, sort].join(":") as Key;
 
     // fetch from storage
-    const value = this.fetchFromCache<ReposItem>(key);
+    const value = await this.fetchFromCache<ReposItem>(key);
     if (value) return value;
 
     // fetch from octokit

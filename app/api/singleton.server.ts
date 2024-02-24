@@ -1,4 +1,3 @@
-import type { RequestHeaders } from "@octokit/types";
 import { LRUCache } from "lru-cache";
 import { Octokit } from "octokit";
 
@@ -41,11 +40,6 @@ const keys = [
 ] as const;
 type Key = (typeof keys)[number];
 
-// cache for 1 hour
-const headers: RequestHeaders = {
-  "Cache-Control": `public, s-maxage=${60 * 60}`,
-};
-
 class Api {
   #emojis: EmojiData | null;
   #octokit: Octokit;
@@ -75,7 +69,7 @@ class Api {
     const value = this.fetchFromCache<EmojisItem>(key);
     if (value) return value;
 
-    const { data } = await this.#octokit.request(endpoints[1], { headers });
+    const { data } = await this.#octokit.request(endpoints[1]);
     this.#emojis = data;
     this.storeInCache<EmojisItem>(key, data);
   }
@@ -108,7 +102,6 @@ class Api {
       username,
       sort,
       per_page: 6,
-      headers,
     };
 
     const key = [username, sort].join(":") as Key;

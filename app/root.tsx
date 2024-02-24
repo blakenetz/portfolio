@@ -7,7 +7,11 @@ import {
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction, MetaFunction } from "@remix-run/node";
+import type {
+  HeadersFunction,
+  LinksFunction,
+  MetaFunction,
+} from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -54,6 +58,11 @@ export const links: LinksFunction = () => [
   { rel: "me", href: "mailto:blake.netzeband@gmail.com" },
   { rel: "index", href: "https://www.blakenetzeband.com" },
 ];
+
+export const headers: HeadersFunction = () => ({
+  // cache for 1 hour
+  "Cache-Control": `public, s-maxage=${60 * 60}`,
+});
 
 const resolver: CSSVariablesResolver = (theme) => {
   const { colors } = theme;

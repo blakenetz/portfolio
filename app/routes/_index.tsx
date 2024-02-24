@@ -40,8 +40,8 @@ export default function Index() {
           </Button>
         </Flex>
       </Flex>
-      {status === "octokit-fail" && !hide && (
-        <Notification title="Sorry!" onClose={setHide}>
+      {status === "octokit-fail" && hide !== true && (
+        <Notification title="Sorry!" onClose={setHide} color="red">
           We seemed to hit a snag fetching data from Github.
         </Notification>
       )}

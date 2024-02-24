@@ -19,9 +19,9 @@ type UserName<T> = T extends "personal"
   ? string[]
   : never;
 
-type StorageItem<T> = T extends "GET /users/{username}/repos"
+type StorageItem<E> = E extends "GET /users/{username}/repos"
   ? OctoResponse
-  : T extends "GET /emojis"
+  : E extends "GET /emojis"
   ? EmojiData
   : never;
 
@@ -64,12 +64,24 @@ class Api {
   private async initialize() {
     const key = "emojis";
     // try cache first
-    const value = await this.#storage.getItem<EmojisItem>(key);
+    const value = await this.fetchFromCache<EmojisItem>(key);
     if (value) return value;
 
     const { data } = await this.#octokit.request(endpoints[1], { headers });
     this.#emojis = data;
-    this.#storage.setItem<EmojisItem>(key, data);
+    this.storeInCache<EmojisItem>(key, data);
+  }
+
+  async fetchFromCache<T extends StorageItem<Endpoint>>(key: string) {
+    const value = await this.#storage.getItem<T>(key);
+    if (value) {
+      console.log("🪐 successfully fetched from cache: ", key);
+    }
+    return value;
+  }
+
+  async storeInCache<T extends StorageItem<Endpoint>>(key: string, value: T) {
+    this.#storage.setItem<T>(key, value);
   }
 
   getEmoji(emoji: keyof EmojiData) {
@@ -95,13 +107,12 @@ class Api {
       const key = [username, sort].join(":");
 
       // fetch from storage
-      const value = await this.#storage.getItem<ReposItem>(key);
-      console.log("successfully fetched from cache: ", key);
+      const value = await this.fetchFromCache<ReposItem>(key);
       if (value) return value;
 
       // fetch from octokit
       const response = await this.#octokit.request(endpoints[0], opts);
-      this.#storage.setItem<ReposItem>(key, response);
+      this.storeInCache<ReposItem>(key, response);
       return response;
     }
 

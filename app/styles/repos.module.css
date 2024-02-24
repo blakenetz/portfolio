@@ -60,9 +60,13 @@
   font-size: var(--mantine-font-size-sm);
 }
 
-.icon {
+.icon,
+.icon svg {
   height: var(--mantine-font-size-md);
   width: var(--mantine-font-size-md);
+}
+
+.icon {
   margin-right: calc(var(--mantine-spacing-xs) / 2);
 }
 

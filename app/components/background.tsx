@@ -26,7 +26,7 @@ export default function Background({
 }: PropsWithChildren<BackgroundProps>) {
   const colorSchemeContext = useContext(ColorSchemeContext);
   const handleClick = useCallback(() => {
-    colorSchemeContext.toggle();
+    colorSchemeContext.toggle((prev) => !prev);
   }, [colorSchemeContext]);
 
   return (
@@ -41,12 +41,11 @@ export default function Background({
           <ActionIcon
             className={styles.ada}
             variant="transparent"
-            size="lg"
             aria-label="Toggle accessibility mode"
             onClick={handleClick}
           >
             <Flex className="burn">
-              <IconAccessible size="lg" />
+              <IconAccessible />
             </Flex>
           </ActionIcon>
         </Tooltip>

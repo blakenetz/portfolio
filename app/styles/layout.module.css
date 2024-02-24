@@ -74,3 +74,8 @@
   top: calc(var(--mantine-spacing-xs) / 2);
   right: calc(var(--mantine-spacing-xs) / 2);
 }
+.ada,
+.ada svg {
+  height: calc(var(--mantine-font-size-lg) * 2);
+  width: calc(var(--mantine-font-size-lg) * 2);
+}

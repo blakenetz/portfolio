@@ -101,7 +101,7 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
                       href={`https://github.com/${repo.user}`}
                     >
                       <Flex className={["burn", styles.icon].join(" ")}>
-                        <IconUserCircle size="md" />
+                        <IconUserCircle />
                       </Flex>
 
                       {repo.user}

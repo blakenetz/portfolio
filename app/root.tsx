@@ -5,10 +5,17 @@ import {
   CSSVariablesResolver,
   MantineProvider,
 } from "@mantine/core";
-import { useToggle } from "@mantine/hooks";
+import { useLocalStorage } from "@mantine/hooks";
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
-import { Links, LiveReload, Meta, Outlet, Scripts } from "@remix-run/react";
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  useRouteError,
+} from "@remix-run/react";
 
 import styles from "~/styles/root.css";
 
@@ -78,8 +85,29 @@ const resolver: CSSVariablesResolver = (theme) => {
   };
 };
 
+export function ErrorBoundary() {
+  const error = useRouteError();
+  console.error(error);
+  return (
+    <html lang="en">
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        {/* add the UI you want your users to see */}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
 export default function App() {
-  const [ada, setAda] = useToggle();
+  const [ada, setAda] = useLocalStorage({
+    key: "ada",
+    defaultValue: false,
+  });
 
   return (
     <html lang="en">
@@ -93,7 +121,7 @@ export default function App() {
       <body>
         <ColorSchemeContext.Provider value={{ ada, toggle: setAda }}>
           <MantineProvider
-            theme={{ other: { ada } }}
+            theme={{ other: { ada }, primaryColor: "indigo" }}
             cssVariablesResolver={resolver}
           >
             <Outlet />

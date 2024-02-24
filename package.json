@@ -50,7 +50,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/blakeface/portfolio.git"
+    "url": "git+https://github.com/blakenetz/portfolio.git"
   },
   "keywords": [
     "portfolio"
@@ -58,7 +58,7 @@
   "author": "me... obviously <blake.netzeband@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/blakeface/portfolio/issues"
+    "url": "https://github.com/blakenetz/portfolio/issues"
   },
-  "homepage": "https://github.com/blakeface/portfolio#readme"
+  "homepage": "https://github.com/blakenetz/portfolio#readme"
 }

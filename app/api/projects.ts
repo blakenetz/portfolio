@@ -1,4 +1,4 @@
-import type { Endpoints } from "@octokit/types";
+import type { Endpoints, RequestParameters } from "@octokit/types";
 
 export const sorts = ["updated", "created"] as const;
 export type Sort = (typeof sorts)[number];
@@ -10,6 +10,8 @@ export type UserScope = (typeof scopes)[number];
 export type OctoResponse = Endpoints["GET /users/{username}/repos"]["response"];
 export type OctoData = OctoResponse["data"];
 export type EmojiData = Endpoints["GET /emojis"]["response"]["data"];
+export type OctoOptions =
+  Endpoints["GET /users/{username}/repos"]["parameters"] & RequestParameters;
 
 // Project types
 export type RepoKeys =

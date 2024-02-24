@@ -1,10 +1,17 @@
+import type { RequestHeaders } from "@octokit/types";
 import { Octokit } from "octokit";
 import path from "path";
 import type { Storage } from "unstorage";
 import { createStorage } from "unstorage";
 import fsDriver from "unstorage/drivers/fs";
 
-import { EmojiData, OctoResponse, Sort, UserScope } from "./projects";
+import {
+  EmojiData,
+  OctoOptions,
+  OctoResponse,
+  Sort,
+  UserScope,
+} from "./projects";
 
 type UserName<T> = T extends "personal"
   ? string
@@ -23,6 +30,11 @@ type Endpoint = (typeof endpoints)[number];
 
 type ReposItem = StorageItem<(typeof endpoints)[0]>;
 type EmojisItem = StorageItem<(typeof endpoints)[1]>;
+
+// cache for 1 hour
+const headers: RequestHeaders = {
+  "Cache-Control": `public, s-maxage=${60 * 60}`,
+};
 
 class Api {
   #emojis: EmojiData | null;
@@ -55,7 +67,7 @@ class Api {
     const value = await this.#storage.getItem<EmojisItem>(key);
     if (value) return value;
 
-    const { data } = await this.#octokit.request(endpoints[1]);
+    const { data } = await this.#octokit.request(endpoints[1], { headers });
     this.#emojis = data;
     this.#storage.setItem<EmojisItem>(key, data);
   }
@@ -72,7 +84,12 @@ class Api {
   }
 
   async request(username: string, sort: Sort) {
-    const opts = { username, sort, per_page: 6 };
+    const opts: OctoOptions = {
+      username,
+      sort,
+      per_page: 6,
+      headers,
+    };
 
     if (process.env.NODE_ENV === "development") {
       const key = [username, sort].join(":");

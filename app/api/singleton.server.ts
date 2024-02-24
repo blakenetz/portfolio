@@ -1,9 +1,6 @@
 import type { RequestHeaders } from "@octokit/types";
+import { LRUCache } from "lru-cache";
 import { Octokit } from "octokit";
-import path from "path";
-import type { Storage } from "unstorage";
-import { createStorage } from "unstorage";
-import fsDriver from "unstorage/drivers/fs";
 
 import {
   EmojiData,
@@ -19,7 +16,7 @@ type UserName<T> = T extends "personal"
   ? string[]
   : never;
 
-type StorageItem<E> = E extends "GET /users/{username}/repos"
+type CacheItem<E = Endpoint> = E extends "GET /users/{username}/repos"
   ? OctoResponse
   : E extends "GET /emojis"
   ? EmojiData
@@ -28,8 +25,21 @@ type StorageItem<E> = E extends "GET /users/{username}/repos"
 const endpoints = ["GET /users/{username}/repos", "GET /emojis"] as const;
 type Endpoint = (typeof endpoints)[number];
 
-type ReposItem = StorageItem<(typeof endpoints)[0]>;
-type EmojisItem = StorageItem<(typeof endpoints)[1]>;
+type ReposItem = CacheItem<(typeof endpoints)[0]>;
+type EmojisItem = CacheItem<(typeof endpoints)[1]>;
+
+const keys = [
+  "emojis",
+  "blakenetz:created",
+  "blakenetz:updated",
+  "blake-kc:created",
+  "blake-kc:updated",
+  "blake-spire:created",
+  "blake-spire:updated",
+  "blake-discover:created",
+  "blake-discover:updated",
+] as const;
+type Key = (typeof keys)[number];
 
 // cache for 1 hour
 const headers: RequestHeaders = {
@@ -40,16 +50,14 @@ class Api {
   #emojis: EmojiData | null;
   #octokit: Octokit;
   #usernames: { personal: UserName<"personal">; work: UserName<"work"> };
-  #storage: Storage<StorageItem<Endpoint>>;
+  #cache: LRUCache<Key, CacheItem>;
 
   constructor() {
     // create API drivers/storage
     this.#octokit = new Octokit({
       auth: process.env.GITHUB_AUTH_TOKEN,
     });
-    this.#storage = createStorage({
-      driver: fsDriver({ base: path.resolve(".", ".cache") }),
-    });
+    this.#cache = new LRUCache({ ttl: 1000 * 60 * 60, max: 100 });
 
     // data used in request calls
     this.#usernames = {
@@ -64,7 +72,7 @@ class Api {
   private async initialize() {
     const key = "emojis";
     // try cache first
-    const value = await this.fetchFromCache<EmojisItem>(key);
+    const value = this.fetchFromCache<EmojisItem>(key);
     if (value) return value;
 
     const { data } = await this.#octokit.request(endpoints[1], { headers });
@@ -72,16 +80,16 @@ class Api {
     this.storeInCache<EmojisItem>(key, data);
   }
 
-  async fetchFromCache<T extends StorageItem<Endpoint>>(key: string) {
-    const value = await this.#storage.getItem<T>(key);
+  fetchFromCache<T extends CacheItem>(key: Key): T {
+    const value = this.#cache.get(key) as T;
     if (value) {
       console.log("🪐 successfully fetched from cache: ", key);
     }
     return value;
   }
 
-  async storeInCache<T extends StorageItem<Endpoint>>(key: string, value: T) {
-    this.#storage.setItem<T>(key, value);
+  storeInCache<T extends CacheItem>(key: Key, value: T) {
+    return this.#cache.set(key, value);
   }
 
   getEmoji(emoji: keyof EmojiData) {
@@ -103,20 +111,16 @@ class Api {
       headers,
     };
 
-    if (process.env.NODE_ENV === "development") {
-      const key = [username, sort].join(":");
+    const key = [username, sort].join(":") as Key;
 
-      // fetch from storage
-      const value = await this.fetchFromCache<ReposItem>(key);
-      if (value) return value;
+    // fetch from storage
+    const value = this.fetchFromCache<ReposItem>(key);
+    if (value) return value;
 
-      // fetch from octokit
-      const response = await this.#octokit.request(endpoints[0], opts);
-      this.storeInCache<ReposItem>(key, response);
-      return response;
-    }
-
-    return this.#octokit.request(endpoints[0], opts);
+    // fetch from octokit
+    const response = await this.#octokit.request(endpoints[0], opts);
+    this.storeInCache<ReposItem>(key, response);
+    return response;
   }
 }
 

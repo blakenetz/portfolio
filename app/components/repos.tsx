@@ -132,8 +132,8 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
           value={value}
           onChange={handleChange}
           data={[
-            { label: "Updated", value: "updated" },
             { label: "Created", value: "created" },
+            { label: "Updated", value: "updated" },
           ]}
           size="xs"
           name={param}

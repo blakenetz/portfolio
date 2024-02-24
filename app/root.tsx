@@ -7,15 +7,12 @@ import {
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction, MetaFunction } from "@remix-run/node";
-import {
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  useRouteError,
-} from "@remix-run/react";
+import type {
+  HeadersFunction,
+  LinksFunction,
+  MetaFunction,
+} from "@remix-run/node";
+import { Links, LiveReload, Meta, Outlet, Scripts } from "@remix-run/react";
 
 import styles from "~/styles/root.css";
 
@@ -55,6 +52,11 @@ export const links: LinksFunction = () => [
   { rel: "index", href: "https://www.blakenetzeband.com" },
 ];
 
+export const headers: HeadersFunction = () => ({
+  // cache for 1 hour
+  "Cache-Control": `public, s-maxage=${60 * 60}`,
+});
+
 const resolver: CSSVariablesResolver = (theme) => {
   const { colors } = theme;
   const saturated = [
@@ -84,24 +86,6 @@ const resolver: CSSVariablesResolver = (theme) => {
     dark: {},
   };
 };
-
-export function ErrorBoundary() {
-  const error = useRouteError();
-  console.error(error);
-  return (
-    <html lang="en">
-      <head>
-        <title>Oh no!</title>
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        {/* add the UI you want your users to see */}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
 
 export default function App() {
   const [ada, setAda] = useLocalStorage({

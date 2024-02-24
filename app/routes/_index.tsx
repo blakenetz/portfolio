@@ -1,13 +1,23 @@
-import { Button, Flex, Text, Title } from "@mantine/core";
-import type { LinksFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import { Button, Flex, Notification, Text, Title } from "@mantine/core";
+import { useToggle } from "@mantine/hooks";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import { json, Link, useLoaderData } from "@remix-run/react";
 
 import Background from "~/components/background";
 import styles from "~/styles/index.css";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
+export const loader: LoaderFunction = async ({ request }) => {
+  const status = new URL(request.url).searchParams.get("status") ?? "ok";
+
+  return json({ status });
+};
+
 export default function Index() {
+  const { status } = useLoaderData<typeof loader>();
+  const [hide, setHide] = useToggle();
+
   return (
     <Background index>
       <Flex className="middle column">
@@ -30,6 +40,11 @@ export default function Index() {
           </Button>
         </Flex>
       </Flex>
+      {status === "octokit-fail" && hide !== true && (
+        <Notification title="Sorry!" onClose={setHide} color="red">
+          We seemed to hit a snag fetching data from Github.
+        </Notification>
+      )}
     </Background>
   );
 }

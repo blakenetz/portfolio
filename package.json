@@ -10,7 +10,7 @@
     "dev": "remix dev --manual -c \"npm run start\"",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "pages:deploy": "npm run build && wrangler pages deploy ./public",
-    "start": "wrangler pages dev --compatibility-date=2024-02-25 ./public",
+    "start": "wrangler pages dev --compatibility-date=2024-02-25 ./public --compatibility-flags=\"nodejs_compat\"",
     "typecheck": "tsc"
   },
   "dependencies": {

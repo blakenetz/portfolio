@@ -138,5 +138,5 @@ class Api {
   }
 }
 
-const singleton = Object.freeze(new Api());
-export default singleton;
+const api = new Api();
+export default api;

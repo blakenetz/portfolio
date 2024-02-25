@@ -1,6 +1,6 @@
 import { formatDistanceToNow, isThisYear } from "date-fns";
 
-import Api from "~/api/singleton.server";
+import Api from "~/api/api.server";
 
 import {
   getParam,

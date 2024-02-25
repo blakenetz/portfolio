@@ -1,9 +1,7 @@
 import { LRUCache } from "lru-cache";
 import { Octokit } from "octokit";
-import path from "path";
 import type { Storage } from "unstorage";
 import { createStorage } from "unstorage";
-import fsDriver from "unstorage/drivers/fs";
 
 import {
   EmojiData,
@@ -65,9 +63,7 @@ class Api {
       auth: process.env.GITHUB_AUTH_TOKEN,
     });
     this.#cache = new LRUCache({ ttl: 1000 * 60 * 60, max: 100 });
-    this.#devStorage = createStorage({
-      driver: fsDriver({ base: path.resolve(".", ".cache") }),
-    });
+    this.#devStorage = createStorage();
 
     // data used in request calls
     this.#usernames = {

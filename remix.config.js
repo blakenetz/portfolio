@@ -12,10 +12,13 @@ export default {
   serverMinify: true,
   serverModuleFormat: "esm",
   serverPlatform: "neutral",
-  // polyfill
+  // one of Oktokit's deps uses "os", so we need to polyfill it
   serverNodeBuiltinsPolyfill: {
     modules: {
-      os: true
+      os: true,
+    },
+    globals: {
+      process: true
     }
   }
 };

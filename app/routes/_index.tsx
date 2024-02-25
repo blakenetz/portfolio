@@ -1,7 +1,8 @@
 import { Button, Flex, Notification, Text, Title } from "@mantine/core";
 import { useToggle } from "@mantine/hooks";
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/cloudflare";
-import { json, Link, useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/cloudflare";
+import { Link, useLoaderData } from "@remix-run/react";
 
 import Background from "~/components/background";
 import styles from "~/styles/index.css";

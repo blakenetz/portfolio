@@ -138,5 +138,5 @@ class Api {
   }
 }
 
-const api = new Api();
+const api = Object.freeze(new Api());
 export default api;

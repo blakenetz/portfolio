@@ -6,12 +6,12 @@ import {
   MantineProvider,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { cssBundleHref } from "@remix-run/css-bundle";
 import type {
   HeadersFunction,
   LinksFunction,
   MetaFunction,
-} from "@remix-run/node";
+} from "@remix-run/cloudflare";
+import { cssBundleHref } from "@remix-run/css-bundle";
 import { Links, LiveReload, Meta, Outlet, Scripts } from "@remix-run/react";
 
 import styles from "~/styles/root.css";

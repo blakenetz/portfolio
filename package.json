@@ -7,9 +7,10 @@
   "version": "3.0.0",
   "scripts": {
     "build": "remix build",
-    "dev": "remix dev --manual",
+    "dev": "remix dev --manual -c \"npm run start\"",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "start": "remix-serve ./build/index.js",
+    "pages:deploy": "npm run build && wrangler pages deploy ./public",
+    "start": "wrangler pages dev ./public",
     "typecheck": "tsc"
   },
   "dependencies": {

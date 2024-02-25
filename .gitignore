@@ -4,3 +4,10 @@ node_modules
 /build
 /public/build
 .env
+
+# cloudflare
+/functions/\[\[path\]\].js
+/functions/\[\[path\]\].js.map
+/functions/metafile.*
+/functions/version.txt
+.dev.vars

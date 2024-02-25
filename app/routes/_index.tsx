@@ -1,6 +1,6 @@
 import { Button, Flex, Notification, Text, Title } from "@mantine/core";
 import { useToggle } from "@mantine/hooks";
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { json, Link, useLoaderData } from "@remix-run/react";
 
 import Background from "~/components/background";
@@ -8,11 +8,11 @@ import styles from "~/styles/index.css";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
-export const loader: LoaderFunction = async ({ request }) => {
+export async function loader({ request }: LoaderFunctionArgs) {
   const status = new URL(request.url).searchParams.get("status") ?? "ok";
 
   return json({ status });
-};
+}
 
 export default function Index() {
   const { status } = useLoaderData<typeof loader>();

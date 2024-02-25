@@ -1,5 +1,5 @@
 @app
-remix-architect-app
+portfolio
 
 @aws
 runtime nodejs18.x

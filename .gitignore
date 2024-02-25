@@ -6,6 +6,7 @@ node_modules
 .env
 
 # arc
+/server/.cache
 /server/index.mjs
 /server/index.mjs.map
 /server/metafile.*

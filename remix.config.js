@@ -2,9 +2,14 @@
 export default {
   ignoredRouteFiles: ["**/.*"],
   postcss: true,
-  cacheDirectory: '.cache'
-  // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
-  // publicPath: "/build/",
-  // serverBuildPath: "build/index.js",
+  cacheDirectory: '.cache',
+  // cloudflare
+  server: "./server.ts",
+  serverBuildPath: "functions/[[path]].js",
+  serverConditions: ["workerd", "worker", "browser"],
+  serverDependenciesToBundle: "all",
+  serverMainFields: ["browser", "module", "main"],
+  serverMinify: true,
+  serverModuleFormat: "esm",
+  serverPlatform: "neutral",
 };

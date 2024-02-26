@@ -7,6 +7,7 @@
   "version": "3.0.0",
   "scripts": {
     "build": "remix build",
+    "deploy": "npx arc deploy production",
     "dev": "remix dev --manual -c \"arc sandbox -e testing\"",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "cross-env NODE_ENV=production arc sandbox",
@@ -36,6 +37,7 @@
     "@types/source-map-support": "^0.5.10",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "autoprefixer": "^10.4.17",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",

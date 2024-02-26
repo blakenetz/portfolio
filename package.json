@@ -26,7 +26,8 @@
     "lru-cache": "^10.2.0",
     "octokit": "^3.1.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "unstorage": "^1.10.1"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.2",
@@ -45,8 +46,7 @@
     "postcss": "^8.4.35",
     "postcss-preset-mantine": "^1.13.0",
     "postcss-simple-vars": "^7.0.1",
-    "typescript": "^5.3.3",
-    "unstorage": "^1.10.1"
+    "typescript": "^5.3.3"
   },
   "engines": {
     "node": ">=18.0.0"

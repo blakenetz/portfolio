@@ -1,10 +1,12 @@
-# fly.toml app configuration file generated for blakenetzeband-portfolio on 2024-03-05T10:43:23-07:00
+# fly.toml app configuration file generated for blakenetzeband-portfolio on 2024-02-25T17:47:32-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'blakenetzeband-portfolio'
 primary_region = 'ord'
+
+[build]
 
 [http_service]
   internal_port = 3000

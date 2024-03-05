@@ -14,8 +14,10 @@ export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 export async function loader({ request }: LoaderFunctionArgs) {
   const repos = await getRepos(request);
 
-  // error handled
-  if (repos.every((r) => r.status === 400)) redirect("/");
+  // nothing to show :( redirect
+  if (repos.every((r) => r.status === 400)) {
+    return redirect("/?status=octokit-fail");
+  }
 
   return repos;
 }

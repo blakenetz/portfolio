@@ -6,6 +6,10 @@ const colors: { [key: string]: MantineColor } = {
   TypeScript: "cyan",
   JavaScript: "teal",
   Just: "grape",
+  CSS: "yellow",
+  HTML: "yellow",
+  Ruby: "red",
+  Python: "violet",
 };
 
 function getColor(language: string): MantineColor {

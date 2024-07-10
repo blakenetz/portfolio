@@ -1,7 +1,8 @@
 import { Notification as MantineNotification } from "@mantine/core";
 
-import styles from "~/styles/notification.module.css";
 import { Status } from "~/util";
+
+import styles from "./notification.module.css";
 
 interface NotificationProps {
   /**

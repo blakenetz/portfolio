@@ -87,3 +87,9 @@
   height: calc(var(--mantine-font-size-lg) * 2);
   width: calc(var(--mantine-font-size-lg) * 2);
 }
+
+.column {
+  flex-direction: column;
+  flex-basis: 45%;
+  gap: var(--mantine-spacing-sm);
+}

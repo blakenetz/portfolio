@@ -3,14 +3,13 @@ import { Link } from "@remix-run/react";
 
 import { Button, Header, Links } from "~/components";
 import commonStyles from "~/styles/common.module.css";
-import styles from "~/styles/index.module.css";
 
 export default function Index() {
   return (
     <div className={commonStyles.center}>
       <Header />
 
-      <Flex className={styles.column}>
+      <Flex className={commonStyles.column}>
         <div className={commonStyles.burn}>
           <Title order={1}>Hello!</Title>
         </div>
@@ -23,7 +22,7 @@ export default function Index() {
         </Text>
         <Text>Are you building something interesting?</Text>
 
-        <Flex className={styles.column}>
+        <Flex className={commonStyles.column}>
           <div className={commonStyles.burn}>
             <Anchor href="mailto:blakenetzeband@gmail.com">
               Let&apos;s connect

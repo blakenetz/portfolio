@@ -15,9 +15,9 @@ import { useCallback, useState } from "react";
 
 import { getParam, RepoData, Sort, sorts, UserScope } from "~/api/projects";
 import commonStyles from "~/styles/common.module.css";
-import styles from "~/styles/repos.module.css";
 
 import Language from "./language";
+import styles from "./repos.module.css";
 
 function validate(val: string | null): Sort | null {
   const sort = val as Sort | null;

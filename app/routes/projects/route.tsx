@@ -3,9 +3,9 @@ import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 
 import { getRepos } from "~/api/projects.server";
 import { Button, Header, Links } from "~/components";
-import styles from "~/styles/projects.module.css";
 import { status } from "~/util";
 
+import styles from "./projects.module.css";
 import Repos from "./repos";
 
 export const meta: MetaFunction = () => [

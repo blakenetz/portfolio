@@ -1,19 +1,17 @@
+import { Anchor, List, ListItem } from "@mantine/core";
 import { json, MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+import { Mdx } from "types/modules";
 
 import Header from "~/components/header";
+import { getPosts } from "~/util";
+
+const posts = getPosts();
 
 export const meta: MetaFunction = () => [
   { title: "BN | Blog" },
   { description: "My thoughts. some complete... others not... 😜" },
 ];
-
-import { Anchor, List, ListItem } from "@mantine/core";
-import { Mdx } from "types/modules";
-
-const posts = import.meta.glob<Mdx>("../blog/*.mdx", {
-  eager: true,
-});
 
 /**
  * @see https://remix.run/docs/en/main/guides/mdx#example-blog-usage

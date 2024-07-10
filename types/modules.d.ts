@@ -1,4 +1,5 @@
 import { MetaDescriptor } from "@remix-run/node";
+import type { MDXProps } from "mdx/types";
 import React from "react";
 
 /** @see https://stackoverflow.com/questions/50374908/transform-union-type-to-intersection-type/50375286#50375286 */
@@ -8,6 +9,8 @@ type UnionToIntersection<U> = (
   ? I
   : never;
 
+type MDXComponent = (props?: React.PropsWithChildren<MDXProps>) => JSX.Element;
+
 export interface Mdx {
   frontmatter: {
     meta: UnionToIntersection<MetaDescriptor>[];
@@ -15,7 +18,7 @@ export interface Mdx {
   };
   meta: UnionToIntersection<MetaDescriptor>[];
   headers: Headers;
-  default: (props?: React.PropsWithChildren) => JSX.Element;
+  default: MDXComponent;
 }
 
 declare module "*.mdx" {
@@ -23,7 +26,7 @@ declare module "*.mdx" {
   export const meta: mdx.meta;
   export const headers: mdx.headers;
   export const frontmatter: mdx.frontmatter;
-  let MDXComponent: (props?: React.PropsWithChildren) => JSX.Element;
+  let MDXComponent: MDXComponent;
   export default MDXComponent;
 }
 
@@ -32,6 +35,6 @@ declare module "*.md" {
   export const meta: mdx.meta;
   export const headers: mdx.headers;
   export const frontmatter: mdx.frontmatter;
-  let MDXComponent: (props?: React.PropsWithChildren) => JSX.Element;
-  export default Mdx;
+  let MDXComponent: MDXComponent;
+  export default MDXComponent;
 }

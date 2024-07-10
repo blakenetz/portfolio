@@ -4,9 +4,10 @@ import {
   PolymorphicComponentProps,
 } from "@mantine/core";
 
-import styles from "~/styles/button.module.css";
 import commonStyles from "~/styles/common.module.css";
 import { cls } from "~/util";
+
+import styles from "./button.module.css";
 
 export default function Button<C>(
   props: PolymorphicComponentProps<C, MantineButtonProps>

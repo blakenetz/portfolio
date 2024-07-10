@@ -25,7 +25,7 @@ import {
 } from "@remix-run/react";
 import React from "react";
 
-import Notification from "~/components/notification";
+import Notification from "~/components/notification/notification";
 import styles from "~/styles/root.css?url";
 import { Status, status as errorStatus, status } from "~/util";
 

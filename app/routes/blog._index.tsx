@@ -1,10 +1,8 @@
-import { json, LinksFunction, MetaFunction } from "@remix-run/node";
+import { json, MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 
 import Header from "~/components/header";
-import styles from "~/styles/projects.css";
 
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 export const meta: MetaFunction = () => [
   { title: "BN | Blog" },
   { description: "My thoughts. some complete... others not... 😜" },
@@ -36,7 +34,9 @@ function postFromModule(
 }
 
 export async function loader() {
-  return json(Object.values(posts).map(postFromModule));
+  return json(
+    Object.values(posts).map((p) => postFromModule(p as unknown as Mdx))
+  );
 }
 
 export default function Blog() {
@@ -44,11 +44,11 @@ export default function Blog() {
 
   return (
     <>
-      <Header burn />
+      <Header />
       <List>
         {posts.map((post) => (
           <ListItem key={post.slug}>
-            <Anchor component={Link} to={post.slug}>
+            <Anchor component={Link} to={`${post.slug}`}>
               {post.title}
             </Anchor>
             {post.description ? <p>{post.description}</p> : null}

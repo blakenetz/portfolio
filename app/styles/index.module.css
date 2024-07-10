@@ -3,13 +3,12 @@
   flex-basis: 45%;
   gap: var(--mantine-spacing-sm);
 }
+
 .middle p {
   font-weight: 700;
 }
 .middle a {
   font-weight: 700;
   text-decoration: underline;
-}
-.middle .mantine-Button-root {
   width: fit-content;
 }

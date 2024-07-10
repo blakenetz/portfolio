@@ -15,7 +15,9 @@ import { useCallback, useState } from "react";
 
 import { getParam, RepoData, Sort, sorts, UserScope } from "~/api/projects";
 import Language from "~/components/language";
+import commonStyles from "~/styles/common.module.css";
 import styles from "~/styles/repos.module.css";
+import { cls } from "~/util";
 
 function validate(val: string | null): Sort | null {
   const sort = val as Sort | null;
@@ -50,7 +52,7 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
 
   return (
     <section className={styles.repos}>
-      <div className={["burn", styles.title].join(" ")}>
+      <div className={cls(commonStyles.burn, styles.title)}>
         <Title order={3}>{`${capitalize(name)} Projects`}</Title>
         {subtitle && <Text>{subtitle}</Text>}
       </div>

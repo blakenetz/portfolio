@@ -49,7 +49,15 @@
   flex-direction: column;
 }
 
-.mix {
+.burn {
+  position: relative;
+  background: var(--bg-gradient);
+  background-size: var(--bg-size);
+  animation: var(--bg-animation);
+}
+
+.burn > * {
+  background: var(--mantine-color-white);
   mix-blend-mode: screen;
 }
 

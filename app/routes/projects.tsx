@@ -1,20 +1,12 @@
-import { Button } from "@mantine/core";
-import {
-  LinksFunction,
-  LoaderFunctionArgs,
-  MetaFunction,
-  redirect,
-} from "@remix-run/node";
+import { LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 
 import { getRepos } from "~/api/projects.server";
-import Header from "~/components/header";
-import Links from "~/components/links";
-import Repos from "~/components/repos";
-import styles from "~/styles/projects.css";
+import { Button, Header, Links, Repos } from "~/components";
+import commonStyles from "~/styles/common.module.css";
+import styles from "~/styles/projects.module.css";
 import { status } from "~/util";
 
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 export const meta: MetaFunction = () => [
   { title: "BN | Projects" },
   { description: "My personal and work Github repositories" },
@@ -37,10 +29,10 @@ export default function Projects() {
 
   return (
     <>
-      <Header burn />
+      <Header />
 
       <Form
-        className="body"
+        className={styles.body}
         onChange={(e) => submit(e.currentTarget)}
         method="GET"
       >
@@ -52,13 +44,11 @@ export default function Projects() {
         />
       </Form>
 
-      <div className="burn button">
-        <Button component={Link} to="/" variant="filled" className="home">
-          Take me home
-        </Button>
-      </div>
+      <Button component={Link} to="/">
+        Take me home
+      </Button>
 
-      <div className="burn">
+      <div className={commonStyles.burn}>
         <Links />
       </div>
     </>

@@ -1,0 +1,8 @@
+.root {
+  border-radius: var(--mantine-radius-default);
+  width: fit-content;
+}
+
+.button {
+  background-color: var(--mantine-color-black);
+}

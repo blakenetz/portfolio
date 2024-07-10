@@ -1,10 +1,9 @@
 import { ActionIcon, Flex, Tooltip } from "@mantine/core";
-import { useLocation } from "@remix-run/react";
 import { IconAccessible } from "@tabler/icons-react";
 import { HTMLAttributes, PropsWithChildren, useContext } from "react";
 
 import ColorSchemeContext from "~/styles/colorSchemeContext";
-import styles from "~/styles/layout.module.css";
+import styles from "~/styles/common.module.css";
 import { cls } from "~/util";
 
 export default function Root({
@@ -12,7 +11,6 @@ export default function Root({
   ...props
 }: PropsWithChildren<HTMLAttributes<HTMLElement>>) {
   const colorSchemeContext = useContext(ColorSchemeContext);
-  const location = useLocation();
 
   const handleClick = () => {
     colorSchemeContext.toggle((prev) => !prev);
@@ -20,12 +18,7 @@ export default function Root({
 
   return (
     <section {...props} className={cls(props.className, styles.background)}>
-      <div
-        className={cls(
-          styles.main,
-          location.pathname === "/" ? styles.mix : undefined
-        )}
-      >
+      <div className={cls(styles.main)}>
         <Tooltip label="Accessibility mode" withArrow>
           <ActionIcon
             className={styles.ada}
@@ -33,7 +26,7 @@ export default function Root({
             aria-label="Toggle accessibility mode"
             onClick={handleClick}
           >
-            <Flex className="burn">
+            <Flex>
               <IconAccessible />
             </Flex>
           </ActionIcon>

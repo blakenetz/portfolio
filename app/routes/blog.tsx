@@ -15,6 +15,9 @@ import { Mdx } from "types/modules";
 
 import * as posts from "~/blog";
 
+/**
+ * @see https://remix.run/docs/en/main/guides/mdx#example-blog-usage
+ */
 function postFromModule(
   module: Mdx
 ): Record<"slug" | "title" | "description", string> {

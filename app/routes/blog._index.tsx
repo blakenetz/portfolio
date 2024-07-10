@@ -11,23 +11,26 @@ export const meta: MetaFunction = () => [
 import { Anchor, List, ListItem } from "@mantine/core";
 import { Mdx } from "types/modules";
 
-import * as posts from "~/blog";
+const posts = import.meta.glob<Mdx>("../blog/*.mdx", {
+  eager: true,
+});
 
 /**
  * @see https://remix.run/docs/en/main/guides/mdx#example-blog-usage
  */
 function postFromModule(
+  filename: string,
   module: Mdx
 ): Record<"slug" | "title" | "description", string> {
-  const title = module.attributes.meta.find((m) =>
+  const title = module.meta.find((m) =>
     Object.keys(m).includes("title")
   )!.title;
-  const description = module.attributes.meta.find(
+  const description = module.meta.find(
     (m) => m.name === "description"
   )!.content;
 
   return {
-    slug: module.filename.replace(/\.mdx?$/, ""),
+    slug: filename.replace(/\.mdx?$/, ""),
     title,
     description,
   };
@@ -35,7 +38,9 @@ function postFromModule(
 
 export async function loader() {
   return json(
-    Object.values(posts).map((p) => postFromModule(p as unknown as Mdx))
+    Object.keys(posts).map((filename) =>
+      postFromModule(filename, posts[filename])
+    )
   );
 }
 

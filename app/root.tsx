@@ -7,7 +7,6 @@ import {
   Title,
 } from "@mantine/core";
 import { useLocalStorage, useToggle } from "@mantine/hooks";
-import { cssBundleHref } from "@remix-run/css-bundle";
 import type {
   HeadersFunction,
   LinksFunction,
@@ -17,7 +16,6 @@ import type {
 import {
   json,
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -28,7 +26,7 @@ import {
 import React from "react";
 
 import Notification from "~/components/notification";
-import styles from "~/styles/root.css";
+import styles from "~/styles/root.css?url";
 import { Status, status as errorStatus, status } from "~/util";
 
 import Root from "./components/root";
@@ -50,7 +48,6 @@ export const meta: MetaFunction = () => [
 ];
 
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   { rel: "stylesheet", href: styles },
   // fonts
   {
@@ -176,7 +173,6 @@ export default function App() {
             <Root>
               <Outlet />
               <Scripts />
-              <LiveReload />
             </Root>
             <Notification hide={hide} handleClose={setHide} status={status} />
           </MantineProvider>

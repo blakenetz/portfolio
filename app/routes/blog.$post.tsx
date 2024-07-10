@@ -1,16 +1,29 @@
-/* eslint-disable import/namespace */
+import { Anchor, AnchorProps } from "@mantine/core";
+import { MDXProvider } from "@mdx-js/react";
 import { useParams } from "@remix-run/react";
+import { Mdx } from "types/modules";
 
-import * as posts from "~/blog/index";
+const posts = import.meta.glob<Mdx>("../blog/*.mdx", {
+  eager: true,
+});
 import Header from "~/components/header";
 
 export default function Post() {
-  const { post } = useParams();
+  const params = useParams();
+  const filename = `../blog/${params.post}.mdx`;
+
+  console.log(posts, params.post, posts[filename]);
 
   return (
-    <>
+    <MDXProvider
+      components={{
+        a: (props: AnchorProps) => (
+          <Anchor {...props} rel="noopener noreferrer" />
+        ),
+      }}
+    >
       <Header />
-      {posts[post] && posts[post].default()}
-    </>
+      {posts[filename] && posts[filename].default()}
+    </MDXProvider>
   );
 }

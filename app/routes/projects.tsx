@@ -12,6 +12,7 @@ import Header from "~/components/header";
 import Links from "~/components/links";
 import Repos from "~/components/repos";
 import styles from "~/styles/projects.css";
+import { status } from "~/util";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 export const meta: MetaFunction = () => [
@@ -24,7 +25,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   // nothing to show :( redirect
   if (repos.every((r) => r.status === 400)) {
-    return redirect("/?status=octokit-fail");
+    return redirect(`/?status=${status.octokit}`);
   }
 
   return repos;

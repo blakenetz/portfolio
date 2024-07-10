@@ -19,10 +19,7 @@ export default function Root({
   };
 
   return (
-    <section
-      {...props}
-      className={cls(props.className, styles.background, props.className)}
-    >
+    <section {...props} className={cls(props.className, styles.background)}>
       <div
         className={cls(
           styles.main,

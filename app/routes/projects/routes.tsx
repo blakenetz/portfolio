@@ -2,10 +2,11 @@ import { LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 
 import { getRepos } from "~/api/projects.server";
-import { Button, Header, Links, Repos } from "~/components";
-import commonStyles from "~/styles/common.module.css";
+import { Button, Header, Links } from "~/components";
 import styles from "~/styles/projects.module.css";
 import { status } from "~/util";
+
+import Repos from "./repos";
 
 export const meta: MetaFunction = () => [
   { title: "BN | Projects" },
@@ -48,9 +49,7 @@ export default function Projects() {
         Take me home
       </Button>
 
-      <div className={commonStyles.burn}>
-        <Links />
-      </div>
+      <Links />
     </>
   );
 }

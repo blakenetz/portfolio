@@ -7,7 +7,12 @@ export default function Header(props: React.HTMLAttributes<HTMLElement>) {
   return (
     <div
       {...props}
-      className={cls(styles.content, styles.column, props.className)}
+      className={cls(
+        styles.content,
+        styles.column,
+        styles.burn,
+        props.className
+      )}
     >
       <Title order={4} component="h1">
         Blake Netzeband

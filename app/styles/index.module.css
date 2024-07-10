@@ -4,11 +4,8 @@
   gap: var(--mantine-spacing-sm);
 }
 
-.middle p {
+.column p,
+.column a {
   font-weight: 700;
-}
-.middle a {
-  font-weight: 700;
-  text-decoration: underline;
-  width: fit-content;
+  display: block;
 }

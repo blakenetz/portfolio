@@ -1,18 +1,19 @@
-import { Flex, Text, Title } from "@mantine/core";
+import { Anchor, Flex, Text, Title } from "@mantine/core";
 import { Link } from "@remix-run/react";
 
 import { Button, Header, Links } from "~/components";
 import commonStyles from "~/styles/common.module.css";
 import styles from "~/styles/index.module.css";
-import { cls } from "~/util";
 
 export default function Index() {
   return (
     <div className={commonStyles.center}>
       <Header />
 
-      <Flex className={cls(styles.middle, styles.column)}>
-        <Title order={1}>Hello</Title>
+      <Flex className={styles.column}>
+        <div className={commonStyles.burn}>
+          <Title order={1}>Hello!</Title>
+        </div>
         <Text>
           I&apos;m a full stack developer with experience building apps of all
           shapes and sizes. I&apos;ve spent a good chunk of my life contributing
@@ -23,9 +24,11 @@ export default function Index() {
         <Text>Are you building something interesting?</Text>
 
         <Flex className={styles.column}>
-          <Text component="a" href="mailto:blakenetzeband@gmail.com">
-            Let&apos;s connect
-          </Text>
+          <div className={commonStyles.burn}>
+            <Anchor href="mailto:blakenetzeband@gmail.com">
+              Let&apos;s connect
+            </Anchor>
+          </div>
 
           <Button component={Link} to="projects">
             Projects

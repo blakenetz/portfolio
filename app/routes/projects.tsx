@@ -1,15 +1,23 @@
 import { Button } from "@mantine/core";
-import { LinksFunction, LoaderFunctionArgs, redirect } from "@remix-run/node";
+import {
+  LinksFunction,
+  LoaderFunctionArgs,
+  MetaFunction,
+  redirect,
+} from "@remix-run/node";
 import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 
 import { getRepos } from "~/api/projects.server";
 import Header from "~/components/header";
 import Links from "~/components/links";
 import Repos from "~/components/repos";
-import Root from "~/components/root";
 import styles from "~/styles/projects.css";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
+export const meta: MetaFunction = () => [
+  { title: "BN | Projects" },
+  { description: "My personal and work Github repositories" },
+];
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const repos = await getRepos(request);
@@ -27,7 +35,7 @@ export default function Projects() {
   const submit = useSubmit();
 
   return (
-    <Root>
+    <>
       <Header burn />
 
       <Form
@@ -52,6 +60,6 @@ export default function Projects() {
       <div className="burn">
         <Links />
       </div>
-    </Root>
+    </>
   );
 }

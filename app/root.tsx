@@ -16,6 +16,7 @@ import { Links, LiveReload, Meta, Outlet, Scripts } from "@remix-run/react";
 
 import styles from "~/styles/root.css";
 
+import Root from "./components/root";
 import ColorSchemeContext from "./styles/colorSchemeContext";
 
 export const meta: MetaFunction = () => [
@@ -108,9 +109,11 @@ export default function App() {
             theme={{ other: { ada }, primaryColor: "indigo" }}
             cssVariablesResolver={resolver}
           >
-            <Outlet />
-            <Scripts />
-            <LiveReload />
+            <Root>
+              <Outlet />
+              <Scripts />
+              <LiveReload />
+            </Root>
           </MantineProvider>
         </ColorSchemeContext.Provider>
       </body>

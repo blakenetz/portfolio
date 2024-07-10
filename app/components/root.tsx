@@ -1,11 +1,7 @@
 import { ActionIcon, Flex, Tooltip } from "@mantine/core";
+import { useLocation } from "@remix-run/react";
 import { IconAccessible } from "@tabler/icons-react";
-import {
-  HTMLAttributes,
-  PropsWithChildren,
-  useCallback,
-  useContext,
-} from "react";
+import { HTMLAttributes, PropsWithChildren, useContext } from "react";
 
 import ColorSchemeContext from "~/styles/colorSchemeContext";
 import styles from "~/styles/layout.module.css";
@@ -16,13 +12,23 @@ export default function Root({
   ...props
 }: PropsWithChildren<HTMLAttributes<HTMLElement>>) {
   const colorSchemeContext = useContext(ColorSchemeContext);
-  const handleClick = useCallback(() => {
+  const location = useLocation();
+
+  const handleClick = () => {
     colorSchemeContext.toggle((prev) => !prev);
-  }, [colorSchemeContext]);
+  };
 
   return (
-    <section {...props} className={cls(props.className, styles.background)}>
-      <div className={styles.main}>
+    <section
+      {...props}
+      className={cls(props.className, styles.background, props.className)}
+    >
+      <div
+        className={cls(
+          styles.main,
+          location.pathname === "/" ? styles.mix : undefined
+        )}
+      >
         <Tooltip label="Accessibility mode" withArrow>
           <ActionIcon
             className={styles.ada}

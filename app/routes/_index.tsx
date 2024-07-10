@@ -5,7 +5,6 @@ import { json, Link, useLoaderData } from "@remix-run/react";
 
 import Header from "~/components/header";
 import Links from "~/components/links";
-import Root from "~/components/root";
 import styles from "~/styles/index.css";
 import layoutStyles from "~/styles/layout.module.css";
 
@@ -22,41 +21,39 @@ export default function Index() {
   const [hide, setHide] = useToggle();
 
   return (
-    <Root className="index">
-      <div className={layoutStyles.center}>
-        <Header />
+    <div className={layoutStyles.center}>
+      <Header />
 
-        <Flex className="middle column">
-          <Title order={1}>Hello</Title>
-          <Text>
-            I&apos;m a full stack developer with experience building apps of all
-            shapes and sizes. I&apos;ve spent a good chunk of my life
-            contributing to products that have an environmental or social
-            impact. The other parts include living out of a van, biking around
-            the world, or just hangin&apos; with my pup :)
+      <Flex className="middle column">
+        <Title order={1}>Hello</Title>
+        <Text>
+          I&apos;m a full stack developer with experience building apps of all
+          shapes and sizes. I&apos;ve spent a good chunk of my life contributing
+          to products that have an environmental or social impact. The other
+          parts include living out of a van, biking around the world, or just
+          hangin&apos; with my pup :)
+        </Text>
+        <Text>Are you building something interesting?</Text>
+
+        <Flex className="column">
+          <Text component="a" href="mailto:blakenetzeband@gmail.com">
+            Let&apos;s connect
           </Text>
-          <Text>Are you building something interesting?</Text>
-
-          <Flex className="column">
-            <Text component="a" href="mailto:blakenetzeband@gmail.com">
-              Let&apos;s connect
-            </Text>
-            <Button component={Link} to="projects">
-              Projects
-            </Button>
-            <Button component={Link} to="blog">
-              Blog
-            </Button>
-          </Flex>
+          <Button component={Link} to="projects">
+            Projects
+          </Button>
+          <Button component={Link} to="blog">
+            Blog
+          </Button>
         </Flex>
-        {status === "octokit-fail" && hide !== true && (
-          <Notification title="Sorry!" onClose={setHide} color="red">
-            We seemed to hit a snag fetching data from Github.
-          </Notification>
-        )}
+      </Flex>
+      {status === "octokit-fail" && hide !== true && (
+        <Notification title="Sorry!" onClose={setHide} color="red">
+          We seemed to hit a snag fetching data from Github.
+        </Notification>
+      )}
 
-        <Links />
-      </div>
-    </Root>
+      <Links />
+    </div>
   );
 }

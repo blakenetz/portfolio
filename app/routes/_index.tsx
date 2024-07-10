@@ -44,6 +44,9 @@ export default function Index() {
             <Button component={Link} to="projects">
               Projects
             </Button>
+            <Button component={Link} to="blog">
+              Blog
+            </Button>
           </Flex>
         </Flex>
         {status === "octokit-fail" && hide !== true && (

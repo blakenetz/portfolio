@@ -28,9 +28,7 @@ export default function Projects() {
 
   return (
     <Root>
-      <div className="burn">
-        <Header />
-      </div>
+      <Header burn />
 
       <Form
         className="body"

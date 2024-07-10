@@ -1,10 +1,22 @@
 import { Title } from "@mantine/core";
 
 import styles from "~/styles/layout.module.css";
+import { cls } from "~/util";
 
-export default function Header() {
-  return (
-    <div className={[styles.content, styles.column].join(" ")}>
+interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
+  /**
+   * Apply `mix-blend-mode: screen;` to extra parent div
+   * @default false
+   */
+  burn?: boolean;
+}
+
+export default function Header({ burn, ...rest }: HeaderProps) {
+  const content = (
+    <div
+      {...rest}
+      className={cls(styles.content, styles.column, rest.className)}
+    >
       <Title order={4} component="h1">
         Blake Netzeband
       </Title>
@@ -13,4 +25,6 @@ export default function Header() {
       </Title>
     </div>
   );
+
+  return burn ? <div className="burn">{content}</div> : content;
 }

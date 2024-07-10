@@ -18,6 +18,12 @@
   }
 }
 
+.column {
+  flex-direction: column;
+  flex-basis: 45%;
+  gap: var(--mantine-spacing-sm);
+}
+
 .main {
   padding: var(--mantine-spacing-md);
   display: flex;
@@ -44,9 +50,7 @@
 .content {
   display: flex;
   gap: var(--mantine-spacing-xs);
-}
-.column {
-  flex-direction: column;
+  flex-basis: 0;
 }
 
 .burn {
@@ -86,10 +90,4 @@
 .ada svg {
   height: calc(var(--mantine-font-size-lg) * 2);
   width: calc(var(--mantine-font-size-lg) * 2);
-}
-
-.column {
-  flex-direction: column;
-  flex-basis: 45%;
-  gap: var(--mantine-spacing-sm);
 }

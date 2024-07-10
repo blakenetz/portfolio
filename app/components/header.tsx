@@ -8,9 +8,9 @@ export default function Header(props: React.HTMLAttributes<HTMLElement>) {
     <div
       {...props}
       className={cls(
-        styles.content,
         styles.column,
         styles.burn,
+        styles.content,
         props.className
       )}
     >

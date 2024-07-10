@@ -13,3 +13,7 @@
 .middle .mantine-Button-root {
   width: fit-content;
 }
+
+.index > div {
+  mix-blend-mode: screen;
+}

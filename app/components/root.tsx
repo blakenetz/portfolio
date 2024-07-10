@@ -7,36 +7,22 @@ import {
   useContext,
 } from "react";
 
-import Header from "~/components/header";
-import Links from "~/components/links";
 import ColorSchemeContext from "~/styles/colorSchemeContext";
 import styles from "~/styles/layout.module.css";
+import { cls } from "~/util";
 
-interface BackgroundProps extends HTMLAttributes<HTMLElement> {
-  /**
-   * Additional content is shown for index page
-   */
-  index?: boolean;
-}
-
-export default function Background({
+export default function Root({
   children,
-  index,
   ...props
-}: PropsWithChildren<BackgroundProps>) {
+}: PropsWithChildren<HTMLAttributes<HTMLElement>>) {
   const colorSchemeContext = useContext(ColorSchemeContext);
   const handleClick = useCallback(() => {
     colorSchemeContext.toggle((prev) => !prev);
   }, [colorSchemeContext]);
 
   return (
-    <section
-      {...props}
-      className={[props.className, styles.background, props.className]
-        .join(" ")
-        .trim()}
-    >
-      <div className={[styles.main, index ? styles.mix : null].join(" ")}>
+    <section {...props} className={cls(props.className, styles.background)}>
+      <div className={styles.main}>
         <Tooltip label="Accessibility mode" withArrow>
           <ActionIcon
             className={styles.ada}
@@ -49,15 +35,8 @@ export default function Background({
             </Flex>
           </ActionIcon>
         </Tooltip>
-        {index ? (
-          <div className={styles.center}>
-            <Header />
-            {children}
-            <Links />
-          </div>
-        ) : (
-          children
-        )}
+
+        {children}
       </div>
     </section>
   );

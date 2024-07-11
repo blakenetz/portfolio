@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, Tooltip } from "@mantine/core";
+import { ActionIcon, Tooltip } from "@mantine/core";
 import { IconAccessible } from "@tabler/icons-react";
 import { HTMLAttributes, PropsWithChildren, useContext } from "react";
 
@@ -24,14 +24,13 @@ export default function Layout({
       <div className={styles.main}>
         <Tooltip label="Accessibility mode" withArrow>
           <ActionIcon
+            color="teal"
             className={styles.ada}
-            variant="transparent"
+            radius="xl"
             aria-label="Toggle accessibility mode"
             onClick={handleClick}
           >
-            <Flex>
-              <IconAccessible />
-            </Flex>
+            <IconAccessible />
           </ActionIcon>
         </Tooltip>
 

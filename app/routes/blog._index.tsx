@@ -1,6 +1,7 @@
 import { Anchor, Text } from "@mantine/core";
 import { json, MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+import { IconBrandMedium } from "@tabler/icons-react";
 import { Attribute, Mdx } from "types/modules";
 
 import { Card } from "~/components";
@@ -21,9 +22,11 @@ function postFromModule(
   filename: string,
   module: Mdx
 ): Record<"slug" | "title" | "description" | keyof Attribute, string> {
-  const title = module.meta.find((m) =>
-    Object.keys(m).includes("title")
-  )!.title;
+  const title = module.meta
+    .find((m) => Object.keys(m).includes("title"))!
+    .title.split("|")
+    .pop()!
+    .trim();
   const description = module.meta.find(
     (m) => m.name === "description"
   )!.content;
@@ -69,6 +72,12 @@ export default function Blog() {
             {post.title}
           </Anchor>
           {post.description ? <Text>{post.description}</Text> : null}
+          {post.source === "medium" ? (
+            <Anchor href={post.url} className={styles.anchor}>
+              <IconBrandMedium /> View on Medium
+            </Anchor>
+          ) : null}
+          <Text className={styles.text}>{`Created ${post.date}`}</Text>
         </Card>
       ))}
     </>

@@ -4,6 +4,7 @@
   padding: var(--mantine-spacing-xl);
   display: flex;
   position: relative;
+  justify-content: center;
   /* animation */
   background: var(--bg-gradient);
   background-size: var(--bg-size);
@@ -32,7 +33,7 @@
 }
 
 .ada {
-  position: absolute;
+  position: fixed;
   top: var(--mantine-spacing-sm);
   right: var(--mantine-spacing-sm);
   z-index: 100;

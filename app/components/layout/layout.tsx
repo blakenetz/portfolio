@@ -3,10 +3,11 @@ import { IconAccessible } from "@tabler/icons-react";
 import { HTMLAttributes, PropsWithChildren, useContext } from "react";
 
 import ColorSchemeContext from "~/styles/colorSchemeContext";
-import styles from "~/styles/common.module.css";
 import { cls } from "~/util";
 
-export default function Root({
+import styles from "./layout.module.css";
+
+export default function Layout({
   children,
   ...props
 }: PropsWithChildren<HTMLAttributes<HTMLElement>>) {

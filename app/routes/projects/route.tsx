@@ -2,7 +2,7 @@ import { LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 
 import { getRepos } from "~/api/projects.server";
-import { Button, Header, Links } from "~/components";
+import { Button, Header } from "~/components";
 import { status } from "~/util";
 
 import styles from "./projects.module.css";
@@ -48,8 +48,6 @@ export default function Projects() {
       <Button component={Link} to="/">
         Take me home
       </Button>
-
-      <Links />
     </>
   );
 }

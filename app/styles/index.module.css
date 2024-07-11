@@ -1,0 +1,11 @@
+.heavy {
+  font-weight: 700;
+}
+
+.fit {
+  width: fit-content;
+}
+
+.center {
+  flex-basis: 70%;
+}

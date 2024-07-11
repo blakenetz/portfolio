@@ -25,11 +25,10 @@ import {
 } from "@remix-run/react";
 import React from "react";
 
-import Notification from "~/components/notification/notification";
+import { Layout, Links as FooterLinks, Notification } from "~/components";
 import styles from "~/styles/root.css?url";
 import { Status, status as errorStatus, status } from "~/util";
 
-import Root from "./components/root";
 import ColorSchemeContext from "./styles/colorSchemeContext";
 
 export const meta: MetaFunction = () => [
@@ -123,7 +122,7 @@ export function ErrorBoundary() {
       </head>
       <body>
         <MantineProvider cssVariablesResolver={resolver}>
-          <Root>
+          <Layout>
             <Title order={4} component="h1">
               Crap. We hit an issue.
             </Title>
@@ -131,7 +130,7 @@ export function ErrorBoundary() {
               Redirecting...
             </Title>
             <Scripts />
-          </Root>
+          </Layout>
         </MantineProvider>
       </body>
     </html>
@@ -170,10 +169,11 @@ export default function App() {
             theme={{ other: { ada }, primaryColor: "indigo" }}
             cssVariablesResolver={resolver}
           >
-            <Root>
+            <Layout>
               <Outlet />
               <Scripts />
-            </Root>
+              <FooterLinks />
+            </Layout>
             <Notification hide={hide} handleClose={setHide} status={status} />
           </MantineProvider>
         </ColorSchemeContext.Provider>

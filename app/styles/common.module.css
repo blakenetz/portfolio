@@ -1,41 +1,6 @@
-.background {
-  min-height: 100vh;
-  width: 100vw;
-  padding: var(--mantine-spacing-xl);
-  display: flex;
-  justify-content: center;
-  position: relative;
-  /* animation */
-  background: var(--bg-gradient);
-  background-size: var(--bg-size);
-  animation: var(--bg-animation);
-
-  @media (max-width: $mantine-breakpoint-lg) {
-    padding: var(--mantine-spacing-lg);
-  }
-  @media (max-width: $mantine-breakpoint-md) {
-    padding: var(--mantine-spacing-md);
-  }
-}
-
 .column {
   flex-direction: column;
-  flex-basis: 45%;
   gap: var(--mantine-spacing-sm);
-}
-
-.main {
-  padding: var(--mantine-spacing-md);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-  color: #000;
-  max-width: var(--mantine-breakpoint-xl);
-  flex: 1;
-  position: relative;
-  gap: var(--mantine-spacing-xl);
 }
 
 .center {
@@ -79,15 +44,4 @@
   left: -10%;
   top: 50%;
   width: 120%;
-}
-
-.ada {
-  position: absolute;
-  top: calc(var(--mantine-spacing-xs) / 2);
-  right: calc(var(--mantine-spacing-xs) / 2);
-}
-.ada,
-.ada svg {
-  height: calc(var(--mantine-font-size-lg) * 2);
-  width: calc(var(--mantine-font-size-lg) * 2);
 }

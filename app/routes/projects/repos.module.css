@@ -10,24 +10,6 @@
   }
 }
 
-.outline {
-  padding: calc(var(--mantine-spacing-xs) / 4);
-  background: var(--bg-gradient);
-  background-size: var(--bg-size);
-  animation: var(--bg-animation);
-}
-
-.repo {
-  padding: var(--mantine-spacing-xs);
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--mantine-spacing-xs) / 2);
-}
-
-.repo img {
-  height: var(--mantine-font-size-md);
-}
-
 .description {
   font-size: var(--mantine-font-size-sm);
   color: var(--mantine-color-md);

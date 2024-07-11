@@ -2,7 +2,6 @@ import {
   Anchor,
   Divider,
   Flex,
-  Paper,
   SegmentedControl,
   SegmentedControlProps,
   Text,
@@ -14,6 +13,7 @@ import { IconGitFork, IconUserCircle } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 
 import { getParam, RepoData, Sort, sorts, UserScope } from "~/api/projects";
+import { Card } from "~/components";
 import commonStyles from "~/styles/common.module.css";
 
 import Language from "./language";
@@ -59,72 +59,65 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
 
       <div className={styles.grid}>
         {data.map((repo) => (
-          <Paper
-            key={repo.name}
-            shadow="sm"
-            withBorder
-            className={styles.outline}
-          >
-            <Paper className={styles.repo}>
-              <Flex>
-                {repo.fork && (
-                  <Tooltip label="This repo was forked" withArrow>
-                    <IconGitFork />
-                  </Tooltip>
-                )}
-                <Title
-                  order={4}
-                  component="p"
-                  dangerouslySetInnerHTML={{ __html: repo.name! }}
-                />
-              </Flex>
-              {repo.description && (
-                <Text
-                  dangerouslySetInnerHTML={{ __html: repo.description }}
-                  className={styles.description}
-                />
+          <Card key={repo.name}>
+            <Flex>
+              {repo.fork && (
+                <Tooltip label="This repo was forked" withArrow>
+                  <IconGitFork />
+                </Tooltip>
               )}
-              <div className={styles.meta}>
-                <Anchor
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={repo.html_url}
-                  className={styles.anchor}
-                >
-                  View on Github
-                </Anchor>
-                {repo.user && (
-                  <>
-                    <Divider orientation="vertical" />
-                    <Anchor
-                      className={[styles.flex, styles.anchor].join(" ")}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={`https://github.com/${repo.user}`}
-                    >
-                      <Flex className={["burn", styles.icon].join(" ")}>
-                        <IconUserCircle />
-                      </Flex>
+              <Title
+                order={4}
+                component="p"
+                dangerouslySetInnerHTML={{ __html: repo.name! }}
+              />
+            </Flex>
+            {repo.description && (
+              <Text
+                dangerouslySetInnerHTML={{ __html: repo.description }}
+                className={styles.description}
+              />
+            )}
+            <div className={styles.meta}>
+              <Anchor
+                target="_blank"
+                rel="noopener noreferrer"
+                href={repo.html_url}
+                className={styles.anchor}
+              >
+                View on Github
+              </Anchor>
+              {repo.user && (
+                <>
+                  <Divider orientation="vertical" />
+                  <Anchor
+                    className={[styles.flex, styles.anchor].join(" ")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://github.com/${repo.user}`}
+                  >
+                    <Flex className={["burn", styles.icon].join(" ")}>
+                      <IconUserCircle />
+                    </Flex>
 
-                      {repo.user}
-                    </Anchor>
-                  </>
-                )}
-              </div>
-              <div className={styles.meta}>
-                {repo.language && (
-                  <>
-                    <Language language={repo.language} />
-                    <Divider orientation="vertical" />
-                  </>
-                )}
+                    {repo.user}
+                  </Anchor>
+                </>
+              )}
+            </div>
+            <div className={styles.meta}>
+              {repo.language && (
+                <>
+                  <Language language={repo.language} />
+                  <Divider orientation="vertical" />
+                </>
+              )}
 
-                <Text>{`Created ${repo.created_at}`}</Text>
-                <Divider orientation="vertical" />
-                <Text>{`Updated ${repo.updated_at}`}</Text>
-              </div>
-            </Paper>
-          </Paper>
+              <Text>{`Created ${repo.created_at}`}</Text>
+              <Divider orientation="vertical" />
+              <Text>{`Updated ${repo.updated_at}`}</Text>
+            </div>
+          </Card>
         ))}
       </div>
 

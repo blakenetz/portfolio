@@ -13,10 +13,11 @@ import { useParams } from "@remix-run/react";
 import { MDXComponents } from "node_modules/@mdx-js/react/lib";
 import { HTMLAttributes } from "react";
 
-import styles from "~/styles/common.module.css";
-import { blogPath, getPosts } from "~/util";
+import commonStyles from "~/styles/common.module.css";
+import { blogPath, cls, getPosts } from "~/util";
 
 import CodeBlock from "./codeBlock";
+import styles from "./post.module.css";
 
 // generic html props
 type HTMLProps = HTMLAttributes<HTMLElement>;
@@ -45,7 +46,7 @@ export default function Post() {
   const filename = `${blogPath}/${params.post}.mdx`;
 
   return (
-    <Flex className={styles.column}>
+    <Flex className={cls(commonStyles.column, styles.reader)}>
       {posts[filename] && posts[filename].default({ components })}
     </Flex>
   );

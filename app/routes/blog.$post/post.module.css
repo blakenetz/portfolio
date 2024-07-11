@@ -1,3 +1,7 @@
 .alert {
   white-space: break-spaces;
 }
+
+.reader {
+  max-width: var(--mantine-breakpoint-md);
+}

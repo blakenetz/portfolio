@@ -43,3 +43,11 @@
   height: calc(var(--mantine-font-size-lg) * 2);
   width: calc(var(--mantine-font-size-lg) * 2);
 }
+
+.anchor {
+  font-weight: 700;
+}
+
+.breadcrumbs {
+  align-self: flex-start;
+}

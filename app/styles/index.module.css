@@ -6,6 +6,8 @@
   width: fit-content;
 }
 
-.center {
-  flex-basis: 70%;
+.main {
+  height: 70%; /* we don't want it perfectly y-centered */
+  gap: var(--mantine-spacing-xl);
+  max-width: var(--mantine-breakpoint-xs);
 }

@@ -5,7 +5,9 @@ import { HTMLAttributes, PropsWithChildren, useContext } from "react";
 import ColorSchemeContext from "~/styles/colorSchemeContext";
 import { cls } from "~/util";
 
+import Header from "./header";
 import styles from "./layout.module.css";
+import Links from "./links";
 
 export default function Layout({
   children,
@@ -19,7 +21,7 @@ export default function Layout({
 
   return (
     <section {...props} className={cls(props.className, styles.background)}>
-      <div className={cls(styles.main)}>
+      <div className={styles.main}>
         <Tooltip label="Accessibility mode" withArrow>
           <ActionIcon
             className={styles.ada}
@@ -33,7 +35,11 @@ export default function Layout({
           </ActionIcon>
         </Tooltip>
 
+        <Header />
+
         {children}
+
+        <Links />
       </div>
     </section>
   );

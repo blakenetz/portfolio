@@ -3,7 +3,6 @@ import { json, MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Mdx } from "types/modules";
 
-import Header from "~/components/header";
 import { getPosts } from "~/util";
 
 const posts = getPosts();
@@ -47,7 +46,6 @@ export default function Blog() {
 
   return (
     <>
-      <Header />
       <List>
         {posts.map((post) => (
           <ListItem key={post.slug}>

@@ -25,7 +25,7 @@ import {
 } from "@remix-run/react";
 import React from "react";
 
-import { Layout, Links as FooterLinks, Notification } from "~/components";
+import { Layout, Notification } from "~/components";
 import styles from "~/styles/root.css?url";
 import { Status, status as errorStatus, status } from "~/util";
 
@@ -172,7 +172,6 @@ export default function App() {
             <Layout>
               <Outlet />
               <Scripts />
-              <FooterLinks />
             </Layout>
             <Notification hide={hide} handleClose={setHide} status={status} />
           </MantineProvider>

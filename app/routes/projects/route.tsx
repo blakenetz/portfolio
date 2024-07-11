@@ -2,7 +2,7 @@ import { LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 
 import { getRepos } from "~/api/projects.server";
-import { Button, Header } from "~/components";
+import { Button } from "~/components";
 import { status } from "~/util";
 
 import styles from "./projects.module.css";
@@ -30,8 +30,6 @@ export default function Projects() {
 
   return (
     <>
-      <Header />
-
       <Form
         className={styles.body}
         onChange={(e) => submit(e.currentTarget)}

@@ -3,15 +3,6 @@
   gap: var(--mantine-spacing-sm);
 }
 
-.center {
-  max-width: var(--mantine-breakpoint-xs);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  gap: var(--mantine-spacing-xl);
-}
-
 .content {
   display: flex;
   gap: var(--mantine-spacing-xs);

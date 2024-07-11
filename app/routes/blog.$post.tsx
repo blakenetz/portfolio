@@ -10,7 +10,6 @@ import {
 import { useParams } from "@remix-run/react";
 import { MDXComponents } from "node_modules/@mdx-js/react/lib";
 
-import Header from "~/components/header";
 import styles from "~/styles/common.module.css";
 import { blogPath, getPosts } from "~/util";
 
@@ -32,7 +31,6 @@ export default function Post() {
 
   return (
     <>
-      <Header />
       <Flex className={styles.column}>
         {posts[filename] &&
           posts[filename].default({

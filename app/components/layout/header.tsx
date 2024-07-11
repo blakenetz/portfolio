@@ -11,7 +11,7 @@ export default function Header(props: React.HTMLAttributes<HTMLElement>) {
   const location = useLocation();
   const home = location.pathname === "/";
   const paths = location.pathname.split("/");
-  console.log(paths);
+
   return home ? (
     <div
       {...props}
@@ -31,11 +31,11 @@ export default function Header(props: React.HTMLAttributes<HTMLElement>) {
     </div>
   ) : (
     <Breadcrumbs className={styles.breadcrumbs}>
-      {paths.map((path) => (
+      {paths.map((path, i) => (
         <Anchor
-          component={Link}
           key={path}
-          to={path}
+          component={Link}
+          to={paths.slice(0, i + 1).join("/")}
           className={styles.anchor}
           c="red.4"
         >

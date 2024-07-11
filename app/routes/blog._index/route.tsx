@@ -1,19 +1,28 @@
-import { Anchor, Text } from "@mantine/core";
+import { Anchor, Flex, Text } from "@mantine/core";
 import { json, MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { IconBrandMedium } from "@tabler/icons-react";
 import { Attribute, Mdx } from "types/modules";
 
 import { Card } from "~/components";
-import styles from "~/styles/blog.module.css";
 import { blogPath, getPosts } from "~/util";
 
-const posts = getPosts();
+import styles from "./blog.module.css";
 
 export const meta: MetaFunction = () => [
   { title: "BN | Blog" },
   { description: "My thoughts. some complete... others not... 😜" },
 ];
+
+const posts = getPosts();
+
+function formatDate(value: string) {
+  return new Date(value).toLocaleDateString("en-us", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
 
 /**
  * @see https://remix.run/docs/en/main/guides/mdx#example-blog-usage
@@ -34,7 +43,7 @@ function postFromModule(
   const attributes = module.frontmatter.attributes.reduce((record, acc) => {
     Object.keys(record).forEach((key) => {
       const k = key as keyof Attribute;
-      acc[k] = record[k];
+      acc[k] = k === "date" ? formatDate(record[k]) : record[k];
     });
     return acc;
   }, {} as Attribute);
@@ -58,10 +67,8 @@ export async function loader() {
 export default function Blog() {
   const posts = useLoaderData<typeof loader>();
 
-  console.log(posts);
-
   return (
-    <>
+    <Flex className={styles.posts}>
       {posts.map((post) => (
         <Card key={post.slug}>
           <Anchor
@@ -71,15 +78,15 @@ export default function Blog() {
           >
             {post.title}
           </Anchor>
-          {post.description ? <Text>{post.description}</Text> : null}
+          <Text>{post.description}</Text>
           {post.source === "medium" ? (
             <Anchor href={post.url} className={styles.anchor}>
               <IconBrandMedium /> View on Medium
             </Anchor>
           ) : null}
-          <Text className={styles.text}>{`Created ${post.date}`}</Text>
+          <Text className={styles.text}>{`Published ${post.date}`}</Text>
         </Card>
       ))}
-    </>
+    </Flex>
   );
 }

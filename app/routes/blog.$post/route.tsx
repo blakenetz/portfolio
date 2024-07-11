@@ -9,10 +9,12 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useParams } from "@remix-run/react";
+import { MetaFunction } from "@remix-run/node";
+import { Link, useParams } from "@remix-run/react";
 import { MDXComponents } from "node_modules/@mdx-js/react/lib";
 import { HTMLAttributes } from "react";
 
+import { Button } from "~/components";
 import commonStyles from "~/styles/common.module.css";
 import { blogPath, cls, getPosts } from "~/util";
 
@@ -23,6 +25,12 @@ import styles from "./post.module.css";
 type HTMLProps = HTMLAttributes<HTMLElement>;
 
 const posts = getPosts();
+
+export const meta: MetaFunction = ({ location }) => {
+  const module = posts[`.${location.pathname}.mdx`];
+
+  return module.meta;
+};
 
 const components: MDXComponents = {
   a: (props: AnchorProps) => (
@@ -46,8 +54,13 @@ export default function Post() {
   const filename = `${blogPath}/${params.post}.mdx`;
 
   return (
-    <Flex className={cls(commonStyles.column, styles.reader)}>
-      {posts[filename] && posts[filename].default({ components })}
-    </Flex>
+    <>
+      <Flex className={cls(commonStyles.column, styles.reader)}>
+        {posts[filename] && posts[filename].default({ components })}
+      </Flex>
+      <Button component={Link} to="/">
+        Take me home
+      </Button>
+    </>
   );
 }

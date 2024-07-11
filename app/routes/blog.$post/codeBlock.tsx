@@ -7,7 +7,6 @@ import styles from "./post.module.css";
 type CodeBlockProps = Omit<CodeProps, "vars" | "classNames" | "styles">;
 
 export default function CodeBlock({ children, ...rest }: CodeBlockProps) {
-  console.log(rest, children);
   const block = rest.className?.includes("language");
   const notification = rest.className?.includes("note");
 

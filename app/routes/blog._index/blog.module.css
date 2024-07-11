@@ -12,3 +12,8 @@
 .text {
   font-size: var(--mantine-font-size-xs);
 }
+
+.posts {
+  flex-direction: column;
+  gap: var(--mantine-spacing-sm);
+}

@@ -53,7 +53,7 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
   return (
     <section className={styles.repos}>
       <div className={commonStyles.burn}>
-        <Title order={3}>{`${capitalize(name)} Projects`}</Title>
+        <Title order={2}>{`${capitalize(name)} Projects`}</Title>
       </div>
       {subtitle && <Text>{subtitle}</Text>}
 

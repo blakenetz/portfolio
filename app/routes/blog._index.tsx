@@ -1,9 +1,11 @@
-import { Anchor, List, ListItem } from "@mantine/core";
+import { Anchor, Text } from "@mantine/core";
 import { json, MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { Mdx } from "types/modules";
+import { Attribute, Mdx } from "types/modules";
 
-import { getPosts } from "~/util";
+import { Card } from "~/components";
+import styles from "~/styles/blog.module.css";
+import { blogPath, getPosts } from "~/util";
 
 const posts = getPosts();
 
@@ -18,7 +20,7 @@ export const meta: MetaFunction = () => [
 function postFromModule(
   filename: string,
   module: Mdx
-): Record<"slug" | "title" | "description", string> {
+): Record<"slug" | "title" | "description" | keyof Attribute, string> {
   const title = module.meta.find((m) =>
     Object.keys(m).includes("title")
   )!.title;
@@ -26,10 +28,19 @@ function postFromModule(
     (m) => m.name === "description"
   )!.content;
 
+  const attributes = module.frontmatter.attributes.reduce((record, acc) => {
+    Object.keys(record).forEach((key) => {
+      const k = key as keyof Attribute;
+      acc[k] = record[k];
+    });
+    return acc;
+  }, {} as Attribute);
+
   return {
-    slug: filename.replace(/\.mdx?$/, ""),
+    slug: filename.replace(/\.mdx?$/, "").replace(blogPath, ""),
     title,
     description,
+    ...attributes,
   };
 }
 
@@ -44,18 +55,22 @@ export async function loader() {
 export default function Blog() {
   const posts = useLoaderData<typeof loader>();
 
+  console.log(posts);
+
   return (
     <>
-      <List>
-        {posts.map((post) => (
-          <ListItem key={post.slug}>
-            <Anchor component={Link} to={`${post.slug}`}>
-              {post.title}
-            </Anchor>
-            {post.description ? <p>{post.description}</p> : null}
-          </ListItem>
-        ))}
-      </List>
+      {posts.map((post) => (
+        <Card key={post.slug}>
+          <Anchor
+            component={Link}
+            to={`.${post.slug}`}
+            className={styles.title}
+          >
+            {post.title}
+          </Anchor>
+          {post.description ? <Text>{post.description}</Text> : null}
+        </Card>
+      ))}
     </>
   );
 }

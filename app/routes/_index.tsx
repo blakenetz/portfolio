@@ -10,7 +10,9 @@ export default function Index() {
   return (
     <Flex className={cls(commonStyles.column, styles.main)}>
       <div className={commonStyles.burn}>
-        <Title order={1}>Hello!</Title>
+        <Title order={1} component="p">
+          Hello!
+        </Title>
       </div>
       <Text className={styles.heavy}>
         I&apos;m a full stack developer with experience building apps of all

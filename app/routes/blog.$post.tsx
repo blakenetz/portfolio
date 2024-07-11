@@ -20,9 +20,10 @@ const components: MDXComponents = {
     <Anchor {...props} target="_blank" rel="noopener noreferrer" />
   ),
   p: (props: TextProps) => <Text {...props} />,
-  h1: (props: TitleProps) => <Title {...props} order={2} component="h3" />,
-  h2: (props: TitleProps) => <Title {...props} order={3} component="h4" />,
-  h3: (props: TitleProps) => <Title {...props} order={4} component="h5" />,
+  h1: (props: TitleProps) => <Title {...props} order={2} />,
+  h2: (props: TitleProps) => <Title {...props} order={3} />,
+  h3: (props: TitleProps) => <Title {...props} order={4} />,
+  h4: (props: TitleProps) => <Title {...props} order={5} />,
 };
 
 export default function Post() {

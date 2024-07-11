@@ -17,7 +17,7 @@ export default function Header(props: React.HTMLAttributes<HTMLElement>) {
       <Title order={4} component="h1">
         Blake Netzeband
       </Title>
-      <Title order={4} component="h2">
+      <Title order={4} component="p">
         Full Stack Developer
       </Title>
     </div>

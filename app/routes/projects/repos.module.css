@@ -12,7 +12,6 @@
 
 .description {
   font-size: var(--mantine-font-size-sm);
-  color: var(--mantine-color-md);
 }
 
 .meta {

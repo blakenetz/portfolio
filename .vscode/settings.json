@@ -21,5 +21,6 @@
     "**/*.less",
     "node_modules/@mantine/core/styles.css"
   ],
-  "prettier.proseWrap": "always"
+  "prettier.proseWrap": "always",
+  "cSpell.enabled": true
 }

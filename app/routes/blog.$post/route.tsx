@@ -1,4 +1,5 @@
 import {
+  Alert,
   Anchor,
   AnchorProps,
   Blockquote,
@@ -9,28 +10,21 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { MetaFunction } from "@remix-run/node";
-import { Link, useParams } from "@remix-run/react";
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+import { IconInfoCircle } from "@tabler/icons-react";
 import { MDXComponents } from "node_modules/@mdx-js/react/lib";
 import { HTMLAttributes } from "react";
 
 import { Button } from "~/components";
 import commonStyles from "~/styles/common.module.css";
-import { blogPath, cls, getPosts } from "~/util";
+import { blogPath, cls, getPosts, postFromModule } from "~/util";
 
 import CodeBlock from "./codeBlock";
 import styles from "./post.module.css";
 
 // generic html props
 type HTMLProps = HTMLAttributes<HTMLElement>;
-
-const posts = getPosts();
-
-export const meta: MetaFunction = ({ location }) => {
-  const module = posts[`.${location.pathname}.mdx`];
-
-  return module.meta;
-};
 
 const components: MDXComponents = {
   a: (props: AnchorProps) => (
@@ -49,14 +43,49 @@ const components: MDXComponents = {
   li: ListItem,
 };
 
-export default function Post() {
-  const params = useParams();
+const posts = getPosts();
+
+export const meta: MetaFunction = ({ location }) => {
+  const module = posts[`.${location.pathname}.mdx`];
+
+  return module.meta;
+};
+
+export const loader: LoaderFunction = ({ params }) => {
   const filename = `${blogPath}/${params.post}.mdx`;
+
+  const { render: _render, ...attributes } = postFromModule(
+    filename,
+    posts[filename]
+  );
+
+  return json({ key: filename, attributes });
+};
+
+export default function Post() {
+  const { key, attributes } = useLoaderData<typeof loader>();
+  const post = posts[key];
 
   return (
     <>
       <Flex className={cls(commonStyles.column, styles.reader)}>
-        {posts[filename] && posts[filename].default({ components })}
+        {attributes.source === "medium" && (
+          <Alert
+            color="pink"
+            icon={<IconInfoCircle />}
+            className={cls(styles.alert, styles.medium)}
+          >
+            This post was originally published on{" "}
+            <Anchor
+              href={attributes.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Medium
+            </Anchor>
+          </Alert>
+        )}
+        {post && post.default({ components })}
       </Flex>
       <Button component={Link} to="/">
         Take me home

@@ -5,3 +5,7 @@
 .reader {
   max-width: var(--mantine-breakpoint-md);
 }
+
+.medium .mantine-Alert-wrapper {
+  align-items: center;
+}

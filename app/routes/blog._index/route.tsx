@@ -2,10 +2,9 @@ import { Anchor, Flex, Text } from "@mantine/core";
 import { json, MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { IconBrandMedium } from "@tabler/icons-react";
-import { Attribute, Mdx } from "types/modules";
 
 import { Card } from "~/components";
-import { blogPath, getPosts } from "~/util";
+import { getPosts, postFromModule } from "~/util";
 
 import styles from "./blog.module.css";
 
@@ -15,46 +14,6 @@ export const meta: MetaFunction = () => [
 ];
 
 const posts = getPosts();
-
-function formatDate(value: string) {
-  return new Date(value).toLocaleDateString("en-us", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
-
-/**
- * @see https://remix.run/docs/en/main/guides/mdx#example-blog-usage
- */
-function postFromModule(
-  filename: string,
-  module: Mdx
-): Record<"slug" | "title" | "description" | keyof Attribute, string> {
-  const title = module.meta
-    .find((m) => Object.keys(m).includes("title"))!
-    .title.split("|")
-    .pop()!
-    .trim();
-  const description = module.meta.find(
-    (m) => m.name === "description"
-  )!.content;
-
-  const attributes = module.frontmatter.attributes.reduce((record, acc) => {
-    Object.keys(record).forEach((key) => {
-      const k = key as keyof Attribute;
-      acc[k] = k === "date" ? formatDate(record[k]) : record[k];
-    });
-    return acc;
-  }, {} as Attribute);
-
-  return {
-    slug: filename.replace(/\.mdx?$/, "").replace(blogPath, ""),
-    title,
-    description,
-    ...attributes,
-  };
-}
 
 export async function loader() {
   return json(

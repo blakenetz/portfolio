@@ -22,7 +22,7 @@ export function getPosts() {
   });
 }
 
-function formatDate(value: string) {
+export function formatDate(value: string) {
   return new Date(value).toLocaleDateString("en-us", {
     year: "numeric",
     month: "short",

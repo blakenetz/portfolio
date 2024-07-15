@@ -12,26 +12,26 @@ import { useSearchParams } from "@remix-run/react";
 import { IconGitFork, IconUserCircle } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 
-import { getParam, RepoData, Sort, sorts, UserScope } from "~/api/projects";
+import { getParam, RepoData, sorts, UserScope } from "~/api/projects";
 import { Card } from "~/components";
 import commonStyles from "~/styles/common.module.css";
+import { capitalize, validate } from "~/util";
 
 import Language from "./language";
 import styles from "./repos.module.css";
 
-function validate(val: string | null): Sort | null {
-  const sort = val as Sort | null;
-  if (sort && sorts.includes(sort)) return sort;
-  return null;
-}
-
-function capitalize(val: string) {
-  return val.charAt(0).toUpperCase() + val.slice(1);
-}
-
 interface ReposProps {
+  /**
+   * API response data
+   */
   data: RepoData;
+  /**
+   * name of input el
+   */
   name: UserScope;
+  /**
+   * Additional information
+   */
   subtitle?: string;
 }
 
@@ -39,14 +39,14 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
   const param = getParam(name);
   const [searchParams] = useSearchParams();
 
-  const initialValue = validate(searchParams.get(param));
+  const initialValue = validate(searchParams.get(param), sorts);
 
   const [value, setValue] = useState(initialValue ?? "updated");
 
   const handleChange = useCallback<
     NonNullable<SegmentedControlProps["onChange"]>
   >((val) => {
-    const valid = validate(val);
+    const valid = validate(val, sorts);
     if (valid) setValue(valid);
   }, []);
 

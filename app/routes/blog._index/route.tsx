@@ -17,7 +17,7 @@ import { IconBrandMedium } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 
 import { Card } from "~/components";
-import { getPosts, postFromModule } from "~/util";
+import { getPosts, postFromModule, validate } from "~/util";
 
 import styles from "./blog.module.css";
 
@@ -28,14 +28,8 @@ export const meta: MetaFunction = () => [
 
 const posts = getPosts();
 const inputName = "sort";
-export const sorts = ["asc", "desc"] as const;
-export type Sort = (typeof sorts)[number];
-
-function validate(val: string | null): Sort | null {
-  const sort = val as Sort | null;
-  if (sort && sorts.includes(sort)) return sort;
-  return null;
-}
+const sorts = ["asc", "desc"] as const;
+type Sort = (typeof sorts)[number];
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { searchParams } = new URL(request.url);
@@ -57,14 +51,14 @@ export default function Blog() {
   const submit = useSubmit();
   const posts = useLoaderData<typeof loader>();
 
-  const initialValue = validate(searchParams.get(inputName));
+  const initialValue = validate<Sort>(searchParams.get(inputName), sorts);
 
   const [value, setValue] = useState(initialValue ?? "desc");
 
   const handleChange = useCallback<
     NonNullable<SegmentedControlProps["onChange"]>
   >((val) => {
-    const valid = validate(val);
+    const valid = validate(val, sorts);
     if (valid) setValue(valid);
   }, []);
 

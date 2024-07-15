@@ -63,3 +63,16 @@ export function postFromModule(
     ...attributes,
   };
 }
+
+export function validate<T>(
+  val: string | null,
+  arr: ReadonlyArray<T>
+): T | null {
+  const sort = val as T | null;
+  if (sort && arr.includes(sort)) return sort;
+  return null;
+}
+
+export function capitalize(val: string) {
+  return val.charAt(0).toUpperCase() + val.slice(1);
+}

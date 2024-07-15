@@ -1,0 +1,19 @@
+.title {
+  font-size: var(--mantine-h4-font-size);
+  line-height: var(--mantine-h4-line-height);
+  font-weight: var(--mantine-h4-font-weight);
+}
+
+.anchor {
+  display: flex;
+  gap: var(--mantine-spacing-xs);
+}
+
+.text {
+  font-size: var(--mantine-font-size-xs);
+}
+
+.posts {
+  flex-direction: column;
+  gap: var(--mantine-spacing-sm);
+}

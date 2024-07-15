@@ -1,0 +1,38 @@
+.column {
+  flex-direction: column;
+  gap: var(--mantine-spacing-sm);
+}
+
+.content {
+  display: flex;
+  gap: var(--mantine-spacing-xs);
+  flex-basis: 0;
+}
+
+.burn {
+  position: relative;
+  background: var(--bg-gradient);
+  background-size: var(--bg-size);
+  animation: var(--bg-animation);
+}
+
+.burn > * {
+  background: var(--mantine-color-white);
+  mix-blend-mode: screen;
+}
+
+.links a {
+  position: relative;
+}
+.links a:focus-visible {
+  outline: none;
+}
+.links a:focus-visible::after,
+.links a:hover::after {
+  content: "";
+  border-bottom: 4px solid var(--mantine-color-black);
+  position: absolute;
+  left: -10%;
+  top: 50%;
+  width: 120%;
+}

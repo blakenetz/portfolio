@@ -1,50 +1,42 @@
-import { Button, Flex, Notification, Text, Title } from "@mantine/core";
-import { useToggle } from "@mantine/hooks";
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
-import { json, Link, useLoaderData } from "@remix-run/react";
+import { Anchor, Flex, Text, Title } from "@mantine/core";
+import { Link } from "@remix-run/react";
 
-import Background from "~/components/background";
-import styles from "~/styles/index.css";
-
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
-
-export const loader: LoaderFunction = async ({ request }) => {
-  const status = new URL(request.url).searchParams.get("status") ?? "ok";
-
-  return json({ status });
-};
+import { Button } from "~/components";
+import commonStyles from "~/styles/common.module.css";
+import styles from "~/styles/index.module.css";
+import { cls } from "~/util";
 
 export default function Index() {
-  const { status } = useLoaderData<typeof loader>();
-  const [hide, setHide] = useToggle();
-
   return (
-    <Background index>
-      <Flex className="middle column">
-        <Title order={1}>Hello</Title>
-        <Text>
-          I&apos;m a full stack developer with experience building apps of all
-          shapes and sizes. I&apos;ve spent a good chunk of my life contributing
-          to products that have an environmental or social impact. The other
-          parts include living out of a van, biking around the world, or just
-          hangin&apos; with my pup :)
-        </Text>
-        <Text>Are you building something interesting?</Text>
+    <Flex className={cls(commonStyles.column, styles.main)}>
+      <div className={commonStyles.burn}>
+        <Title order={1} component="p">
+          Hello!
+        </Title>
+      </div>
+      <Text className={styles.heavy}>
+        I&apos;m a full stack developer with experience building apps of all
+        shapes and sizes. I&apos;ve spent a good chunk of my life contributing
+        to products that have an environmental or social impact. The other parts
+        include living out of a van, biking around the world, or just
+        hangin&apos; with my pup :)
+      </Text>
+      <Text className={styles.heavy}>
+        Are you building something interesting?{" "}
+        <Anchor href="mailto:blakenetzeband@gmail.com" className={styles.heavy}>
+          Let&apos;s connect
+        </Anchor>
+      </Text>
 
-        <Flex className="column">
-          <Text component="a" href="mailto:blakenetzeband@gmail.com">
-            Let&apos;s connect
-          </Text>
-          <Button component={Link} to="projects">
-            Projects
-          </Button>
-        </Flex>
+      <Flex className={commonStyles.column}>
+        <Button component={Link} to="projects">
+          Projects
+        </Button>
+
+        <Button component={Link} to="blog">
+          Blog
+        </Button>
       </Flex>
-      {status === "octokit-fail" && hide !== true && (
-        <Notification title="Sorry!" onClose={setHide} color="red">
-          We seemed to hit a snag fetching data from Github.
-        </Notification>
-      )}
-    </Background>
+    </Flex>
   );
 }

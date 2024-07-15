@@ -1,6 +1,6 @@
 import { Badge, Flex, MantineColor, Text } from "@mantine/core";
 
-import styles from "~/styles/repos.module.css";
+import styles from "./repos.module.css";
 
 const colors: { [key: string]: MantineColor } = {
   TypeScript: "cyan",

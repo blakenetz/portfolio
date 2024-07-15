@@ -1,0 +1,13 @@
+.heavy {
+  font-weight: 700;
+}
+
+.fit {
+  width: fit-content;
+}
+
+.main {
+  height: 70%; /* we don't want it perfectly y-centered */
+  gap: var(--mantine-spacing-xl);
+  max-width: var(--mantine-breakpoint-xs);
+}

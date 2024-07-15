@@ -1,6 +1,8 @@
 {
   "cSpell.words": [
     "desaturated",
+    "dweb",
+    "frontmatter",
     "gsap",
     "mantine",
     "Octo",
@@ -17,5 +19,6 @@
     "**/*.sass",
     "**/*.less",
     "node_modules/@mantine/core/styles.css"
-  ]
+  ],
+  "prettier.proseWrap": "always"
 }

@@ -1,0 +1,9 @@
+/* .burn > p {
+  font-size: var(--mantine-font-size-sm);
+} */
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xl);
+}

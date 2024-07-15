@@ -4,17 +4,30 @@ import {
   ColorSchemeScript,
   CSSVariablesResolver,
   MantineProvider,
+  Title,
 } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
-import { cssBundleHref } from "@remix-run/css-bundle";
+import { useLocalStorage, useToggle } from "@mantine/hooks";
 import type {
   HeadersFunction,
   LinksFunction,
+  LoaderFunction,
   MetaFunction,
 } from "@remix-run/node";
-import { Links, LiveReload, Meta, Outlet, Scripts } from "@remix-run/react";
+import {
+  json,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  useLoaderData,
+  useNavigate,
+  useRouteError,
+} from "@remix-run/react";
+import React from "react";
 
-import styles from "~/styles/root.css";
+import { Layout, Notification } from "~/components";
+import styles from "~/styles/root.css?url";
+import { Status, status as errorStatus, status } from "~/util";
 
 import ColorSchemeContext from "./styles/colorSchemeContext";
 
@@ -34,7 +47,6 @@ export const meta: MetaFunction = () => [
 ];
 
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   { rel: "stylesheet", href: styles },
   // fonts
   {
@@ -87,7 +99,56 @@ const resolver: CSSVariablesResolver = (theme) => {
   };
 };
 
+export function ErrorBoundary() {
+  const error = useRouteError();
+  const navigate = useNavigate();
+
+  if (process.env.NODE_ENV === "development") {
+    console.error("aw shit!", error);
+  }
+
+  React.useEffect(() => {
+    navigate(`/?status=${status.unknown}`);
+  });
+
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+        <ColorSchemeScript />
+      </head>
+      <body>
+        <MantineProvider cssVariablesResolver={resolver}>
+          <Layout>
+            <Title order={4} component="h1">
+              Crap. We hit an issue.
+            </Title>
+            <Title order={5} component="h2">
+              Redirecting...
+            </Title>
+            <Scripts />
+          </Layout>
+        </MantineProvider>
+      </body>
+    </html>
+  );
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const status =
+    (new URL(request.url).searchParams.get("status") as Status) ??
+    errorStatus.ok;
+
+  return json({ status });
+};
+
 export default function App() {
+  const { status } = useLoaderData<typeof loader>();
+  const [hide, setHide] = useToggle();
+
   const [ada, setAda] = useLocalStorage({
     key: "ada",
     defaultValue: false,
@@ -108,9 +169,11 @@ export default function App() {
             theme={{ other: { ada }, primaryColor: "indigo" }}
             cssVariablesResolver={resolver}
           >
-            <Outlet />
-            <Scripts />
-            <LiveReload />
+            <Layout>
+              <Outlet />
+              <Scripts />
+            </Layout>
+            <Notification hide={hide} handleClose={setHide} status={status} />
           </MantineProvider>
         </ColorSchemeContext.Provider>
       </body>

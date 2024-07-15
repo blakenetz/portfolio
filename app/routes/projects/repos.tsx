@@ -1,19 +1,9 @@
-import {
-  Anchor,
-  Divider,
-  Flex,
-  SegmentedControl,
-  SegmentedControlProps,
-  Text,
-  Title,
-  Tooltip,
-} from "@mantine/core";
+import { Anchor, Divider, Flex, Text, Title, Tooltip } from "@mantine/core";
 import { useSearchParams } from "@remix-run/react";
 import { IconGitFork, IconUserCircle } from "@tabler/icons-react";
-import { useCallback, useState } from "react";
 
 import { getParam, RepoData, sorts, UserScope } from "~/api/projects";
-import { Card } from "~/components";
+import { Card, SortControl } from "~/components";
 import commonStyles from "~/styles/common.module.css";
 import { capitalize, validate } from "~/util";
 
@@ -39,16 +29,7 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
   const param = getParam(name);
   const [searchParams] = useSearchParams();
 
-  const initialValue = validate(searchParams.get(param), sorts);
-
-  const [value, setValue] = useState(initialValue ?? "updated");
-
-  const handleChange = useCallback<
-    NonNullable<SegmentedControlProps["onChange"]>
-  >((val) => {
-    const valid = validate(val, sorts);
-    if (valid) setValue(valid);
-  }, []);
+  const initialValue = validate(searchParams.get(param), sorts) ?? "updated";
 
   return (
     <section className={styles.repos}>
@@ -121,19 +102,12 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
         ))}
       </div>
 
-      <Flex className={styles.end}>
-        <Text>Sort by last</Text>
-        <SegmentedControl
-          value={value}
-          onChange={handleChange}
-          data={[
-            { label: "Created", value: "created" },
-            { label: "Updated", value: "updated" },
-          ]}
-          size="xs"
-          name={param}
-        />
-      </Flex>
+      <SortControl
+        title="Sort by last"
+        name={param}
+        values={sorts}
+        initialValue={initialValue}
+      />
     </section>
   );
 }

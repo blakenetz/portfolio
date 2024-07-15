@@ -31,12 +31,6 @@
   margin-right: calc(var(--mantine-spacing-xs) / 2);
 }
 
-.end {
-  justify-content: flex-end;
-  align-items: center;
-  gap: var(--mantine-spacing-xs);
-}
-
 .anchor {
   font-size: var(--mantine-font-size-sm);
 }

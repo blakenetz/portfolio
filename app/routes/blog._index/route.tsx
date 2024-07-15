@@ -1,10 +1,4 @@
-import {
-  Anchor,
-  Flex,
-  SegmentedControl,
-  SegmentedControlProps,
-  Text,
-} from "@mantine/core";
+import { Anchor, Text } from "@mantine/core";
 import { json, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import {
   Form,
@@ -14,9 +8,8 @@ import {
   useSubmit,
 } from "@remix-run/react";
 import { IconBrandMedium } from "@tabler/icons-react";
-import { useCallback, useState } from "react";
 
-import { Card } from "~/components";
+import { Card, SortControl } from "~/components";
 import { getPosts, postFromModule, validate } from "~/util";
 
 import styles from "./blog.module.css";
@@ -29,7 +22,6 @@ export const meta: MetaFunction = () => [
 const posts = getPosts();
 const inputName = "sort";
 const sorts = ["asc", "desc"] as const;
-type Sort = (typeof sorts)[number];
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { searchParams } = new URL(request.url);
@@ -51,16 +43,7 @@ export default function Blog() {
   const submit = useSubmit();
   const posts = useLoaderData<typeof loader>();
 
-  const initialValue = validate<Sort>(searchParams.get(inputName), sorts);
-
-  const [value, setValue] = useState(initialValue ?? "desc");
-
-  const handleChange = useCallback<
-    NonNullable<SegmentedControlProps["onChange"]>
-  >((val) => {
-    const valid = validate(val, sorts);
-    if (valid) setValue(valid);
-  }, []);
+  const initialValue = validate(searchParams.get(inputName), sorts) ?? "desc";
 
   return (
     <Form
@@ -87,19 +70,11 @@ export default function Blog() {
         </Card>
       ))}
 
-      <Flex className={styles.control}>
-        <Text>Sort by last</Text>
-        <SegmentedControl
-          value={value}
-          onChange={handleChange}
-          data={[
-            { label: "Asc", value: "asc" },
-            { label: "Desc", value: "desc" },
-          ]}
-          size="xs"
-          name={inputName}
-        />
-      </Flex>
+      <SortControl
+        name={inputName}
+        values={sorts}
+        initialValue={initialValue}
+      />
     </Form>
   );
 }

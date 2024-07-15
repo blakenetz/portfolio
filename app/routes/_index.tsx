@@ -22,19 +22,13 @@ export default function Index() {
         hangin&apos; with my pup :)
       </Text>
       <Text className={styles.heavy}>
-        Are you building something interesting?
+        Are you building something interesting?{" "}
+        <Anchor href="mailto:blakenetzeband@gmail.com" className={styles.heavy}>
+          Let&apos;s connect
+        </Anchor>
       </Text>
 
       <Flex className={commonStyles.column}>
-        <div className={cls(commonStyles.burn, styles.fit)}>
-          <Anchor
-            href="mailto:blakenetzeband@gmail.com"
-            className={styles.heavy}
-          >
-            Let&apos;s connect
-          </Anchor>
-        </div>
-
         <Button component={Link} to="projects">
           Projects
         </Button>

@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "remix vite:dev",
     "build": "remix vite:build",
-    "start": "remix-serve ./build/server/index.js",
+    "start": "NODE_ENV=production remix-serve ./build/server/index.js",
     "deploy": "fly deploy --remote-only",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "tsc"

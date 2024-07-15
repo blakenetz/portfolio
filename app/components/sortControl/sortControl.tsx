@@ -10,7 +10,7 @@ import { capitalize, validate } from "~/util";
 
 import styles from "./sortControl.module.css";
 
-interface SortData<T> {
+interface SortControlProps<T> {
   /**
    * Text of label element
    * @default "Sort by"
@@ -33,12 +33,12 @@ interface SortData<T> {
   initialValue: T;
 }
 
-export default function Sort<T extends string>({
+export default function SortControl<T extends string>({
   title = "Sort by",
   name,
   values,
   initialValue,
-}: SortData<T>) {
+}: SortControlProps<T>) {
   const [value, setValue] = useState(initialValue);
 
   const handleChange = useCallback<

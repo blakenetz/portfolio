@@ -1,4 +1,4 @@
-import { Anchor, Text } from "@mantine/core";
+import { Anchor, Divider, Text } from "@mantine/core";
 import { json, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import {
   Form,
@@ -7,12 +7,12 @@ import {
   useSearchParams,
   useSubmit,
 } from "@remix-run/react";
-import { IconBrandMedium } from "@tabler/icons-react";
 
 import { Card, SortControl } from "~/components";
 import { getPosts, postFromModule, validate } from "~/util";
 
 import styles from "./blog.module.css";
+import Source from "./source";
 
 export const meta: MetaFunction = () => [
   { title: "BN | Blog" },
@@ -61,12 +61,11 @@ export default function Blog() {
             {post.title}
           </Anchor>
           <Text>{post.description}</Text>
-          {post.source === "medium" ? (
-            <Anchor href={post.url} className={styles.anchor}>
-              <IconBrandMedium /> View on Medium
-            </Anchor>
-          ) : null}
-          <Text className={styles.text}>{`Published ${post.date}`}</Text>
+          <div className={styles.details}>
+            <Source source={post.source} url={post.url} />
+            <Divider orientation="vertical" />
+            <Text>{`Published ${post.date}`}</Text>
+          </div>
         </Card>
       ))}
 

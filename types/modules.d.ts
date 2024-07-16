@@ -12,15 +12,20 @@ type UnionToIntersection<U> = (
 export type MDXComponent = (
   props?: React.PropsWithChildren<MDXProps>
 ) => JSX.Element;
-export type Attribute = Record<"date" | "source" | "url", string>;
+
+export type Attribute = {
+  date: string;
+  url: string;
+  source: "github" | "medium";
+};
 
 export interface Mdx {
   frontmatter: {
-    meta: UnionToIntersection<MetaDescriptor>[];
+    meta: UnionToIntersection<MetaDescriptor>;
     headers: Headers;
-    attributes: Attribute[];
+    attributes: Attribute;
   };
-  meta: UnionToIntersection<MetaDescriptor>[];
+  meta: UnionToIntersection<MetaDescriptor>;
   headers: Headers;
   default: MDXComponent;
 }

@@ -17,14 +17,13 @@ const file = {
 const dir = path.resolve("app/blog", file.complete);
 const content = `---
 meta:
-  - title: BN | Blog | ${file.name}
-  - name: description
-    content: ADD DESCRIPTION
+  title: BN | Blog | ${file.name}
+  description: ADD DESCRIPTION
 
 attributes:
-  - date: ${formatDate(new Date().toISOString())}
-  - source: medium | github
-  - url: ADD URL TO SOURCE HERE
+  date: ${formatDate(new Date().toISOString(), true)}
+  source: medium | github
+  url: ADD URL TO SOURCE HERE
 ---
 
 export const meta = frontmatter.meta;
@@ -32,6 +31,24 @@ export const headers = frontmatter.headers;
 export const attributes = frontmatter.attributes;
 
 # ${file.name}
+
+Use standard mdx syntax. The exceptions being:
+
+For singleline codeblocks, use
+\`HELLO!\`
+
+For multiline codeblocks, use
+\`\`\`console
+HELLO
+AND
+GOODBYE
+\`\`\`
+
+For notifications codeblocks, use
+\`\`\`note
+This multiline block
+will have unique styles
+\`\`\`
 `;
 
 fs.writeFileSync(dir, content);

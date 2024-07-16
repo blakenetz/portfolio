@@ -21,11 +21,11 @@ export type Attribute = {
 
 export interface Mdx {
   frontmatter: {
-    meta: UnionToIntersection<MetaDescriptor>;
+    meta: UnionToIntersection<MetaDescriptor>[];
     headers: Headers;
     attributes: Attribute;
   };
-  meta: UnionToIntersection<MetaDescriptor>;
+  meta: UnionToIntersection<MetaDescriptor>[];
   headers: Headers;
   default: MDXComponent;
 }

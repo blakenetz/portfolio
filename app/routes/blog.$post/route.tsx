@@ -1,5 +1,4 @@
 import {
-  Alert,
   Anchor,
   AnchorProps,
   Blockquote,
@@ -10,9 +9,8 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { json, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { IconInfoCircle } from "@tabler/icons-react";
 import { MDXComponents } from "node_modules/@mdx-js/react/lib";
 import { HTMLAttributes } from "react";
 
@@ -22,6 +20,7 @@ import { blogPath, cls, getPosts, postFromModule } from "~/util";
 
 import CodeBlock from "./codeBlock";
 import styles from "./post.module.css";
+import Source from "./source";
 
 // generic html props
 type HTMLProps = HTMLAttributes<HTMLElement>;
@@ -51,7 +50,7 @@ export const meta: MetaFunction = ({ location }) => {
   return module.meta;
 };
 
-export const loader: LoaderFunction = ({ params }) => {
+export function loader({ params }: LoaderFunctionArgs) {
   const filename = `${blogPath}/${params.post}.mdx`;
 
   const { render: _render, ...attributes } = postFromModule(
@@ -60,7 +59,7 @@ export const loader: LoaderFunction = ({ params }) => {
   );
 
   return json({ key: filename, attributes });
-};
+}
 
 export default function Post() {
   const { key, attributes } = useLoaderData<typeof loader>();
@@ -69,22 +68,8 @@ export default function Post() {
   return (
     <>
       <Flex className={cls(commonStyles.column, styles.reader)}>
-        {attributes.source === "medium" && (
-          <Alert
-            color="pink"
-            icon={<IconInfoCircle />}
-            className={cls(styles.alert, styles.medium)}
-          >
-            This post was originally published on{" "}
-            <Anchor
-              href={attributes.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Medium
-            </Anchor>
-          </Alert>
-        )}
+        <Source source={attributes.source} url={attributes.url} />
+
         {post && post.default({ components })}
       </Flex>
       <Button component={Link} to="/">

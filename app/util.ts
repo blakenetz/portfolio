@@ -1,7 +1,7 @@
 import { formatDistanceToNow, isThisYear } from "date-fns";
 import { Attribute, Mdx } from "types/modules";
 
-type Post = Record<"slug" | "title" | "description", string> &
+export type Post = Record<"slug" | "title" | "description", string> &
   Attribute & { render: Mdx["default"] };
 
 export function cls(...args: (string | undefined)[]) {
@@ -47,15 +47,26 @@ export function formatDate(value: string, skipCommon = false) {
  */
 export function postFromModule(filename: string, module: Mdx): Post {
   const slug = filename.replace(/\.mdx?$/, "").replace(blogPath, "");
-  const title = module.meta.title.split("|").pop()!.trim();
-  const description = module.meta.description;
+
+  const title = module.meta
+    .find((m) => Object.keys(m).includes("title"))!
+    .title.split("|")
+    .pop()!
+    .trim();
+
+  const description = module.meta.find(
+    (m) => m.name === "description"
+  )!.content;
+
+  const { date, ...attributes } = module.frontmatter.attributes;
 
   return {
     slug,
     title,
     description,
     render: module.default,
-    ...module.frontmatter.attributes,
+    ...attributes,
+    date: formatDate(date),
   };
 }
 

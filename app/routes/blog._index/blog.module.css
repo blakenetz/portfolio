@@ -9,11 +9,8 @@
   gap: var(--mantine-spacing-xs);
 }
 
-.details {
+.text {
   font-size: var(--mantine-font-size-xs);
-  display: flex;
-  gap: var(--mantine-spacing-xs);
-  align-items: center;
 }
 
 .posts {

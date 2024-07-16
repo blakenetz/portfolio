@@ -17,8 +17,9 @@ const file = {
 const dir = path.resolve("app/blog", file.complete);
 const content = `---
 meta:
-  title: BN | Blog | ${file.name}
-  description: ADD DESCRIPTION
+  - title: BN | Blog | ${file.name}
+  - name: description
+    content: ADD DESCRIPTION
 
 attributes:
   date: ${formatDate(new Date().toISOString(), true)}

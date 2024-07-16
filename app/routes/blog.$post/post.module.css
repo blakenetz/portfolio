@@ -6,6 +6,12 @@
   max-width: var(--mantine-breakpoint-md);
 }
 
-.medium .mantine-Alert-wrapper {
+.center {
+  display: inline-flex;
   align-items: center;
+  gap: var(--mantine-spacing-xm);
+}
+
+.notification {
+  background-color: var(--mantine-color-violet-light);
 }

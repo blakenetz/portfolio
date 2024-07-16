@@ -72,8 +72,8 @@ export default function Post() {
 
         {post && post.default({ components })}
       </Flex>
-      <Button component={Link} to="/">
-        Take me home
+      <Button component={Link} to="/blog">
+        Take me back
       </Button>
     </>
   );

@@ -1,6 +1,5 @@
-import { formatDistanceToNow, isThisYear } from "date-fns";
-
 import Api from "~/api/singleton.server";
+import { formatDate } from "~/util";
 
 import {
   getParam,
@@ -13,21 +12,6 @@ import {
   sorts,
   UserScope,
 } from "./projects";
-
-const formatter = new Intl.DateTimeFormat("en-US", {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-});
-function formatDate(value: string) {
-  const date = new Date(value);
-
-  if (isThisYear(date)) {
-    return formatDistanceToNow(date, { addSuffix: true });
-  }
-
-  return formatter.format(date);
-}
 
 const reg = /(:[\w\-+]+:)/g;
 function parseEmojis(text: string | null) {

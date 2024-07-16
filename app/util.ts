@@ -1,4 +1,8 @@
+import { formatDistanceToNow, isThisYear } from "date-fns";
 import { Attribute, Mdx } from "types/modules";
+
+export type Post = Record<"slug" | "title" | "description", string> &
+  Attribute & { render: Mdx["default"] };
 
 export function cls(...args: (string | undefined)[]) {
   return args.join(" ").trim();
@@ -22,45 +26,47 @@ export function getPosts() {
   });
 }
 
-function formatDate(value: string) {
-  return new Date(value).toLocaleDateString("en-us", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+const formatter = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+
+export function formatDate(value: string, skipCommon = false) {
+  const date = new Date(value);
+
+  if (!skipCommon && isThisYear(date)) {
+    return formatDistanceToNow(date, { addSuffix: true });
+  }
+
+  return formatter.format(date);
 }
 
 /**
  * @see https://remix.run/docs/en/main/guides/mdx#example-blog-usage
  */
-export function postFromModule(
-  filename: string,
-  module: Mdx
-): Record<"slug" | "title" | "description", string> &
-  Attribute & { render: Mdx["default"] } {
+export function postFromModule(filename: string, module: Mdx): Post {
+  const slug = filename.replace(/\.mdx?$/, "").replace(blogPath, "");
+
   const title = module.meta
     .find((m) => Object.keys(m).includes("title"))!
     .title.split("|")
     .pop()!
     .trim();
+
   const description = module.meta.find(
     (m) => m.name === "description"
   )!.content;
 
-  const attributes = module.frontmatter.attributes.reduce((record, acc) => {
-    Object.keys(record).forEach((key) => {
-      const k = key as keyof Attribute;
-      acc[k] = k === "date" ? formatDate(record[k]) : record[k];
-    });
-    return acc;
-  }, {} as Attribute);
+  const { date, ...attributes } = module.frontmatter.attributes;
 
   return {
-    slug: filename.replace(/\.mdx?$/, "").replace(blogPath, ""),
+    slug,
     title,
     description,
     render: module.default,
     ...attributes,
+    date: formatDate(date),
   };
 }
 

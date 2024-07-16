@@ -15,19 +15,18 @@ import type {
 } from "@remix-run/node";
 import {
   json,
+  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   useLoaderData,
-  useNavigate,
   useRouteError,
 } from "@remix-run/react";
-import React from "react";
 
-import { Layout, Notification } from "~/components";
+import { Button, Layout, Notification } from "~/components";
 import styles from "~/styles/root.css?url";
-import { Status, status as errorStatus, status } from "~/util";
+import { Status, status as errorStatus } from "~/util";
 
 import ColorSchemeContext from "./styles/colorSchemeContext";
 
@@ -101,15 +100,10 @@ const resolver: CSSVariablesResolver = (theme) => {
 
 export function ErrorBoundary() {
   const error = useRouteError();
-  const navigate = useNavigate();
 
   if (process.env.NODE_ENV === "development") {
     console.error("aw shit!", error);
   }
-
-  React.useEffect(() => {
-    navigate(`/?status=${status.unknown}`);
-  });
 
   return (
     <html lang="en">
@@ -126,9 +120,9 @@ export function ErrorBoundary() {
             <Title order={4} component="h1">
               Crap. We hit an issue.
             </Title>
-            <Title order={5} component="h2">
-              Redirecting...
-            </Title>
+            <Button component={Link} to="/">
+              Send me home!
+            </Button>
             <Scripts />
           </Layout>
         </MantineProvider>

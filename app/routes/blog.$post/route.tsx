@@ -14,7 +14,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { MDXComponents } from "node_modules/@mdx-js/react/lib";
 import { HTMLAttributes } from "react";
 
-import { Button } from "~/components";
+import { Auth, Button } from "~/components";
 import commonStyles from "~/styles/common.module.css";
 import { blogPath, cls, getPosts, postFromModule } from "~/util";
 
@@ -72,6 +72,7 @@ export default function Post() {
 
         {post && post.default({ components })}
       </Flex>
+      <Auth />
       <Button component={Link} to="/blog">
         Take me back
       </Button>

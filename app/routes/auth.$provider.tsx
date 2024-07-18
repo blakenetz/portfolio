@@ -1,10 +1,8 @@
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { ActionFunctionArgs } from "@remix-run/node";
 
-import { authenticator } from "~/server/auth.server";
+import { authenticator } from "~/server/authenticator.server";
 
-export const loader = () => redirect("/login");
-
-export const action = ({ request, params }: ActionFunctionArgs) => {
-  console.log("provider", params, request);
+export const action = ({ request, params, ...rest }: ActionFunctionArgs) => {
+  console.log("provider action", params, request, rest);
   return authenticator.authenticate(params.provider!, request);
 };

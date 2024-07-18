@@ -3,7 +3,7 @@ import { createCookieSessionStorage } from "@remix-run/node"; // or cloudflare/d
 export type SessionData = { user: string };
 type SessionFlashData = { error: string };
 
-export const session = createCookieSessionStorage<
+export const sessionStorage = createCookieSessionStorage<
   SessionData,
   SessionFlashData
 >({
@@ -17,4 +17,4 @@ export const session = createCookieSessionStorage<
   },
 });
 
-export const { getSession, commitSession, destroySession } = session;
+export const { getSession, commitSession, destroySession } = sessionStorage;

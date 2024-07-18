@@ -15,3 +15,11 @@
 .notification {
   background-color: var(--mantine-color-violet-light);
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
+  gap: var(--mantine-spacing-md);
+  margin-top: var(--mantine-spacing-sm);
+}

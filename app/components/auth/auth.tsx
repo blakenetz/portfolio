@@ -3,7 +3,7 @@ import { Form } from "@remix-run/react";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { ButtonHTMLAttributes } from "react";
 
-import { AvailableProvider, availableProviders } from "~/api/auth.server";
+import { AvailableProvider, availableProviders } from "~/server/auth.server";
 import { capitalize } from "~/util";
 
 interface AuthProviderButtonProps

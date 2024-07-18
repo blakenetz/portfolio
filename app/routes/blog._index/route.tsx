@@ -8,7 +8,7 @@ import {
   useSubmit,
 } from "@remix-run/react";
 
-import { fetchPosts, inputName, sorts } from "~/api/blog";
+import { fetchPosts, inputName, sorts } from "~/server/blog";
 import { Card, SortControl } from "~/components";
 import { validate } from "~/util";
 

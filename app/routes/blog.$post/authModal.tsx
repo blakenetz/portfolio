@@ -12,6 +12,7 @@ import { IconKey, IconMoodTongue, IconSend } from "@tabler/icons-react";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 
 import { Button } from "~/components";
+import { AuthMode } from "~/server/auth";
 import { capitalize } from "~/util";
 
 import styles from "./post.module.css";
@@ -21,7 +22,7 @@ type Field = (typeof fields)[number];
 
 interface FieldProps {
   field: Field;
-  mode: Mode;
+  mode: AuthMode;
   errors: Field[];
 }
 
@@ -51,10 +52,7 @@ function Field({ field, mode, errors }: FieldProps) {
   return isHidden ? null : <Component {...props} />;
 }
 
-const modes = ["new", "existing"] as const;
-type Mode = (typeof modes)[number];
-
-const modeMap = new Map<Mode, { cta: string; data: SegmentedControlItem }>([
+const modeMap = new Map<AuthMode, { cta: string; data: SegmentedControlItem }>([
   ["new", { cta: "Log in", data: { value: "new", label: "Sign in" } }],
   [
     "existing",
@@ -69,7 +67,7 @@ interface AuthModalProps extends ModalProps {
   /**
    * Controls form UI
    */
-  mode: Mode;
+  mode: AuthMode;
 }
 
 export default function AuthModal({
@@ -117,7 +115,7 @@ export default function AuthModal({
         fullWidth
         data={data}
         value={mode}
-        onChange={(v) => setMode(v as Mode)}
+        onChange={(v) => setMode(v as AuthMode)}
       />
 
       <fetcher.Form

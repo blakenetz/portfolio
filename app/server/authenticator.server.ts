@@ -1,28 +1,39 @@
+import bcrypt from "bcrypt";
 import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 
 import { sessionStorage } from "~/services/session.server";
+import { validateString } from "~/util";
+
+import { AuthMode } from "./auth";
+import DB from "./db.singleton.server";
 
 type User = {
-  name: string;
-  email: string;
+  username: string;
 };
 
 export const authenticator = new Authenticator<User>(sessionStorage);
 
-const url =
-  process.env.NODE_ENV === "production"
-    ? "https://blakenetzeband.com"
-    : "http://localhost:5173";
+// const url =
+//   process.env.NODE_ENV === "production"
+//     ? "https://blakenetzeband.com"
+//     : "http://localhost:5173";
 
 authenticator.use(
   new FormStrategy(async ({ form }) => {
-    const username = form.get("username");
-    const email = form.get("email");
-    const password = form.get("password");
-    const mode = form.get("mode");
+    const username = validateString(form.get("username"));
+    const password = validateString(form.get("password"));
+    const mode = validateString<AuthMode>(form.get("mode"));
 
-    return user;
+    const salt = bcrypt.genSaltSync();
+    const hash = bcrypt.hashSync(password, salt);
+
+    if (mode === "new") {
+      const email = validateString(form.get("email"));
+    } else {
+    }
+
+    return { username };
   }),
   "form"
 );

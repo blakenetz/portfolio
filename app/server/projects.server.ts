@@ -1,4 +1,4 @@
-import Api from "~/server/singleton.server";
+import Api from "~/server/projects.singleton.server";
 import { formatDate } from "~/util";
 
 import {

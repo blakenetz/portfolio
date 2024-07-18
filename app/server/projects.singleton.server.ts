@@ -46,7 +46,7 @@ type Key = (typeof keys)[number];
 
 const isDev = process.env.NODE_ENV === "development";
 
-class Api {
+class ProjectsApi {
   #emojis: EmojiData | null;
   #octokit: Octokit;
   #usernames: { personal: UserName<"personal">; work: UserName<"work"> };
@@ -142,5 +142,5 @@ class Api {
   }
 }
 
-const singleton = Object.freeze(new Api());
+const singleton = Object.freeze(new ProjectsApi());
 export default singleton;

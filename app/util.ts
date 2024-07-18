@@ -79,6 +79,13 @@ export function validate<T>(
   return null;
 }
 
+export function validateString<T extends string>(val: unknown): T {
+  if (val && typeof val === "string" && val.length) return val;
+  throw new Error(
+    `Invalid value: ${val}. Expected a string with a length > 0. Received type: ${typeof val}`
+  );
+}
+
 export function capitalize(val: string) {
   return val.charAt(0).toUpperCase() + val.slice(1);
 }

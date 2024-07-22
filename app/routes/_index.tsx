@@ -39,7 +39,7 @@ export default function Index() {
           Blog
         </Button>
 
-        <AuthModal opened onClose={() => null} mode="new" />
+        <AuthModal opened onClose={() => null} mode="existing" />
       </Flex>
     </Flex>
   );

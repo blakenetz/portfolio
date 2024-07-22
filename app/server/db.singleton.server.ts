@@ -80,11 +80,18 @@ class DB {
     return this.#db.collection(collection).insertMany(doc);
   }
 
-  async findOne<T extends keyof Documents>(
+  async findOne<T extends Collection>(
     collection: T,
     doc: Filter<Documents[T]>
   ) {
-    return this.#db.collection<Documents[T]>(collection).find(doc);
+    return this.#db.collection<Documents[T]>(collection).findOne(doc);
+  }
+
+  async findMany<T extends Collection>(
+    collection: T,
+    doc: Filter<Documents[T]>
+  ) {
+    return this.#db.collection<Documents[T]>(collection).findOne(doc);
   }
 }
 

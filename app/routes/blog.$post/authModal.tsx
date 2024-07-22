@@ -47,18 +47,21 @@ function Field({ field, mode, errors }: FieldProps) {
   const Component: React.ElementType =
     field === "password" ? PasswordInput : TextInput;
 
-  const isHidden = mode === "new" && field === "email";
+  const isHidden = mode === "existing" && field === "email";
 
   return isHidden ? null : <Component {...props} />;
 }
 
 const modeMap = new Map<AuthMode, { cta: string; data: SegmentedControlItem }>([
-  ["new", { cta: "Log in", data: { value: "new", label: "Sign in" } }],
   [
     "existing",
+    { cta: "Sign in", data: { value: "existing", label: "Sign in" } },
+  ],
+  [
+    "new",
     {
       cta: "Create account",
-      data: { value: "existing", label: "New account" },
+      data: { value: "new", label: "New account" },
     },
   ],
 ]);
@@ -85,8 +88,6 @@ export default function AuthModal({
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     const formData = new FormData(e.currentTarget);
 
-    formData.append("mode", mode);
-
     const username = formData.get("username");
     const password = formData.get("password");
     const email = formData.get("email");
@@ -99,9 +100,12 @@ export default function AuthModal({
 
     setErrors(nextErrors);
 
-    if (!nextErrors.length) {
-      fetcher.submit(formData);
+    if (nextErrors.length) {
+      e.preventDefault();
+      return;
     }
+
+    fetcher.submit(e.currentTarget);
   };
 
   const handleChange: ChangeEventHandler<HTMLFormElement> = (e) => {
@@ -111,13 +115,6 @@ export default function AuthModal({
 
   return (
     <Modal opened={opened} {...rest} withCloseButton={false}>
-      <SegmentedControl
-        fullWidth
-        data={data}
-        value={mode}
-        onChange={(v) => setMode(v as AuthMode)}
-      />
-
       <fetcher.Form
         method="POST"
         action="/auth/form"
@@ -125,6 +122,14 @@ export default function AuthModal({
         onSubmit={handleSubmit}
         onChange={handleChange}
       >
+        <SegmentedControl
+          fullWidth
+          data={data}
+          value={mode}
+          name="mode"
+          onChange={(v) => setMode(v as AuthMode)}
+        />
+
         {fields.map((field) => (
           <Field key={field} field={field} mode={mode} errors={errors} />
         ))}

@@ -14,18 +14,8 @@ type User = {
 
 export const authenticator = new Authenticator<User>(sessionStorage);
 
-// const url =
-//   process.env.NODE_ENV === "production"
-//     ? "https://blakenetzeband.com"
-//     : "http://localhost:5173";
-
 authenticator.use(
   new FormStrategy(async ({ form }) => {
-    console.log({
-      username: form.get("username"),
-      password: form.get("password"),
-      mode: form.get("mode"),
-    });
     const username = validateString(form.get("username"));
     const password = validateString(form.get("password"));
     const mode = validateString<AuthMode>(form.get("mode"));
@@ -40,16 +30,17 @@ authenticator.use(
         password: hash,
         email,
       });
-    } else {
-      console.log("finding one from db");
-      const user = await DB.findOne<"users">("users", {
-        username,
-        password: hash,
-      });
-      console.log(user);
+      return { username };
     }
 
-    return { username };
+    const user = await DB.findOne("users", {
+      username,
+      password: hash,
+    });
+
+    if (!user) throw new Error("User not found!");
+
+    return { username: user.username };
   }),
   "form"
 );

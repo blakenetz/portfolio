@@ -1,4 +1,5 @@
 import {
+  Alert,
   Modal,
   ModalProps,
   PasswordInput,
@@ -7,12 +8,18 @@ import {
   TextInput,
   TextInputProps,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { useFetcher } from "@remix-run/react";
-import { IconKey, IconMoodTongue, IconSend } from "@tabler/icons-react";
+import {
+  IconKey,
+  IconMoodConfuzed,
+  IconMoodTongue,
+  IconSend,
+} from "@tabler/icons-react";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 
 import { Button } from "~/components";
-import { AuthMode } from "~/server/auth";
+import { AuthFetcher, AuthMode } from "~/server/auth";
 import { capitalize } from "~/util";
 
 import styles from "./post.module.css";
@@ -78,14 +85,19 @@ export default function AuthModal({
   mode: defaultMode,
   ...rest
 }: AuthModalProps) {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<AuthFetcher>();
   const [mode, setMode] = useState(defaultMode);
   const [errors, setErrors] = useState<Field[]>([]);
+  const [showNotification, { close, open }] = useDisclosure();
 
   const { cta } = modeMap.get(mode)!;
   const data = Array.from(modeMap.values()).map(({ data }) => data);
 
+  const loading = fetcher.state !== "idle";
+  const showError = !loading && showNotification && fetcher.data?.ok === false;
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
     const username = formData.get("username");
@@ -100,12 +112,10 @@ export default function AuthModal({
 
     setErrors(nextErrors);
 
-    if (nextErrors.length) {
-      e.preventDefault();
-      return;
+    if (!nextErrors.length) {
+      fetcher.submit(e.currentTarget);
+      open();
     }
-
-    fetcher.submit(e.currentTarget);
   };
 
   const handleChange: ChangeEventHandler<HTMLFormElement> = (e) => {
@@ -134,10 +144,24 @@ export default function AuthModal({
           <Field key={field} field={field} mode={mode} errors={errors} />
         ))}
 
-        <Button component="button" type="submit">
+        <Button component="button" type="submit" loading={loading}>
           {cta}
         </Button>
       </fetcher.Form>
+
+      {showError && (
+        <Alert
+          color="red"
+          variant="light"
+          onClose={close}
+          className={styles.authNotification}
+          withCloseButton
+          closeButtonLabel="Dismiss"
+          icon={<IconMoodConfuzed />}
+        >
+          {fetcher.data?.error}
+        </Alert>
+      )}
     </Modal>
   );
 }

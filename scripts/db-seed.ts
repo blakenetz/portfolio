@@ -1,14 +1,18 @@
+import bcrypt from "bcrypt";
+
 import DB from "~/server/db.singleton.server";
 
 (async () => {
   console.log("Seeding users...");
   const arr = Array.from({ length: 20 }, (_v, i) => i + 1);
 
+  const salt = bcrypt.genSaltSync();
+
   const { insertedIds } = await DB.createMany<"users">(
     "users",
     arr.map((i) => ({
       username: `User-${i}`,
-      password: "1234" + i,
+      password: bcrypt.hashSync("1234" + i, salt),
     }))
   );
 

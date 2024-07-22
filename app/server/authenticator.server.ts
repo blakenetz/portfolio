@@ -12,6 +12,10 @@ type User = {
   username: string;
 };
 
+export const errors = {
+  notFound: "User not Found",
+};
+
 export const authenticator = new Authenticator<User>(sessionStorage);
 
 authenticator.use(
@@ -38,7 +42,7 @@ authenticator.use(
       password: hash,
     });
 
-    if (!user) throw new Error("User not found!");
+    if (!user) throw new Error(errors.notFound);
 
     return { username: user.username };
   }),

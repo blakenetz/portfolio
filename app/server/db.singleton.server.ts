@@ -1,5 +1,6 @@
 import {
   Db,
+  Filter,
   InsertManyResult,
   InsertOneResult,
   MongoClient,
@@ -10,18 +11,17 @@ import { Attribute } from "types/modules";
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_CLUSTER}.eqg93nd.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.NODE_ENV}`;
 
-type Collections = {
+type Documents = {
   users: User;
+  newUser: NewUser;
   posts: Post;
   comments: Comment;
 };
 
-type Collection = keyof Collections;
+type Collection = Exclude<keyof Documents, "newUser">;
 
-type User = {
-  username: string;
-  password: string;
-};
+type User = { username: string; password: string };
+type NewUser = User & { email: string };
 
 type Post = {
   meta: Pick<Attribute, "source" | "url"> & { date: Date };
@@ -67,17 +67,24 @@ class DB {
     return this.#db.createCollection(name);
   }
 
-  async create<T extends Collection>(
-    collection: T,
-    doc: Collections[T]
+  async create<T extends keyof Documents>(
+    collection: Collection,
+    doc: Documents[T]
   ): Promise<InsertOneResult> {
     return this.#db.collection(collection).insertOne(doc);
   }
-  async createMany<T extends Collection>(
-    collection: T,
-    doc: Array<Collections[T]>
+  async createMany<T extends keyof Documents>(
+    collection: Collection,
+    doc: Array<Documents[T]>
   ): Promise<InsertManyResult> {
     return this.#db.collection(collection).insertMany(doc);
+  }
+
+  async findOne<T extends keyof Documents>(
+    collection: T,
+    doc: Filter<Documents[T]>
+  ) {
+    return this.#db.collection<Documents[T]>(collection).find(doc);
   }
 }
 

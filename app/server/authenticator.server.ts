@@ -21,6 +21,11 @@ export const authenticator = new Authenticator<User>(sessionStorage);
 
 authenticator.use(
   new FormStrategy(async ({ form }) => {
+    console.log({
+      username: form.get("username"),
+      password: form.get("password"),
+      mode: form.get("mode"),
+    });
     const username = validateString(form.get("username"));
     const password = validateString(form.get("password"));
     const mode = validateString<AuthMode>(form.get("mode"));
@@ -30,7 +35,18 @@ authenticator.use(
 
     if (mode === "new") {
       const email = validateString(form.get("email"));
+      await DB.create<"newUser">("users", {
+        username,
+        password: hash,
+        email,
+      });
     } else {
+      console.log("finding one from db");
+      const user = await DB.findOne<"users">("users", {
+        username,
+        password: hash,
+      });
+      console.log(user);
     }
 
     return { username };

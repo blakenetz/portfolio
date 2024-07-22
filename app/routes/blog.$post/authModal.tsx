@@ -85,7 +85,7 @@ export default function AuthModal({
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     const formData = new FormData(e.currentTarget);
 
-    formData.set("mode", mode);
+    formData.append("mode", mode);
 
     const username = formData.get("username");
     const password = formData.get("password");

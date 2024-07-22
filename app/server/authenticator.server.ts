@@ -14,6 +14,7 @@ type User = {
 
 export const errors = {
   notFound: "User not Found",
+  badPassword: "Incorrect username or password",
 };
 
 export const authenticator = new Authenticator<User>(sessionStorage);
@@ -37,12 +38,13 @@ authenticator.use(
       return { username };
     }
 
-    const user = await DB.findOne("users", {
-      username,
-      password: hash,
-    });
+    const user = await DB.findOne("users", { username });
 
     if (!user) throw new Error(errors.notFound);
+
+    if (!bcrypt.compareSync(password, user.password)) {
+      throw new Error(errors.badPassword);
+    }
 
     return { username: user.username };
   }),

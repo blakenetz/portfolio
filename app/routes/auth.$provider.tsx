@@ -6,9 +6,10 @@ import { authenticator } from "~/server/authenticator.server";
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   try {
-    return await authenticator.authenticate(params.provider!, request, {
+    await authenticator.authenticate(params.provider!, request, {
       throwOnError: true,
     });
+    return json<AuthFetcher>({ ok: true });
   } catch (error) {
     if (error instanceof AuthorizationError) {
       return json<AuthFetcher>({ ok: false, error: error.message });

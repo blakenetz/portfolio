@@ -1,77 +1,52 @@
+import { Flex } from "@mantine/core";
+import { MDXProvider } from "@mdx-js/react";
 import {
-  Anchor,
-  AnchorProps,
-  Blockquote,
-  Flex,
-  Image,
-  List,
-  ListItem,
-  Text,
-  Title,
-} from "@mantine/core";
-import { json, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+  json,
+  LoaderFunctionArgs,
+  MetaFunction,
+  redirect,
+} from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { MDXComponents } from "node_modules/@mdx-js/react/lib";
-import { HTMLAttributes } from "react";
+import { Mdx } from "types/modules";
 
 import { Button } from "~/components";
+import { getPost } from "~/server/blog.server";
 import commonStyles from "~/styles/common.module.css";
-import { blogPath, cls, getPosts, postFromModule } from "~/util";
+import { cls, status } from "~/util";
 
-import CodeBlock from "./codeBlock";
 import Comments from "./comments";
+import components from "./components";
 import styles from "./post.module.css";
 import Source from "./source";
 
-// generic html props
-type HTMLProps = HTMLAttributes<HTMLElement>;
-
-const components: MDXComponents = {
-  a: (props: AnchorProps) => (
-    <Anchor {...props} target="_blank" rel="noopener noreferrer" />
-  ),
-  p: (props: HTMLProps) => <Text {...props} />,
-  h1: (props: HTMLProps) => <Title {...props} order={2} />,
-  h2: (props: HTMLProps) => <Title {...props} order={3} />,
-  h3: (props: HTMLProps) => <Title {...props} order={4} />,
-  h4: (props: HTMLProps) => <Title {...props} order={5} />,
-  code: CodeBlock,
-  img: (props: HTMLProps) => <Image {...props} />,
-  blockquote: (props: HTMLProps) => <Blockquote {...props} p="md" />,
-  ul: (props: HTMLProps) => <List {...props} withPadding type="unordered" />,
-  ol: (props: HTMLProps) => <List {...props} withPadding type="ordered" />,
-  li: ListItem,
-};
-
-const posts = getPosts();
+const posts = import.meta.glob<Mdx>("/app/blog/*.mdx", {
+  eager: true,
+});
 
 export const meta: MetaFunction = ({ location }) => {
-  const module = posts[`.${location.pathname}.mdx`];
+  const module = posts[`/app${location.pathname}.mdx`];
 
   return module.meta;
 };
 
-export function loader({ params }: LoaderFunctionArgs) {
-  const filename = `${blogPath}/${params.post}.mdx`;
+export async function loader({ params }: LoaderFunctionArgs) {
+  const post = await getPost(params);
 
-  const { render: _render, ...attributes } = postFromModule(
-    filename,
-    posts[filename]
-  );
+  if (post.ok === false) return redirect(`/blog?status=${status.unknown}`);
 
-  return json({ key: filename, attributes });
+  return json(post);
 }
 
 export default function Post() {
-  const { key, attributes } = useLoaderData<typeof loader>();
-
-  const post = posts[key];
+  const { meta } = useLoaderData<typeof loader>();
+  const pathName = `/app/blog/${meta.slug}.mdx`;
+  const post = posts[pathName];
+  // console.log(post, meta, posts);
 
   return (
-    <>
+    <MDXProvider components={components}>
       <Flex className={cls(commonStyles.column, styles.reader)}>
-        <Source source={attributes.source} url={attributes.url} />
-
+        <Source source={meta?.source} url={meta?.url} />
         {post && post.default({ components })}
       </Flex>
 
@@ -80,6 +55,6 @@ export default function Post() {
       <Button component={Link} to="/blog">
         Take me back
       </Button>
-    </>
+    </MDXProvider>
   );
 }

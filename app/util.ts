@@ -15,17 +15,6 @@ export const status = {
 } as const;
 export type Status = (typeof status)[keyof typeof status];
 
-/**
- * Save as variable since glob uses this when generating keys
- */
-export const blogPath = "./blog";
-
-export function getPosts() {
-  return import.meta.glob<Mdx>("./blog/*.mdx", {
-    eager: true,
-  });
-}
-
 const formatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "short",
@@ -52,24 +41,6 @@ export function parseMdxMeta(meta: Mdx["meta"]) {
   const description = meta.find((m) => m.name === "description")!.content;
 
   return { title, description };
-}
-
-/**
- * @see https://remix.run/docs/en/main/guides/mdx#example-blog-usage
- */
-export function postFromModule(filename: string, module: Mdx): Post {
-  const slug = filename.replace(/\.mdx?$/, "").replace(blogPath, "");
-  const { title, description } = parseMdxMeta(module.meta);
-  const { date, ...attributes } = module.frontmatter.attributes;
-
-  return {
-    slug,
-    title,
-    description,
-    render: module.default,
-    ...attributes,
-    date: formatDate(date),
-  };
 }
 
 export function validate<T>(

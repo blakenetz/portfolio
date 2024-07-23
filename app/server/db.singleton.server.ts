@@ -29,6 +29,7 @@ export type Post = {
     date: Date;
     title: string;
     description: string;
+    slug: string;
   };
   content: Binary;
 };

@@ -11,7 +11,7 @@ import {
 import { Card, SortControl } from "~/components";
 import { inputName, sorts } from "~/server/blog";
 import { getPosts } from "~/server/blog.server";
-import { kebobCase, validate } from "~/util";
+import { validate } from "~/util";
 
 import styles from "./blog.module.css";
 
@@ -41,11 +41,7 @@ export default function Blog() {
     >
       {posts.map((post) => (
         <Card key={post.title}>
-          <Anchor
-            component={Link}
-            to={kebobCase(post.title)}
-            className={styles.title}
-          >
+          <Anchor component={Link} to={post.slug} className={styles.title}>
             {post.title}
           </Anchor>
 

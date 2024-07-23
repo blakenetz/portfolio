@@ -13,7 +13,7 @@ import { unified } from "unified";
 import { matter } from "vfile-matter";
 
 import DB from "~/server/db.singleton.server";
-import { parseMdxMeta } from "~/util";
+import { kebobCase, parseMdxMeta } from "~/util";
 interface __VFile extends VFile {
   data: {
     matter: Mdx["frontmatter"];
@@ -54,6 +54,7 @@ function matterify() {
           ...attributes,
           ...metaValues,
           date: new Date(attributes.date),
+          slug: kebobCase(metaValues.title),
         },
       });
       console.log(`File ${file} uploaded successfully`);

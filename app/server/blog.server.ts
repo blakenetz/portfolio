@@ -1,3 +1,8 @@
+import { Params } from "@remix-run/react";
+import fs from "fs";
+import { writeFile } from "fs/promises";
+import path from "path";
+
 import DB, { Post } from "~/server/db.singleton.server";
 import { formatDate, validate } from "~/util";
 
@@ -20,4 +25,31 @@ export async function getPosts(request: Request) {
     .toArray();
 
   return posts;
+}
+
+export async function getPost(params: Params<"post">): Promise<
+  | {
+      ok: true;
+      meta: Post["meta"];
+    }
+  | { ok: false }
+> {
+  const post = await DB.findOne("posts", { "meta.slug": params.post });
+  if (!post) return { ok: false };
+
+  // ensure it exists locally
+  const rootPath = path.resolve(".", "app/blog");
+  const filePath = path.resolve(rootPath, post.meta.slug + ".mdx");
+  const exists = fs.existsSync(filePath);
+
+  // if not try to write
+  if (!exists) {
+    try {
+      await writeFile(filePath, post.content.buffer);
+    } catch (error) {
+      return { ok: false };
+    }
+  }
+
+  return { ok: true, meta: post.meta };
 }

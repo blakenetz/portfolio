@@ -2,7 +2,6 @@ import {
   Anchor,
   AnchorProps,
   Blockquote,
-  Button as MantineButton,
   Flex,
   Image,
   List,
@@ -10,7 +9,6 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { json, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { MDXComponents } from "node_modules/@mdx-js/react/lib";
@@ -20,8 +18,8 @@ import { Button } from "~/components";
 import commonStyles from "~/styles/common.module.css";
 import { blogPath, cls, getPosts, postFromModule } from "~/util";
 
-import AuthModal from "./authModal";
 import CodeBlock from "./codeBlock";
+import Comments from "./comments";
 import styles from "./post.module.css";
 import Source from "./source";
 
@@ -65,7 +63,6 @@ export function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default function Post() {
-  const [opened, actions] = useDisclosure();
   const { key, attributes } = useLoaderData<typeof loader>();
 
   const post = posts[key];
@@ -77,11 +74,9 @@ export default function Post() {
 
         {post && post.default({ components })}
       </Flex>
-      <Flex>
-        <Title>Comments</Title>
-        <AuthModal opened={opened} onClose={actions.close} mode="new" />
-        <MantineButton onClick={actions.open}>Sign up</MantineButton>
-      </Flex>
+
+      <Comments />
+
       <Button component={Link} to="/blog">
         Take me back
       </Button>

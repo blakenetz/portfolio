@@ -6,8 +6,6 @@ import commonStyles from "~/styles/common.module.css";
 import styles from "~/styles/index.module.css";
 import { cls } from "~/util";
 
-import AuthModal from "./blog.$post/authModal";
-
 export default function Index() {
   return (
     <Flex className={cls(commonStyles.column, styles.main)}>
@@ -38,8 +36,6 @@ export default function Index() {
         <Button component={Link} to="blog">
           Blog
         </Button>
-
-        <AuthModal opened onClose={() => null} mode="existing" />
       </Flex>
     </Flex>
   );

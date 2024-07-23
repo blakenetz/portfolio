@@ -15,7 +15,8 @@
     "create:post": "tsx scripts/new-blog-post.ts",
     "db:restart": "NODE_ENV=development tsx --env-file .env --env-file .env.development scripts/db-restart",
     "db:seed": "NODE_ENV=development tsx --env-file .env --env-file .env.development scripts/db-seed",
-    "db:setup": "npm run db:restart && npm run db:seed"
+    "db:setup": "npm run db:restart && npm run db:seed",
+    "db:blog-sync": "NODE_ENV=development tsx --env-file .env --env-file .env.development scripts/blog-sync.ts"
   },
   "dependencies": {
     "@mantine/core": "^7.11.1",

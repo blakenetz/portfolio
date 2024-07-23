@@ -23,7 +23,6 @@
   "dependencies": {
     "@mantine/core": "^7.11.1",
     "@mantine/hooks": "^7.11.1",
-    "@mdx-js/react": "^3.0.1",
     "@remix-run/node": "^2.10.2",
     "@remix-run/react": "^2.10.2",
     "@remix-run/serve": "^2.10.2",
@@ -42,6 +41,7 @@
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.2",
+    "@mdx-js/react": "^3.0.1",
     "@mdx-js/rollup": "^3.0.1",
     "@remix-run/dev": "^2.10.2",
     "@types/bcrypt": "^5.0.2",

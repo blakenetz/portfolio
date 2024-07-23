@@ -13,6 +13,7 @@ import { unified } from "unified";
 import { matter } from "vfile-matter";
 
 import DB from "~/server/db.singleton.server";
+import { parseMdxMeta } from "~/util";
 interface __VFile extends VFile {
   data: {
     matter: Mdx["frontmatter"];
@@ -44,11 +45,16 @@ function matterify() {
         .process(vFile)) as __VFile;
 
       const binary = Binary.createFromBase64(base64);
-      const { attributes } = results.data.matter;
+      const { attributes, meta } = results.data.matter;
+      const metaValues = parseMdxMeta(meta);
 
       await DB.create<"posts">("posts", {
         content: binary,
-        meta: { ...attributes, date: new Date(attributes.date) },
+        meta: {
+          ...attributes,
+          ...metaValues,
+          date: new Date(attributes.date),
+        },
       });
       console.log(`File ${file} uploaded successfully`);
     }

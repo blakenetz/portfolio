@@ -42,22 +42,24 @@ export function formatDate(value: string, skipCommon = false) {
   return formatter.format(date);
 }
 
-/**
- * @see https://remix.run/docs/en/main/guides/mdx#example-blog-usage
- */
-export function postFromModule(filename: string, module: Mdx): Post {
-  const slug = filename.replace(/\.mdx?$/, "").replace(blogPath, "");
-
-  const title = module.meta
+export function parseMdxMeta(meta: Mdx["meta"]) {
+  const title = meta
     .find((m) => Object.keys(m).includes("title"))!
     .title.split("|")
     .pop()!
     .trim();
 
-  const description = module.meta.find(
-    (m) => m.name === "description"
-  )!.content;
+  const description = meta.find((m) => m.name === "description")!.content;
 
+  return { title, description };
+}
+
+/**
+ * @see https://remix.run/docs/en/main/guides/mdx#example-blog-usage
+ */
+export function postFromModule(filename: string, module: Mdx): Post {
+  const slug = filename.replace(/\.mdx?$/, "").replace(blogPath, "");
+  const { title, description } = parseMdxMeta(module.meta);
   const { date, ...attributes } = module.frontmatter.attributes;
 
   return {

@@ -18,13 +18,6 @@ import DB from "~/server/db.singleton.server";
 
   console.log("Seeding posts and comments...");
   await Promise.all([
-    DB.createMany<"posts">(
-      "posts",
-      arr.map((i) => ({
-        meta: { date: new Date() },
-        content: `Post number ${i}`,
-      }))
-    ),
     DB.createMany<"comments">(
       "comments",
       Object.values(insertedIds).map((id, i) => ({

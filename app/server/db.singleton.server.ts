@@ -25,7 +25,11 @@ type User = { username: string; password: string };
 type NewUser = User & { email: string };
 
 type Post = {
-  meta: Pick<Attribute, "source" | "url"> & { date: Date };
+  meta: Pick<Attribute, "source" | "url"> & {
+    date: Date;
+    title: string;
+    description: string;
+  };
   content: Binary;
 };
 
@@ -92,7 +96,11 @@ class DB {
     collection: T,
     doc: Filter<Documents[T]>
   ) {
-    return this.#db.collection<Documents[T]>(collection).findOne(doc);
+    return this.#db.collection<Documents[T]>(collection).find(doc);
+  }
+
+  async findAll<T extends Collection>(collection: T) {
+    return this.#db.collection<Documents[T]>(collection).find();
   }
 }
 

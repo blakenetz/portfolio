@@ -8,9 +8,10 @@ import {
   useSubmit,
 } from "@remix-run/react";
 
-import { fetchPosts, inputName, sorts } from "~/server/blog";
 import { Card, SortControl } from "~/components";
-import { validate } from "~/util";
+import { inputName, sorts } from "~/server/blog";
+import { getPosts } from "~/server/blog.server";
+import { kebobCase, validate } from "~/util";
 
 import styles from "./blog.module.css";
 
@@ -19,8 +20,8 @@ export const meta: MetaFunction = () => [
   { description: "My thoughts. some complete... others not... 😜" },
 ];
 
-export function loader({ request }: LoaderFunctionArgs) {
-  const posts = fetchPosts(request);
+export async function loader({ request }: LoaderFunctionArgs) {
+  const posts = await getPosts(request);
 
   return json(posts);
 }
@@ -39,10 +40,10 @@ export default function Blog() {
       onChange={(e) => submit(e.currentTarget)}
     >
       {posts.map((post) => (
-        <Card key={post.slug}>
+        <Card key={post.title}>
           <Anchor
             component={Link}
-            to={`.${post.slug}`}
+            to={kebobCase(post.title)}
             className={styles.title}
           >
             {post.title}

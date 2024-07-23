@@ -32,7 +32,7 @@ const formatter = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
 });
 
-export function formatDate(value: string, skipCommon = false) {
+export function formatDate(value: string | Date, skipCommon = false) {
   const date = new Date(value);
 
   if (!skipCommon && isThisYear(date)) {
@@ -91,4 +91,8 @@ export function validateString<T extends string>(val: unknown): T {
 
 export function capitalize(val: string) {
   return val.charAt(0).toUpperCase() + val.slice(1);
+}
+
+export function kebobCase(val: string) {
+  return val.replace(/\s/, "-").toLowerCase();
 }

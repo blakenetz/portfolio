@@ -36,7 +36,9 @@ export type Post = {
 
 export type Comment = {
   user: ObjectId;
+  post: ObjectId;
   content: string;
+  date: Date;
 };
 
 class DB {

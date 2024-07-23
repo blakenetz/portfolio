@@ -1,9 +1,10 @@
 import { Params } from "@remix-run/react";
 import fs from "fs";
 import { writeFile } from "fs/promises";
+import { WithId } from "mongodb";
 import path from "path";
 
-import DB, { Post } from "~/server/db.singleton.server";
+import DB, { Comment, Post } from "~/server/db.singleton.server";
 import { formatDate, validate } from "~/util";
 
 import { inputName, sorts } from "./blog";
@@ -31,6 +32,7 @@ export async function getPost(params: Params<"post">): Promise<
   | {
       ok: true;
       meta: Post["meta"];
+      comments: WithId<Comment>[];
     }
   | { ok: false }
 > {
@@ -50,6 +52,8 @@ export async function getPost(params: Params<"post">): Promise<
       return { ok: false };
     }
   }
+  const commentCursor = await DB.findMany("comments", { post: post._id });
+  const comments = await commentCursor.sort({ date: 1 }).toArray();
 
-  return { ok: true, meta: post.meta };
+  return { ok: true, meta: post.meta, comments };
 }

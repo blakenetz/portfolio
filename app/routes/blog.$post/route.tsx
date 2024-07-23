@@ -1,5 +1,4 @@
 import { Flex } from "@mantine/core";
-import { MDXProvider } from "@mdx-js/react";
 import {
   json,
   LoaderFunctionArgs,
@@ -41,10 +40,9 @@ export default function Post() {
   const { meta } = useLoaderData<typeof loader>();
   const pathName = `/app/blog/${meta.slug}.mdx`;
   const post = posts[pathName];
-  // console.log(post, meta, posts);
 
   return (
-    <MDXProvider components={components}>
+    <>
       <Flex className={cls(commonStyles.column, styles.reader)}>
         <Source source={meta?.source} url={meta?.url} />
         {post && post.default({ components })}
@@ -55,6 +53,6 @@ export default function Post() {
       <Button component={Link} to="/blog">
         Take me back
       </Button>
-    </MDXProvider>
+    </>
   );
 }

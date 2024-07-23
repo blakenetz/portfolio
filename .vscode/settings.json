@@ -7,10 +7,12 @@
     "frontmatter",
     "gsap",
     "mantine",
+    "matterify",
     "Octo",
     "tabler",
     "typecheck",
     "unstorage",
+    "vfile",
     "warpjs"
   ],
   "editor.codeActionsOnSave": {

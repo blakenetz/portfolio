@@ -12,11 +12,12 @@
     "deploy": "fly deploy --remote-only",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "tsc",
+    "tsx-dev": "NODE_ENV=development tsx --env-file .env --env-file .env.development",
     "create:post": "tsx scripts/new-blog-post.ts",
-    "db:restart": "NODE_ENV=development tsx --env-file .env --env-file .env.development scripts/db-restart",
-    "db:seed": "NODE_ENV=development tsx --env-file .env --env-file .env.development scripts/db-seed",
+    "db:restart": "npm run tsx-dev scripts/db-restart",
+    "db:seed": "npm run tsx-dev scripts/db-seed",
     "db:setup": "npm run db:restart && npm run db:seed",
-    "db:blog-sync": "NODE_ENV=development tsx --env-file .env --env-file .env.development scripts/blog-sync.ts"
+    "db:blog-sync": "npm run tsx-dev scripts/blog-sync.ts"
   },
   "dependencies": {
     "@mantine/core": "^7.11.1",
@@ -59,8 +60,13 @@
     "postcss-simple-vars": "^7.0.1",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "to-vfile": "^8.0.0",
     "tsx": "^4.16.2",
     "typescript": "~5.4.0",
+    "unified": "^11.0.5",
+    "vfile-matter": "^5.0.0",
     "vite": "^5.3.3",
     "vite-tsconfig-paths": "^4.3.2"
   },

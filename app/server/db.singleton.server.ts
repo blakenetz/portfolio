@@ -1,4 +1,5 @@
 import {
+  Binary,
   Db,
   Filter,
   InsertManyResult,
@@ -25,7 +26,7 @@ type NewUser = User & { email: string };
 
 type Post = {
   meta: Pick<Attribute, "source" | "url"> & { date: Date };
-  content: string;
+  content: Binary;
 };
 
 type Comment = {

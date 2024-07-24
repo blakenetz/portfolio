@@ -12,7 +12,7 @@ export const sessionStorage = createCookieSessionStorage<
     maxAge: 60,
     path: "/",
     sameSite: "lax",
-    secrets: [],
+    secrets: [process.env.AUTH_COOKIE_SECRET!],
     secure: process.env.NODE_ENV === "production",
   },
 });

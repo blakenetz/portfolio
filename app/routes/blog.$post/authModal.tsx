@@ -128,7 +128,7 @@ export default function AuthModal({
       <fetcher.Form
         method="POST"
         action="/auth/form"
-        className={styles.form}
+        className={styles.flex}
         onSubmit={handleSubmit}
         onChange={handleChange}
       >

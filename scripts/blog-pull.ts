@@ -15,8 +15,17 @@ const dir = path.resolve(".", "app/blog");
     const fileName = kebobCase(file.meta.title) + ".mdx";
     const resolvedPath = path.resolve(dir, fileName);
 
-    console.log("Writing: ", fileName);
-    await fs.writeFile(resolvedPath, content);
+    const exists = await fs
+      .access(resolvedPath, fs.constants.F_OK)
+      .then(() => true)
+      .catch(() => false);
+
+    if (exists) {
+      console.log("Skipping. File exists: ", fileName);
+    } else {
+      console.log("Writing: ", fileName);
+      await fs.writeFile(resolvedPath, content);
+    }
   }
 
   process.exit();

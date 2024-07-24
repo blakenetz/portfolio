@@ -1,7 +1,7 @@
 import {
   Alert,
+  Button as MantineButton,
   Modal,
-  ModalProps,
   PasswordInput,
   SegmentedControl,
   SegmentedControlItem,
@@ -11,12 +11,18 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { useFetcher } from "@remix-run/react";
 import {
+  IconCheck,
   IconKey,
   IconMoodConfuzed,
   IconMoodTongue,
   IconSend,
 } from "@tabler/icons-react";
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  useEffect,
+  useState,
+} from "react";
 
 import { Button } from "~/components";
 import { AuthFetcher, AuthMode } from "~/server/auth";
@@ -73,28 +79,27 @@ const modeMap = new Map<AuthMode, { cta: string; data: SegmentedControlItem }>([
   ],
 ]);
 
-interface AuthModalProps extends ModalProps {
-  /**
-   * Controls form UI
-   */
-  mode: AuthMode;
-}
-
-export default function AuthModal({
-  opened,
-  mode: defaultMode,
-  ...rest
-}: AuthModalProps) {
+export default function AuthModal() {
   const fetcher = useFetcher<AuthFetcher>();
-  const [mode, setMode] = useState(defaultMode);
+  const [mode, setMode] = useState<AuthMode>("new");
   const [errors, setErrors] = useState<Field[]>([]);
-  const [showNotification, { close, open }] = useDisclosure();
+  const [showNotification, notificationActions] = useDisclosure();
+  const [opened, actions] = useDisclosure();
 
   const { cta } = modeMap.get(mode)!;
   const data = Array.from(modeMap.values()).map(({ data }) => data);
 
   const loading = fetcher.state !== "idle";
   const showError = !loading && showNotification && fetcher.data?.ok === false;
+
+  useEffect(() => {
+    let id: NodeJS.Timeout;
+    if (fetcher.data?.ok === true) {
+      id = setTimeout(() => actions.close(), 1000);
+    }
+
+    return () => clearTimeout(id);
+  }, [actions, fetcher]);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -114,7 +119,7 @@ export default function AuthModal({
 
     if (!nextErrors.length) {
       fetcher.submit(e.currentTarget);
-      open();
+      notificationActions.open();
     }
   };
 
@@ -124,44 +129,48 @@ export default function AuthModal({
   };
 
   return (
-    <Modal opened={opened} {...rest} withCloseButton={false}>
-      <fetcher.Form
-        method="POST"
-        action="/auth/form"
-        className={styles.flex}
-        onSubmit={handleSubmit}
-        onChange={handleChange}
-      >
-        <SegmentedControl
-          fullWidth
-          data={data}
-          value={mode}
-          name="mode"
-          onChange={(v) => setMode(v as AuthMode)}
-        />
-
-        {fields.map((field) => (
-          <Field key={field} field={field} mode={mode} errors={errors} />
-        ))}
-
-        <Button component="button" type="submit" loading={loading}>
-          {cta}
-        </Button>
-      </fetcher.Form>
-
-      {showError && (
-        <Alert
-          color="red"
-          variant="light"
-          onClose={close}
-          className={styles.authNotification}
-          withCloseButton
-          closeButtonLabel="Dismiss"
-          icon={<IconMoodConfuzed />}
+    <>
+      <Modal opened={opened} onClose={actions.close} withCloseButton={false}>
+        <fetcher.Form
+          method="POST"
+          action="/auth/form"
+          className={styles.flex}
+          onSubmit={handleSubmit}
+          onChange={handleChange}
         >
-          {fetcher.data?.error}
-        </Alert>
-      )}
-    </Modal>
+          <SegmentedControl
+            fullWidth
+            data={data}
+            value={mode}
+            name="mode"
+            onChange={(v) => setMode(v as AuthMode)}
+          />
+
+          {fields.map((field) => (
+            <Field key={field} field={field} mode={mode} errors={errors} />
+          ))}
+
+          <Button component="button" type="submit" loading={loading}>
+            {fetcher.data?.ok === true ? <IconCheck /> : cta}
+          </Button>
+        </fetcher.Form>
+
+        {showError && (
+          <Alert
+            color="red"
+            variant="light"
+            onClose={notificationActions.close}
+            className={styles.authNotification}
+            withCloseButton
+            closeButtonLabel="Dismiss"
+            icon={<IconMoodConfuzed />}
+          >
+            {fetcher.data?.error}
+          </Alert>
+        )}
+      </Modal>
+
+      <MantineButton onClick={actions.open}>Sign up</MantineButton>
+    </>
   );
 }

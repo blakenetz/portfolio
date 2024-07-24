@@ -1,14 +1,13 @@
-import bcrypt from "bcrypt";
 import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 
 import { sessionStorage } from "~/services/session.server";
-import { validateString } from "~/util";
+import { hashPassword, validateString } from "~/util";
 
 import { AuthMode } from "./auth";
 import DB from "./db.singleton.server";
 
-type User = {
+export type User = {
   username: string;
 };
 
@@ -25,8 +24,7 @@ authenticator.use(
     const password = validateString(form.get("password"));
     const mode = validateString<AuthMode>(form.get("mode"));
 
-    const salt = bcrypt.genSaltSync();
-    const hash = bcrypt.hashSync(password, salt);
+    const hash = hashPassword(password);
 
     if (mode === "new") {
       const email = validateString(form.get("email"));
@@ -42,10 +40,11 @@ authenticator.use(
 
     if (!user) throw new Error(errors.notFound);
 
-    if (!bcrypt.compareSync(password, user.password)) {
+    if (hash !== user.password) {
       throw new Error(errors.badPassword);
     }
 
+    console.log("returning username: ", user.username);
     return { username: user.username };
   }),
   "form"

@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { formatDistanceToNow, isThisYear } from "date-fns";
 import { Attribute, Mdx } from "types/modules";
 
@@ -66,4 +67,10 @@ export function capitalize(val: string) {
 
 export function kebobCase(val: string) {
   return val.replace(/\s/, "-").toLowerCase();
+}
+
+export function hashPassword(password: string) {
+  return crypto
+    .pbkdf2Sync(password, process.env.AUTH_HASH!, 1000, 64, `sha512`)
+    .toString(`hex`);
 }

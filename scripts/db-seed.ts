@@ -1,8 +1,8 @@
-import bcrypt from "bcrypt";
 import { add } from "date-fns";
 import { Binary } from "mongodb";
 
 import DB, { Comment } from "~/server/db.singleton.server";
+import { hashPassword } from "~/util";
 
 import { generateBaseMDxContent } from "./util";
 
@@ -12,15 +12,13 @@ const today = new Date();
   console.log("Seeding users and posts...");
   const arr = Array.from({ length: 20 }, (_v, i) => i + 1);
 
-  const salt = bcrypt.genSaltSync();
-
   const [{ insertedIds: userIds }, { insertedIds: postIds }] =
     await Promise.all([
       DB.createMany<"users">(
         "users",
         arr.map((i) => ({
           username: `User-${i}`,
-          password: bcrypt.hashSync("1234" + i, salt),
+          password: hashPassword("1234" + i),
         }))
       ),
       DB.createMany<"posts">(

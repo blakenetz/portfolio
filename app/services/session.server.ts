@@ -8,9 +8,9 @@ export const sessionStorage = createCookieSessionStorage<
   SessionFlashData
 >({
   cookie: {
-    name: "__session",
-    maxAge: 60,
+    name: "userAuth",
     path: "/",
+    httpOnly: true,
     sameSite: "lax",
     secrets: [process.env.AUTH_COOKIE_SECRET!],
     secure: process.env.NODE_ENV === "production",

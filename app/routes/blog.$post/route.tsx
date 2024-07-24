@@ -9,6 +9,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { Mdx } from "types/modules";
 
 import { Button } from "~/components";
+import { authenticator } from "~/server/authenticator.server";
 import { getPost } from "~/server/blog.server";
 import commonStyles from "~/styles/common.module.css";
 import { cls, status } from "~/util";
@@ -28,27 +29,28 @@ export const meta: MetaFunction = ({ location }) => {
   return module.meta;
 };
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, request }: LoaderFunctionArgs) {
   const post = await getPost(params);
+  const user = await authenticator.isAuthenticated(request);
 
   if (post.ok === false) return redirect(`/blog?status=${status.unknown}`);
 
-  return json(post);
+  return json({ data: post, user });
 }
 
 export default function Post() {
-  const { meta } = useLoaderData<typeof loader>();
-  const pathName = `/app/blog/${meta.slug}.mdx`;
+  const { data, user } = useLoaderData<typeof loader>();
+  const pathName = `/app/blog/${data.meta.slug}.mdx`;
   const post = posts[pathName];
 
   return (
     <>
       <Flex className={cls(commonStyles.column, styles.reader)}>
-        <Source source={meta?.source} url={meta?.url} />
+        <Source source={data.meta?.source} url={data.meta?.url} />
         {post && post.default({ components })}
       </Flex>
 
-      <Comments />
+      <Comments user={user} />
 
       <Button component={Link} to="/blog">
         Take me back

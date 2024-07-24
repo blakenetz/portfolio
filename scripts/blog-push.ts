@@ -14,6 +14,8 @@ import { matter } from "vfile-matter";
 
 import DB from "~/server/db.singleton.server";
 import { kebobCase, parseMdxMeta } from "~/util";
+
+import { exists } from "./util";
 interface __VFile extends VFile {
   data: {
     matter: Mdx["frontmatter"];
@@ -29,6 +31,12 @@ function matterify() {
 }
 
 (async () => {
+  const dirExists = await exists(dir);
+  if (!dirExists) {
+    console.log("No posts to sync...");
+    process.exit();
+  }
+
   console.log("Uploading blog posts...");
   try {
     const files = await fs.readdir(dir);

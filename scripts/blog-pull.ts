@@ -5,9 +5,14 @@ import path from "path";
 import DB from "~/server/db.singleton.server";
 import { kebobCase } from "~/util";
 
+import { exists } from "./util";
+
 const dir = path.resolve(".", "app/blog");
 
 (async () => {
+  const dirExists = await exists(dir);
+  if (!dirExists) await fs.mkdir(dir);
+
   console.log("Pulling blog posts...");
   const files = await DB.findAll("posts");
   for await (const file of files) {
@@ -15,12 +20,9 @@ const dir = path.resolve(".", "app/blog");
     const fileName = kebobCase(file.meta.title) + ".mdx";
     const resolvedPath = path.resolve(dir, fileName);
 
-    const exists = await fs
-      .access(resolvedPath, fs.constants.F_OK)
-      .then(() => true)
-      .catch(() => false);
+    const skip = await exists(resolvedPath);
 
-    if (exists) {
+    if (skip) {
       console.log("Skipping. File exists: ", fileName);
     } else {
       console.log("Writing: ", fileName);

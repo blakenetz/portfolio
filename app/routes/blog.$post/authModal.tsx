@@ -95,7 +95,7 @@ export default function AuthModal() {
   useEffect(() => {
     let id: NodeJS.Timeout;
     if (fetcher.data?.ok === true) {
-      id = setTimeout(() => actions.close(), 1000);
+      id = setTimeout(() => actions.close(), 750);
     }
 
     return () => clearTimeout(id);

@@ -9,6 +9,7 @@ import DB from "./db.singleton.server";
 
 export type User = {
   username: string;
+  id: string;
 };
 
 export const errors = {
@@ -28,12 +29,12 @@ authenticator.use(
 
     if (mode === "new") {
       const email = validateString(form.get("email"));
-      await DB.create<"newUser">("users", {
+      const results = await DB.create<"newUser">("users", {
         username,
         password: hash,
         email,
       });
-      return { username };
+      return { username, id: results.insertedId.toString() };
     }
 
     const user = await DB.findOne("users", { username });
@@ -44,8 +45,7 @@ authenticator.use(
       throw new Error(errors.badPassword);
     }
 
-    console.log("returning username: ", user.username);
-    return { username: user.username };
+    return { username: user.username, id: user._id.toString() };
   }),
   "form"
 );

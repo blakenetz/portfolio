@@ -1,9 +1,6 @@
 import crypto from "crypto";
 import { formatDistanceToNow, isThisYear } from "date-fns";
-import { Attribute, Mdx } from "types/modules";
-
-export type Post = Record<"slug" | "title" | "description", string> &
-  Attribute & { render: Mdx["default"] };
+import { Mdx } from "types/modules";
 
 export function cls(...args: (string | undefined)[]) {
   return args.join(" ").trim();

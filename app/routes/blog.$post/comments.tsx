@@ -5,14 +5,14 @@ import { WithId } from "mongodb";
 import { FormEventHandler } from "react";
 
 import { User } from "~/server/authenticator.server";
-import { Comment } from "~/server/db.singleton.server";
+import { CommentModel } from "~/server/db.singleton.server";
 import { cls } from "~/util";
 
 import AuthModal from "./authModal";
 import styles from "./post.module.css";
 
 interface CommentsProps {
-  comments?: WithId<Comment>[];
+  comments?: WithId<CommentModel>[];
 
   /**
    * authentication state
@@ -48,7 +48,7 @@ export default function Comments({ comments = [], user }: CommentsProps) {
           className={styles.flex}
           onSubmit={handleSubmit}
           method="POST"
-          action="/blog/comment"
+          action="."
         >
           <Textarea
             label="What do you think?"

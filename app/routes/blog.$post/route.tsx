@@ -1,5 +1,6 @@
 import { Flex } from "@mantine/core";
 import {
+  ActionFunctionArgs,
   json,
   LoaderFunctionArgs,
   MetaFunction,
@@ -10,7 +11,7 @@ import { Mdx } from "types/modules";
 
 import { Button } from "~/components";
 import { authenticator } from "~/server/authenticator.server";
-import { getPost } from "~/server/blog.server";
+import { getPost, postComment } from "~/server/blog.server";
 import commonStyles from "~/styles/common.module.css";
 import { cls, status } from "~/util";
 
@@ -35,7 +36,17 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
   if (post.ok === false) return redirect(`/blog?status=${status.unknown}`);
 
-  return json({ data: post, user });
+  const { ok: _ok, ...data } = post;
+
+  return json({
+    data,
+    user,
+  });
+}
+
+export async function action({ request, params }: ActionFunctionArgs) {
+  const comments = await postComment(request, params);
+  return json({ ok: true, data: comments });
 }
 
 export default function Post() {
@@ -46,7 +57,7 @@ export default function Post() {
   return (
     <>
       <Flex className={cls(commonStyles.column, styles.reader)}>
-        <Source source={data.meta?.source} url={data.meta?.url} />
+        <Source source={data.meta.source} url={data.meta.url} />
         {post && post.default({ components })}
       </Flex>
 

@@ -4,8 +4,9 @@ import { writeFile } from "fs/promises";
 import { WithId } from "mongodb";
 import path from "path";
 
-import DB, { Comment, Post } from "~/server/db.singleton.server";
-import { formatDate, validate } from "~/util";
+import DB, { CommentModel, PostModel } from "~/server/db.singleton.server";
+import { getSession } from "~/services/session.server";
+import { formatDate, validate, validateString } from "~/util";
 
 import { inputName, sorts } from "./blog";
 
@@ -26,7 +27,7 @@ export async function getPosts(request: Request) {
   ]);
   const posts = await cursor
     .sort({ "meta.date": direction })
-    .project<Post>({ meta: 1 })
+    .project<PostModel>({ meta: 1 })
     .limit(limit)
     .skip(skip)
     .map((doc) => ({
@@ -38,15 +39,19 @@ export async function getPosts(request: Request) {
   return { data: posts, count: Math.ceil(count / limit) };
 }
 
+async function getPostByParams(params: Params<"post">) {
+  return DB.findOne("posts", { "meta.slug": params.post });
+}
+
 export async function getPost(params: Params<"post">): Promise<
   | {
       ok: true;
-      meta: Post["meta"];
-      comments: WithId<Comment>[];
+      meta: PostModel["meta"];
+      comments: WithId<CommentModel>[];
     }
   | { ok: false }
 > {
-  const post = await DB.findOne("posts", { "meta.slug": params.post });
+  const post = await getPostByParams(params);
   if (!post) return { ok: false };
 
   // ensure it exists locally
@@ -62,8 +67,38 @@ export async function getPost(params: Params<"post">): Promise<
       return { ok: false };
     }
   }
-  const commentCursor = await DB.findMany("comments", { post: post._id });
-  const comments = await commentCursor.sort({ date: 1 }).toArray();
+  const commentCursor = await DB.findMany("comments", {
+    post: post._id,
+  });
+  const comments = await commentCursor
+    .sort({ date: 1 })
+    .map((comment) => ({
+      ...comment,
+      date: formatDate(comment.date),
+    }))
+    .toArray();
 
-  return { ok: true, meta: post.meta, comments };
+  console.log(comments);
+
+  return { ok: true, meta: post.meta };
+}
+
+export async function postComment(request: Request, params: Params<"post">) {
+  const formData = await request.formData();
+  const comment = validateString(formData.get("comment"));
+  if (!comment) return { ok: false, error: "Please add a comment" };
+
+  const session = await getSession(request.headers.get("cookie"));
+  const user = session.get("user-id");
+  if (!user) return { ok: false, error: "Please login" };
+
+  const post = await getPostByParams(params);
+  const results = await DB.create<"comments">("comments", {
+    user: user,
+    post: post!._id,
+    content: comment,
+    date: new Date(),
+  });
+
+  console.log(results);
 }

@@ -13,18 +13,18 @@ import { Attribute } from "types/modules";
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_CLUSTER}.eqg93nd.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.NODE_ENV}`;
 
 export type Documents = {
-  users: User;
-  newUser: NewUser;
-  posts: Post;
-  comments: Comment;
+  users: UserModel;
+  newUser: NewUserModel;
+  posts: PostModel;
+  comments: CommentModel;
 };
 
 export type Collection = Exclude<keyof Documents, "newUser">;
 
-export type User = { username: string; password: string };
-export type NewUser = User & { email: string };
+export type UserModel = { username: string; password: string };
+export type NewUserModel = UserModel & { email: string };
 
-export type Post = {
+export type PostModel = {
   meta: Pick<Attribute, "source" | "url"> & {
     date: Date;
     title: string;
@@ -34,9 +34,15 @@ export type Post = {
   content: Binary;
 };
 
-export type Comment = {
+export type CommentModel = {
   user: ObjectId;
   post: ObjectId;
+  content: string;
+  date: Date;
+};
+
+export type DisplayComment = {
+  username: string;
   content: string;
   date: Date;
 };

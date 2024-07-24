@@ -1,7 +1,7 @@
 import { add } from "date-fns";
 import { Binary } from "mongodb";
 
-import DB, { Comment } from "~/server/db.singleton.server";
+import DB, { CommentModel } from "~/server/db.singleton.server";
 import { hashPassword } from "~/util";
 
 import { generateBaseMDxContent } from "./util";
@@ -41,12 +41,12 @@ const today = new Date();
 
   console.log("Seeding comments...");
   const users = Object.values(userIds);
-  const comments: Comment[] = Object.values(postIds).flatMap((post) => {
+  const comments: CommentModel[] = Object.values(postIds).flatMap((post) => {
     // give every post 5 comments
     return Array.from({ length: 5 }, (_el, i) => i + 1).map((i) => ({
       user: users[Math.floor(Math.random() * users.length) + 1],
       post: post,
-      content: `Comment number ${i}`,
+      content: `CommentModel number ${i}`,
       date: add(today, { hours: i }),
     }));
   });

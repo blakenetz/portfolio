@@ -1,6 +1,6 @@
 import { createCookieSessionStorage } from "@remix-run/node"; // or cloudflare/deno
 
-export type SessionData = { user: string };
+export type SessionData = { username: string; "user-id": string };
 type SessionFlashData = { error: string };
 
 export const sessionStorage = createCookieSessionStorage<

@@ -90,20 +90,27 @@ class DB {
 
   async findOne<T extends Collection>(
     collection: T,
-    doc: Filter<Documents[T]>
+    filter: Filter<Documents[T]>
   ) {
-    return this.#db.collection<Documents[T]>(collection).findOne(doc);
+    return this.#db.collection<Documents[T]>(collection).findOne(filter);
   }
 
   async findMany<T extends Collection>(
     collection: T,
-    doc: Filter<Documents[T]>
+    filter: Filter<Documents[T]>
   ) {
-    return this.#db.collection<Documents[T]>(collection).find(doc);
+    return this.#db.collection<Documents[T]>(collection).find(filter);
   }
 
   async findAll<T extends Collection>(collection: T) {
     return this.#db.collection<Documents[T]>(collection).find();
+  }
+
+  async count<T extends Collection>(
+    collection: T,
+    filter?: Filter<Documents[T]>
+  ) {
+    return this.#db.collection<Documents[T]>(collection).countDocuments(filter);
   }
 }
 

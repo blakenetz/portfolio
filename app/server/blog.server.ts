@@ -11,21 +11,31 @@ import { inputName, sorts } from "./blog";
 
 export async function getPosts(request: Request) {
   const { searchParams } = new URL(request.url);
-  const param = searchParams.get(inputName);
-  const sort = validate(param, sorts);
+
+  const sortParam = searchParams.get(inputName);
+  const sort = validate(sortParam, sorts);
   const direction = sort === "asc" ? 1 : -1;
 
-  const cursor = await DB.findAll("posts");
-  const posts = cursor
+  const page = Number(searchParams.get("page")) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const [cursor, count] = await Promise.all([
+    DB.findAll("posts"),
+    DB.count("posts"),
+  ]);
+  const posts = await cursor
     .sort({ "meta.date": direction })
     .project<Post>({ meta: 1 })
+    .limit(limit)
+    .skip(skip)
     .map((doc) => ({
       ...doc.meta,
       date: formatDate(doc.meta.date),
     }))
     .toArray();
 
-  return posts;
+  return { data: posts, count: Math.ceil(count / limit) };
 }
 
 export async function getPost(params: Params<"post">): Promise<

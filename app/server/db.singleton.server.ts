@@ -81,7 +81,7 @@ class DB {
     return this.#db.createCollection(name);
   }
 
-  async create<T extends keyof Documents>(
+  async createOne<T extends keyof Documents>(
     collection: Collection,
     doc: Documents[T]
   ): Promise<InsertOneResult> {

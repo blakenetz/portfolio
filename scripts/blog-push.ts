@@ -56,7 +56,7 @@ function matterify() {
       const { attributes, meta } = results.data.matter;
       const metaValues = parseMdxMeta(meta);
 
-      await DB.create<"posts">("posts", {
+      await DB.createOne<"posts">("posts", {
         content: binary,
         meta: {
           ...attributes,

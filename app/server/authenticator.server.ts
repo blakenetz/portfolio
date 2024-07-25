@@ -29,7 +29,7 @@ authenticator.use(
 
     if (mode === "new") {
       const email = validateString(form.get("email"));
-      const results = await DB.create<"newUser">("users", {
+      const results = await DB.createOne<"newUser">("users", {
         username,
         password: hash,
         email,

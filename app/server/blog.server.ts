@@ -67,9 +67,8 @@ export async function getPost(params: Params<"post">): Promise<
       return { ok: false };
     }
   }
-  const commentCursor = await DB.findMany("comments", {
-    post: post._id,
-  });
+
+  const commentCursor = await DB.findMany("comments", { post: post._id });
   const comments = await commentCursor
     .sort({ date: 1 })
     .map((comment) => ({
@@ -78,9 +77,9 @@ export async function getPost(params: Params<"post">): Promise<
     }))
     .toArray();
 
-  console.log(comments);
+  const __comments = await DB.console.log(comments);
 
-  return { ok: true, meta: post.meta };
+  return { ok: true, meta: post.meta, comments: [] };
 }
 
 export async function postComment(request: Request, params: Params<"post">) {
@@ -93,7 +92,7 @@ export async function postComment(request: Request, params: Params<"post">) {
   if (!user) return { ok: false, error: "Please login" };
 
   const post = await getPostByParams(params);
-  const results = await DB.create<"comments">("comments", {
+  const results = await DB.createOne<"comments">("comments", {
     user: user,
     post: post!._id,
     content: comment,

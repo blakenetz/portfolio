@@ -1,10 +1,10 @@
 import { Params } from "@remix-run/react";
 import fs from "fs";
 import { writeFile } from "fs/promises";
-import { WithId } from "mongodb";
+import { ObjectId } from "mongodb";
 import path from "path";
 
-import DB, { CommentModel, PostModel } from "~/server/db.singleton.server";
+import DB, { Comment, PostModel } from "~/server/db.singleton.server";
 import { getSession } from "~/services/session.server";
 import { formatDate, validate, validateString } from "~/util";
 
@@ -47,7 +47,7 @@ export async function getPost(params: Params<"post">): Promise<
   | {
       ok: true;
       meta: PostModel["meta"];
-      comments: WithId<CommentModel>[];
+      comments: Comment[];
     }
   | { ok: false }
 > {
@@ -68,18 +68,24 @@ export async function getPost(params: Params<"post">): Promise<
     }
   }
 
-  const commentCursor = await DB.findMany("comments", { post: post._id });
+  const commentCursor = await DB.aggregate(
+    "comments",
+    { post: post._id },
+    "users"
+  );
+
   const comments = await commentCursor
     .sort({ date: 1 })
-    .map((comment) => ({
-      ...comment,
-      date: formatDate(comment.date),
-    }))
+    .map<Comment>((comment) => {
+      return {
+        user: comment.users_model.username,
+        content: comment.content,
+        date: formatDate(comment.date),
+      };
+    })
     .toArray();
 
-  const __comments = await DB.console.log(comments);
-
-  return { ok: true, meta: post.meta, comments: [] };
+  return { ok: true, meta: post.meta, comments };
 }
 
 export async function postComment(request: Request, params: Params<"post">) {
@@ -93,7 +99,7 @@ export async function postComment(request: Request, params: Params<"post">) {
 
   const post = await getPostByParams(params);
   const results = await DB.createOne<"comments">("comments", {
-    user: user,
+    user: new ObjectId(user),
     post: post!._id,
     content: comment,
     date: new Date(),

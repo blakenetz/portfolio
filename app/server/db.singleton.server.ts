@@ -1,5 +1,7 @@
 import {
+  AggregationCursor,
   Binary,
+  Collection as MongoCollection,
   Db,
   Filter,
   InsertManyResult,
@@ -24,7 +26,7 @@ export type Collection = Exclude<keyof Documents, "newUser">;
 export type UserModel = { username: string; password: string };
 export type NewUserModel = UserModel & { email: string };
 
-export type PostModel = {
+export interface PostModel {
   meta: Pick<Attribute, "source" | "url"> & {
     date: Date;
     title: string;
@@ -32,19 +34,25 @@ export type PostModel = {
     slug: string;
   };
   content: Binary;
-};
+}
 
-export type CommentModel = {
+export interface CommentModel {
   user: ObjectId;
   post: ObjectId;
   content: string;
   date: Date;
-};
+}
 
-export type DisplayComment = {
-  username: string;
-  content: string;
-  date: Date;
+export interface Comment extends Pick<CommentModel, "content"> {
+  user: UserModel["username"];
+  date: string;
+}
+
+type WithJoin<
+  T extends Collection,
+  L extends Exclude<Collection, T>
+> = Documents[T] & {
+  [key in L as `${key}_model`]: Documents[L];
 };
 
 class DB {
@@ -63,6 +71,12 @@ class DB {
 
     this.#client = client;
     this.#db = client.db();
+  }
+
+  private getCollection<T extends Collection>(
+    collection: Collection
+  ): MongoCollection<Documents[T]> {
+    return this.#db.collection(collection);
   }
 
   async destroy() {
@@ -85,38 +99,58 @@ class DB {
     collection: Collection,
     doc: Documents[T]
   ): Promise<InsertOneResult> {
-    return this.#db.collection(collection).insertOne(doc);
+    return this.getCollection(collection).insertOne(doc);
   }
   async createMany<T extends keyof Documents>(
     collection: Collection,
     doc: Array<Documents[T]>
   ): Promise<InsertManyResult> {
-    return this.#db.collection(collection).insertMany(doc);
+    return this.getCollection(collection).insertMany(doc);
   }
 
   async findOne<T extends Collection>(
     collection: T,
     filter: Filter<Documents[T]>
   ) {
-    return this.#db.collection<Documents[T]>(collection).findOne(filter);
+    return this.getCollection<T>(collection).findOne(filter);
   }
 
   async findMany<T extends Collection>(
     collection: T,
     filter: Filter<Documents[T]>
   ) {
-    return this.#db.collection<Documents[T]>(collection).find(filter);
+    return this.getCollection<T>(collection).find(filter);
   }
 
   async findAll<T extends Collection>(collection: T) {
-    return this.#db.collection<Documents[T]>(collection).find();
+    return this.getCollection<T>(collection).find();
   }
 
   async count<T extends Collection>(
     collection: T,
     filter?: Filter<Documents[T]>
   ) {
-    return this.#db.collection<Documents[T]>(collection).countDocuments(filter);
+    return this.getCollection<T>(collection).countDocuments(filter);
+  }
+
+  async aggregate<T extends Collection, L extends Exclude<Collection, T>>(
+    collection: T,
+    match: Filter<Documents[T]>,
+    lookup: L
+  ): Promise<AggregationCursor<WithJoin<T, L>>> {
+    const mapKey = `${lookup}_model`;
+    return this.#db.collection<Documents[T]>(collection).aggregate([
+      { $match: match },
+      {
+        $lookup: {
+          from: lookup,
+          localField: lookup,
+          foreignField: "id",
+          as: mapKey,
+        },
+      },
+      { $set: { [mapKey]: { $first: "$" + mapKey } } },
+    ]);
   }
 }
 

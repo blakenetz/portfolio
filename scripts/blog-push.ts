@@ -13,9 +13,8 @@ import { unified } from "unified";
 import { matter } from "vfile-matter";
 
 import DB from "~/server/db.singleton.server";
-import { kebobCase, parseMdxMeta } from "~/util";
+import { exists, kebobCase, parseMdxMeta } from "~/util";
 
-import { exists } from "./util";
 interface __VFile extends VFile {
   data: {
     matter: Mdx["frontmatter"];

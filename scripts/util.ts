@@ -1,5 +1,3 @@
-import fs from "node:fs/promises";
-
 import { formatDate } from "~/util";
 
 export function generateBaseMDxContent(fileName: string) {
@@ -39,11 +37,4 @@ This multiline block
 will have unique styles
 \`\`\`
 `;
-}
-
-export async function exists(filePath: string) {
-  return fs
-    .access(filePath, fs.constants.F_OK)
-    .then(() => true)
-    .catch(() => false);
 }

@@ -1,3 +1,5 @@
+import fs from "node:fs/promises";
+
 import crypto from "crypto";
 import { formatDistanceToNow, isThisYear } from "date-fns";
 import { Mdx } from "types/modules";
@@ -70,4 +72,11 @@ export function hashPassword(password: string) {
   return crypto
     .pbkdf2Sync(password, process.env.AUTH_HASH!, 1000, 64, `sha512`)
     .toString(`hex`);
+}
+
+export async function exists(filePath: string) {
+  return fs
+    .access(filePath, fs.constants.F_OK)
+    .then(() => true)
+    .catch(() => false);
 }

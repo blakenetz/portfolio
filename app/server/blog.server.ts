@@ -6,7 +6,7 @@ import path from "path";
 
 import DB, { Comment, PostModel } from "~/server/db.singleton.server";
 import { getSession } from "~/services/session.server";
-import { formatDate, validate, validateString } from "~/util";
+import { exists, formatDate, validate, validateString } from "~/util";
 
 import { inputName, sorts } from "./blog";
 
@@ -43,6 +43,24 @@ async function getPostByParams(params: Params<"post">) {
   return DB.findOne("posts", { "meta.slug": params.post });
 }
 
+async function verifyMdxFile(post: PostModel): Promise<boolean> {
+  const rootPath = path.resolve(".", "app/blog");
+  const filePath = path.resolve(rootPath, post.meta.slug + ".mdx");
+  const fileExists = exists(filePath);
+
+  // if not try to write
+  if (!fileExists) {
+    try {
+      await writeFile(filePath, post.content.buffer);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 export async function getPost(params: Params<"post">): Promise<
   | {
       ok: true;
@@ -54,19 +72,10 @@ export async function getPost(params: Params<"post">): Promise<
   const post = await getPostByParams(params);
   if (!post) return { ok: false };
 
-  // ensure it exists locally
-  const rootPath = path.resolve(".", "app/blog");
-  const filePath = path.resolve(rootPath, post.meta.slug + ".mdx");
-  const exists = fs.existsSync(filePath);
+  const verified = await verifyMdxFile(post);
+  if (!verified) return { ok: false };
 
-  // if not try to write
-  if (!exists) {
-    try {
-      await writeFile(filePath, post.content.buffer);
-    } catch (error) {
-      return { ok: false };
-    }
-  }
+  // const limit = 10;
 
   const commentCursor = await DB.aggregate(
     "comments",
@@ -76,8 +85,9 @@ export async function getPost(params: Params<"post">): Promise<
 
   const comments = await commentCursor
     .sort({ date: -1 })
+    // .limit(limit)
+    // .skip(skip)
     .map<Comment>((comment) => {
-      console.log(comment);
       return {
         user: comment.users_model.username,
         content: comment.content,

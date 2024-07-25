@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Container,
-  Text,
-  Textarea,
-  Title,
-} from "@mantine/core";
+import { Avatar, Button, Text, Textarea, Title } from "@mantine/core";
 import { useToggle } from "@mantine/hooks";
 import { useFetcher } from "@remix-run/react";
 import { FormEventHandler } from "react";
@@ -47,7 +40,7 @@ export default function Comments({ comments, user }: CommentsProps) {
         <Text>None yet 😕... but you can be the first!</Text>
       ) : (
         comments.map((comment, i) => (
-          <Container
+          <section
             key={i}
             className={cls(styles.flex, styles.row, styles.comment)}
           >
@@ -59,7 +52,7 @@ export default function Comments({ comments, user }: CommentsProps) {
               </div>
               <Text>{comment.content}</Text>
             </div>
-          </Container>
+          </section>
         ))
       )}
 

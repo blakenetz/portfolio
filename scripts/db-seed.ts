@@ -1,4 +1,4 @@
-import { add } from "date-fns";
+import { sub } from "date-fns";
 import { Binary } from "mongodb";
 
 import DB, { CommentModel } from "~/server/db.singleton.server";
@@ -17,7 +17,7 @@ const today = new Date();
       DB.createMany<"users">(
         "users",
         arr.map((i) => ({
-          username: `User-${i}`,
+          username: `User ${i}`,
           password: hashPassword("1234" + i),
         }))
       ),
@@ -29,7 +29,7 @@ const today = new Date();
           return {
             content: Binary.createFromBase64(base64),
             meta: {
-              date: add(today, { hours: i }),
+              date: sub(today, { hours: i }),
               title,
               description: `This is my ${i} post`,
               slug: `post-${i}`,
@@ -46,8 +46,8 @@ const today = new Date();
     return Array.from({ length: 5 }, (_el, i) => i + 1).map((i) => ({
       user: users[Math.floor(Math.random() * users.length) + 1],
       post: post,
-      content: `CommentModel number ${i}`,
-      date: add(today, { hours: i }),
+      content: `comment number ${i}`,
+      date: sub(today, { hours: i }),
     }));
   });
 

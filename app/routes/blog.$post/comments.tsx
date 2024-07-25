@@ -1,18 +1,24 @@
-import { Button, Text, Textarea, Title } from "@mantine/core";
+import {
+  Avatar,
+  Button,
+  Container,
+  Text,
+  Textarea,
+  Title,
+} from "@mantine/core";
 import { useToggle } from "@mantine/hooks";
 import { useFetcher } from "@remix-run/react";
-import { WithId } from "mongodb";
 import { FormEventHandler } from "react";
 
 import { User } from "~/server/authenticator.server";
-import { CommentModel } from "~/server/db.singleton.server";
+import { Comment } from "~/server/db.singleton.server";
 import { cls } from "~/util";
 
 import AuthModal from "./authModal";
 import styles from "./post.module.css";
 
 interface CommentsProps {
-  comments?: WithId<CommentModel>[];
+  comments: Comment[];
 
   /**
    * authentication state
@@ -20,7 +26,7 @@ interface CommentsProps {
   user: User | null;
 }
 
-export default function Comments({ comments = [], user }: CommentsProps) {
+export default function Comments({ comments, user }: CommentsProps) {
   const fetcher = useFetcher();
   const [error, setError] = useToggle();
 
@@ -39,7 +45,23 @@ export default function Comments({ comments = [], user }: CommentsProps) {
       <Title order={3}>Comments</Title>
       {!comments.length ? (
         <Text>None yet 😕... but you can be the first!</Text>
-      ) : null}
+      ) : (
+        comments.map((comment, i) => (
+          <Container
+            key={i}
+            className={cls(styles.flex, styles.row, styles.comment)}
+          >
+            <Avatar name={comment.user} color="initials" />
+            <div className={cls(styles.flex, styles.commentBody)}>
+              <div className={cls(styles.flex, styles.row, styles.header)}>
+                <Title order={4}>{comment.user}</Title>
+                <Text>{comment.date}</Text>
+              </div>
+              <Text>{comment.content}</Text>
+            </div>
+          </Container>
+        ))
+      )}
 
       {!user ? (
         <AuthModal />

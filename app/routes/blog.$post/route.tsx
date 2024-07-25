@@ -61,7 +61,7 @@ export default function Post() {
         {post && post.default({ components })}
       </Flex>
 
-      <Comments user={user} />
+      <Comments user={user} comments={data.comments} />
 
       <Button component={Link} to="/blog">
         Take me back

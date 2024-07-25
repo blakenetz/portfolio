@@ -52,7 +52,7 @@ type WithJoin<
   T extends Collection,
   L extends Exclude<Collection, T>
 > = Documents[T] & {
-  [key in L as `${key}_model`]: Documents[L];
+  [key in Exclude<Collection, T> as `${key}_model`]: Documents[L];
 };
 
 class DB {
@@ -149,7 +149,7 @@ class DB {
           as: mapKey,
         },
       },
-      { $set: { [mapKey]: { $first: "$" + mapKey } } },
+      { $unwind: "$" + mapKey },
     ]);
   }
 }

@@ -75,8 +75,9 @@ export async function getPost(params: Params<"post">): Promise<
   );
 
   const comments = await commentCursor
-    .sort({ date: 1 })
+    .sort({ date: -1 })
     .map<Comment>((comment) => {
+      console.log(comment);
       return {
         user: comment.users_model.username,
         content: comment.content,

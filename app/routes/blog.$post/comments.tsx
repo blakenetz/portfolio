@@ -22,8 +22,7 @@ interface CommentsProps {
 export default function Comments({ comments, user }: CommentsProps) {
   const fetcher = useFetcher();
   const [error, setError] = useToggle();
-  const [batch, handlers] = useCounter(2);
-  const [_searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams({ batch: "1" });
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -36,8 +35,8 @@ export default function Comments({ comments, user }: CommentsProps) {
   };
 
   const handleShowMore = () => {
-    setSearchParams({ batch: batch + "" });
-    handlers.increment();
+    let batch = Number(searchParams.get("batch") ?? "1");
+    setSearchParams({ batch: ++batch + "" });
   };
 
   return (

@@ -1,5 +1,5 @@
 import { Avatar, Button, Text, Textarea, Title } from "@mantine/core";
-import { useCounter, useToggle } from "@mantine/hooks";
+import { useToggle } from "@mantine/hooks";
 import { useFetcher, useSearchParams } from "@remix-run/react";
 import { FormEventHandler } from "react";
 
@@ -23,6 +23,8 @@ export default function Comments({ comments, user }: CommentsProps) {
   const fetcher = useFetcher();
   const [error, setError] = useToggle();
   const [searchParams, setSearchParams] = useSearchParams({ batch: "1" });
+
+  console.log(user);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -62,7 +64,7 @@ export default function Comments({ comments, user }: CommentsProps) {
             </section>
           ))}
           <Button
-            className={styles.submit}
+            className={styles.cta}
             variant="subtle"
             onClick={handleShowMore}
           >
@@ -71,27 +73,28 @@ export default function Comments({ comments, user }: CommentsProps) {
         </div>
       )}
 
-      {!user ? (
-        <AuthModal />
-      ) : (
-        <fetcher.Form
-          className={styles.flex}
-          onSubmit={handleSubmit}
-          method="POST"
-          action="."
-        >
-          <Textarea
-            label="What do you think?"
-            name="comment"
-            autosize
-            minRows={4}
-            error={error}
-          />
-          <Button className={styles.submit} type="submit">
+      <fetcher.Form
+        className={styles.flex}
+        onSubmit={handleSubmit}
+        method="POST"
+        action="."
+      >
+        <Textarea
+          label="What do you think?"
+          name="comment"
+          autosize
+          minRows={4}
+          error={error}
+          disabled={!user}
+        />
+        {!user ? (
+          <AuthModal />
+        ) : (
+          <Button className={styles.cta} type="submit">
             Submit
           </Button>
-        </fetcher.Form>
-      )}
+        )}
+      </fetcher.Form>
     </section>
   );
 }

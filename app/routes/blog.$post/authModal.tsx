@@ -170,7 +170,9 @@ export default function AuthModal() {
         )}
       </Modal>
 
-      <MantineButton onClick={actions.open}>Sign up</MantineButton>
+      <MantineButton onClick={actions.open} className={styles.cta}>
+        Sign up
+      </MantineButton>
     </>
   );
 }

@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 
+import { Location as RemixLocation } from "@remix-run/react";
 import crypto from "crypto";
 import { formatDistanceToNow, isThisYear } from "date-fns";
 import { Mdx } from "types/modules";
@@ -79,4 +80,14 @@ export async function exists(filePath: string) {
     .access(filePath, fs.constants.F_OK)
     .then(() => true)
     .catch(() => false);
+}
+
+export function getSearchString(
+  location: RemixLocation,
+  values: Record<string, string | number>
+) {
+  const params = new URLSearchParams(location.search);
+  Object.keys(values).forEach((k) => params.set(k, values[k] + ""));
+
+  return params.toString();
 }

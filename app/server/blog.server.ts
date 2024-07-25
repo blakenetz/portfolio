@@ -1,5 +1,4 @@
 import { Params } from "@remix-run/react";
-import fs from "fs";
 import { writeFile } from "fs/promises";
 import { ObjectId } from "mongodb";
 import path from "path";
@@ -61,7 +60,10 @@ async function verifyMdxFile(post: PostModel): Promise<boolean> {
   return true;
 }
 
-export async function getPost(params: Params<"post">): Promise<
+export async function getPost(
+  request: Request,
+  params: Params<"post">
+): Promise<
   | {
       ok: true;
       meta: PostModel["meta"];
@@ -75,7 +77,9 @@ export async function getPost(params: Params<"post">): Promise<
   const verified = await verifyMdxFile(post);
   if (!verified) return { ok: false };
 
-  // const limit = 10;
+  const { searchParams } = new URL(request.url);
+  const batch = searchParams.get("batch");
+  const limit = batch ? Number(batch) : 1;
 
   const commentCursor = await DB.aggregate(
     "comments",
@@ -85,7 +89,7 @@ export async function getPost(params: Params<"post">): Promise<
 
   const comments = await commentCursor
     .sort({ date: -1 })
-    // .limit(limit)
+    .limit(limit * 5)
     // .skip(skip)
     .map<Comment>((comment) => {
       return {

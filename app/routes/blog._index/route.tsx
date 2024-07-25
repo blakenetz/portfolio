@@ -13,7 +13,7 @@ import { useState } from "react";
 import { Card, SortControl } from "~/components";
 import { inputName, sorts } from "~/server/blog";
 import { getPosts } from "~/server/blog.server";
-import { validate } from "~/util";
+import { getSearchString, validate } from "~/util";
 
 import styles from "./blog.module.css";
 
@@ -26,13 +26,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const posts = await getPosts(request);
 
   return json(posts);
-}
-
-function getSearchString(search: string, page: number) {
-  const params = new URLSearchParams(search);
-  params.set("page", page.toString());
-
-  return params.toString();
 }
 
 export default function Blog() {
@@ -51,7 +44,7 @@ export default function Blog() {
 
   const getItemProp: PaginationProps["getItemProps"] = (page) => ({
     component: Link,
-    to: { search: getSearchString(location.search, page) },
+    to: { search: getSearchString(location, { page }) },
   });
 
   const getControlProps: PaginationProps["getControlProps"] = (control) => {
@@ -60,9 +53,11 @@ export default function Blog() {
     switch (control) {
       case "first":
         page = 0;
+        disabled = activePage <= 1;
         break;
       case "last":
         page = count;
+        disabled = activePage >= count;
         break;
       case "next":
         page = activePage + 1;
@@ -79,7 +74,7 @@ export default function Blog() {
       disabled,
       to: disabled
         ? undefined
-        : { search: getSearchString(location.search, page) },
+        : { search: getSearchString(location, { page }) },
     };
   };
 

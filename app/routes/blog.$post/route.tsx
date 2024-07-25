@@ -30,8 +30,9 @@ export const meta: MetaFunction = ({ location }) => {
   return module.meta;
 };
 
-export async function loader({ params, request }: LoaderFunctionArgs) {
-  const post = await getPost(params);
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  console.log("loader", request);
+  const post = await getPost(request, params);
   const user = await authenticator.isAuthenticated(request);
 
   if (post.ok === false) return redirect(`/blog?status=${status.unknown}`);
@@ -46,6 +47,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
 export async function action({ request, params }: ActionFunctionArgs) {
   const comments = await postComment(request, params);
+
   return json({ ok: true, data: comments });
 }
 

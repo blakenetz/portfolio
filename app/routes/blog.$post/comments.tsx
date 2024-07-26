@@ -60,7 +60,18 @@ export default function Comments({
 
   return (
     <section className={cls(styles.flex, styles.comments)}>
-      <Title order={3}>Comments</Title>
+      <div className={cls(styles.flex, styles.row, styles.commentHeader)}>
+        <Title order={3}>Comments</Title>
+        {showMore && (
+          <Button
+            className={styles.cta}
+            variant="subtle"
+            onClick={handleShowMore}
+          >
+            Show older
+          </Button>
+        )}
+      </div>
       {!comments.length ? (
         <Text>None yet 😕... but you can be the first!</Text>
       ) : (
@@ -80,15 +91,6 @@ export default function Comments({
               </div>
             </section>
           ))}
-          {showMore && (
-            <Button
-              className={styles.cta}
-              variant="subtle"
-              onClick={handleShowMore}
-            >
-              Show more
-            </Button>
-          )}
         </div>
       )}
 

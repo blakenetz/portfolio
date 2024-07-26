@@ -83,8 +83,8 @@ export async function getPost(
   if (!verified) return { ok: false };
 
   const { searchParams } = new URL(request.url);
-  const batch = searchParams.get("batch");
-  const limit = batch ? Number(batch) : 1;
+  const batch = Number(searchParams.get("batch"));
+  const limit = Number.isInteger(batch) && batch > 0 ? batch : 1;
   const filter: Filter<CommentModel> = { post: post._id };
 
   const [commentCursor, commentsTotal] = await Promise.all([
@@ -93,7 +93,7 @@ export async function getPost(
   ]);
 
   const comments = await commentCursor
-    .sort({ date: 1 })
+    .sort({ date: -1 })
     .limit(limit * 5)
     .map<Comment>((comment) => {
       return {
@@ -102,7 +102,8 @@ export async function getPost(
         date: formatDate(comment.date),
       };
     })
-    .toArray();
+    .toArray()
+    .then((v) => v.reverse());
 
   return { ok: true, meta: post.meta, comments, commentsTotal };
 }

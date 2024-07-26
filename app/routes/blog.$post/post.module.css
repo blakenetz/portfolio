@@ -60,3 +60,7 @@
   padding: var(--mantine-spacing-sm);
   border-radius: var(--mantine-radius-xs);
 }
+
+.commentHeader {
+  justify-content: space-between;
+}

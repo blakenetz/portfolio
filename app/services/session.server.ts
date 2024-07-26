@@ -1,6 +1,10 @@
 import { createCookieSessionStorage } from "@remix-run/node"; // or cloudflare/deno
 
-export type SessionData = { username: string; "user-id": string };
+export type SessionData = {
+  username: string;
+  "user-id": string;
+  [sessionKey: string]: string;
+};
 type SessionFlashData = { error: string };
 
 export const sessionStorage = createCookieSessionStorage<
@@ -8,7 +12,7 @@ export const sessionStorage = createCookieSessionStorage<
   SessionFlashData
 >({
   cookie: {
-    name: "userAuth",
+    name: "session",
     path: "/",
     httpOnly: true,
     sameSite: "lax",

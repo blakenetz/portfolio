@@ -28,6 +28,11 @@
   margin-top: var(--mantine-spacing-xl);
 }
 
+.authRoot {
+  gap: calc(var(--mantine-spacing-xs) / 2);
+  align-items: flex-end;
+}
+
 .comments {
   max-width: var(--mantine-breakpoint-sm);
   align-items: flex-start;

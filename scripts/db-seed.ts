@@ -43,15 +43,18 @@ const today = new Date();
   const users = Object.values(userIds);
   const comments: CommentModel[] = Object.values(postIds).flatMap((post) => {
     // give every post 5 comments
-    return Array.from({ length: 5 }, (_el, i) => i + 1).map((i) => ({
-      user: users[Math.floor(Math.random() * users.length) + 1],
-      post: post,
-      content: `comment number ${i}`,
-      date: sub(today, { hours: i }),
-    }));
+    return Array.from({ length: 10 }, (_el, i) => i + 1).map((i) => {
+      const user = users[Math.floor(Math.random() * users.length)];
+      return {
+        user,
+        post: post,
+        content: `comment number  ${i}.`,
+        date: sub(today, { hours: i, minutes: i * 10 }),
+      };
+    });
   });
 
-  await await DB.createMany<"comments">("comments", comments);
+  await DB.createMany<"comments">("comments", comments);
 
   console.log("Successfully seeded!");
 

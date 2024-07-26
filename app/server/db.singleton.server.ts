@@ -139,13 +139,15 @@ class DB {
     lookup: L
   ): Promise<AggregationCursor<WithJoin<T, L>>> {
     const mapKey = `${lookup}_model`;
+    const field = lookup.replace(/s$/, "");
+
     return this.#db.collection<Documents[T]>(collection).aggregate([
       { $match: match },
       {
         $lookup: {
           from: lookup,
-          localField: lookup,
-          foreignField: "id",
+          localField: field,
+          foreignField: "_id",
           as: mapKey,
         },
       },

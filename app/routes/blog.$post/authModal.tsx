@@ -5,6 +5,7 @@ import {
   PasswordInput,
   SegmentedControl,
   SegmentedControlItem,
+  Text,
   TextInput,
   TextInputProps,
 } from "@mantine/core";
@@ -26,7 +27,7 @@ import {
 
 import { Button } from "~/components";
 import { AuthFetcher, AuthMode } from "~/server/auth";
-import { capitalize } from "~/util";
+import { capitalize, cls } from "~/util";
 
 import styles from "./post.module.css";
 
@@ -170,9 +171,10 @@ export default function AuthModal() {
         )}
       </Modal>
 
-      <MantineButton onClick={actions.open} className={styles.cta}>
-        Sign up
-      </MantineButton>
+      <div className={cls(styles.flex, styles.authRoot)}>
+        <MantineButton onClick={actions.open}>Sign up</MantineButton>
+        <Text>You need to be signed in to comment</Text>
+      </div>
     </>
   );
 }

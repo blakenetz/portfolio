@@ -1,9 +1,13 @@
 import { Params } from "@remix-run/react";
 import { writeFile } from "fs/promises";
-import { ObjectId } from "mongodb";
+import { Filter, ObjectId } from "mongodb";
 import path from "path";
 
-import DB, { Comment, PostModel } from "~/server/db.singleton.server";
+import DB, {
+  Comment,
+  CommentModel,
+  PostModel,
+} from "~/server/db.singleton.server";
 import { getSession } from "~/services/session.server";
 import { exists, formatDate, validate, validateString } from "~/util";
 
@@ -68,6 +72,7 @@ export async function getPost(
       ok: true;
       meta: PostModel["meta"];
       comments: Comment[];
+      commentsTotal: number;
     }
   | { ok: false }
 > {
@@ -80,17 +85,16 @@ export async function getPost(
   const { searchParams } = new URL(request.url);
   const batch = searchParams.get("batch");
   const limit = batch ? Number(batch) : 1;
+  const filter: Filter<CommentModel> = { post: post._id };
 
-  const commentCursor = await DB.aggregate(
-    "comments",
-    { post: post._id },
-    "users"
-  );
+  const [commentCursor, commentsTotal] = await Promise.all([
+    DB.aggregate("comments", filter, "users"),
+    DB.count("comments", filter),
+  ]);
 
   const comments = await commentCursor
-    .sort({ date: -1 })
+    .sort({ date: 1 })
     .limit(limit * 5)
-    // .skip(skip)
     .map<Comment>((comment) => {
       return {
         user: comment.users_model.username,
@@ -100,7 +104,7 @@ export async function getPost(
     })
     .toArray();
 
-  return { ok: true, meta: post.meta, comments };
+  return { ok: true, meta: post.meta, comments, commentsTotal };
 }
 
 export async function postComment(request: Request, params: Params<"post">) {
@@ -120,5 +124,5 @@ export async function postComment(request: Request, params: Params<"post">) {
     date: new Date(),
   });
 
-  console.log(results);
+  return { ok: results.acknowledged };
 }

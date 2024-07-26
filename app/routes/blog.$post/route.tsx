@@ -31,7 +31,6 @@ export const meta: MetaFunction = ({ location }) => {
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  console.log("loader", request);
   const post = await getPost(request, params);
   const user = await authenticator.isAuthenticated(request);
 
@@ -63,7 +62,11 @@ export default function Post() {
         {post && post.default({ components })}
       </Flex>
 
-      <Comments user={user} comments={data.comments} />
+      <Comments
+        user={user}
+        comments={data.comments}
+        commentsTotal={data.commentsTotal}
+      />
 
       <Button component={Link} to="/blog">
         Take me back

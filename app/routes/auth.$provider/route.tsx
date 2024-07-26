@@ -14,6 +14,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"));
     session.set("username", user.username);
     session.set("user-id", user.id);
+    session.set(authenticator.sessionKey, user.username);
 
     const headers = new Headers({ "Set-Cookie": await commitSession(session) });
 

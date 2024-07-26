@@ -1,7 +1,7 @@
 import { Avatar, Button, Text, Textarea, Title } from "@mantine/core";
 import { useToggle } from "@mantine/hooks";
 import { useFetcher, useSearchParams } from "@remix-run/react";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useState } from "react";
 
 import { User } from "~/server/authenticator.server";
 import { Comment } from "~/server/db.singleton.server";
@@ -11,7 +11,15 @@ import AuthModal from "./authModal";
 import styles from "./post.module.css";
 
 interface CommentsProps {
+  /**
+   * This includes username and a formatted date
+   */
   comments: Comment[];
+
+  /**
+   * Used for batching comments
+   */
+  commentsTotal: number;
 
   /**
    * authentication state
@@ -19,12 +27,17 @@ interface CommentsProps {
   user: User | null;
 }
 
-export default function Comments({ comments, user }: CommentsProps) {
+export default function Comments({
+  commentsTotal,
+  comments,
+  user,
+}: CommentsProps) {
   const fetcher = useFetcher();
   const [error, setError] = useToggle();
   const [searchParams, setSearchParams] = useSearchParams({ batch: "1" });
+  const [value, setValue] = useState("");
 
-  console.log(user);
+  const showMore = commentsTotal > comments.length;
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -33,7 +46,11 @@ export default function Comments({ comments, user }: CommentsProps) {
     const comment = formData.get("comment");
 
     if (!comment) setError(true);
-    else fetcher.submit(e.currentTarget);
+    else {
+      fetcher.submit(e.currentTarget);
+      setError(false);
+      setValue("");
+    }
   };
 
   const handleShowMore = () => {
@@ -63,13 +80,15 @@ export default function Comments({ comments, user }: CommentsProps) {
               </div>
             </section>
           ))}
-          <Button
-            className={styles.cta}
-            variant="subtle"
-            onClick={handleShowMore}
-          >
-            Show more
-          </Button>
+          {showMore && (
+            <Button
+              className={styles.cta}
+              variant="subtle"
+              onClick={handleShowMore}
+            >
+              Show more
+            </Button>
+          )}
         </div>
       )}
 
@@ -86,6 +105,8 @@ export default function Comments({ comments, user }: CommentsProps) {
           minRows={4}
           error={error}
           disabled={!user}
+          value={value}
+          onChange={(e) => setValue(e.currentTarget.value)}
         />
         {!user ? (
           <AuthModal />

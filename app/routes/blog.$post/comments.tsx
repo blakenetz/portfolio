@@ -40,7 +40,9 @@ export default function Comments({
   const showMore = commentsTotal > comments.length;
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    if (e.defaultPrevented) return;
     e.preventDefault();
+
     const formData = new FormData(e.currentTarget);
 
     const comment = formData.get("comment");

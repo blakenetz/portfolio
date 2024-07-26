@@ -1,6 +1,7 @@
 import {
   Alert,
   Button as MantineButton,
+  Divider,
   Modal,
   PasswordInput,
   SegmentedControl,
@@ -12,6 +13,8 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { useFetcher } from "@remix-run/react";
 import {
+  IconBrandGithub,
+  IconBrandGoogle,
   IconCheck,
   IconKey,
   IconMoodConfuzed,
@@ -151,9 +154,34 @@ export default function AuthModal() {
             <Field key={field} field={field} mode={mode} errors={errors} />
           ))}
 
-          <Button component="button" type="submit" loading={loading}>
+          <Button
+            component="button"
+            type="submit"
+            loading={loading}
+            className={styles.cta}
+          >
             {fetcher.data?.ok === true ? <IconCheck /> : cta}
           </Button>
+
+          {mode === "new" && (
+            <>
+              <Divider label="Or" labelPosition="center" />
+              <div className={styles.flex}>
+                <MantineButton
+                  variant="outline"
+                  classNames={{ label: styles.row }}
+                >
+                  <IconBrandGithub /> Sign up with Github
+                </MantineButton>
+                <MantineButton
+                  variant="outline"
+                  classNames={{ label: styles.row }}
+                >
+                  <IconBrandGoogle /> Sign up with Google
+                </MantineButton>
+              </div>
+            </>
+          )}
         </fetcher.Form>
 
         {showError && (

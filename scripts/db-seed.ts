@@ -2,7 +2,7 @@ import { sub } from "date-fns";
 import { Binary } from "mongodb";
 
 import DB, { CommentModel } from "~/server/db.singleton.server";
-import { hashPassword } from "~/util";
+import { hashPassword } from "~/utils";
 
 import { generateBaseMDxContent } from "./util";
 

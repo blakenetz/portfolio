@@ -46,8 +46,26 @@
 
 .anchor {
   font-weight: 700;
+  color: var(--mantine-color-red-4);
 }
 
 .breadcrumbs {
   align-self: flex-start;
+}
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--mantine-spacing-md);
+  background: linear-gradient(
+    120deg,
+    var(--mantine-color-red-2),
+    var(--mantine-color-red-4)
+  );
+  z-index: 1;
+}
+
+.fixed a {
+  color: var(--mantine-color-black);
 }

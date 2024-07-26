@@ -5,7 +5,7 @@ import { FormEventHandler, useState } from "react";
 
 import { User } from "~/server/authenticator.server";
 import { Comment } from "~/server/db.singleton.server";
-import { cls } from "~/util";
+import { cls } from "~/utils";
 
 import AuthModal from "./authModal";
 import styles from "./post.module.css";

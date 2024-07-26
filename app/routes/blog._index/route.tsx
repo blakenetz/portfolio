@@ -13,7 +13,7 @@ import { useState } from "react";
 import { Card, SortControl } from "~/components";
 import { inputName, sorts } from "~/server/blog";
 import { getPosts } from "~/server/blog.server";
-import { getSearchString, validate } from "~/util";
+import { getSearchString, validate } from "~/utils";
 
 import styles from "./blog.module.css";
 

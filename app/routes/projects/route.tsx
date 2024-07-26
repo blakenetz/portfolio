@@ -3,7 +3,7 @@ import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 
 import { Button } from "~/components";
 import { getRepos } from "~/server/projects.server";
-import { status } from "~/util";
+import { status } from "~/utils";
 
 import styles from "./projects.module.css";
 import Repos from "./repos";

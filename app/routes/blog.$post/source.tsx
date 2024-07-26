@@ -2,7 +2,7 @@ import { Anchor, Notification, Text } from "@mantine/core";
 import { IconBrandGithub, IconBrandMedium } from "@tabler/icons-react";
 import { Attribute } from "types/modules";
 
-import { capitalize, cls } from "~/util";
+import { capitalize, cls } from "~/utils";
 
 import styles from "./post.module.css";
 

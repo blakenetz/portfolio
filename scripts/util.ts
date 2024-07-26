@@ -1,4 +1,4 @@
-import { formatDate } from "~/util";
+import { formatDate } from "~/utils";
 
 export function generateBaseMDxContent(fileName: string) {
   return `---

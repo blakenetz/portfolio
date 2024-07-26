@@ -2,7 +2,7 @@ import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 
 import { sessionStorage } from "~/services/session.server";
-import { hashPassword, validateString } from "~/util";
+import { hashPassword, validateString } from "~/utils";
 
 import { AuthMode } from "./auth";
 import DB from "./db.singleton.server";

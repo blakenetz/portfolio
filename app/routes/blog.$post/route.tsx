@@ -13,7 +13,7 @@ import { Button } from "~/components";
 import { authenticator } from "~/server/authenticator.server";
 import { getPost, postComment } from "~/server/blog.server";
 import commonStyles from "~/styles/common.module.css";
-import { cls, status } from "~/util";
+import { cls, status } from "~/utils";
 
 import Comments from "./comments";
 import components from "./components";

@@ -26,7 +26,7 @@ import {
 
 import { Button, Layout, Notification } from "~/components";
 import styles from "~/styles/root.css?url";
-import { Status, status as errorStatus } from "~/util";
+import { Status, status as errorStatus } from "~/utils";
 
 import ColorSchemeContext from "./styles/colorSchemeContext";
 

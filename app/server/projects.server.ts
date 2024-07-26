@@ -1,5 +1,5 @@
 import Api from "~/server/projects.singleton.server";
-import { formatDate } from "~/util";
+import { formatDate } from "~/utils";
 
 import {
   getParam,

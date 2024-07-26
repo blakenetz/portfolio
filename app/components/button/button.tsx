@@ -5,7 +5,7 @@ import {
 } from "@mantine/core";
 
 import commonStyles from "~/styles/common.module.css";
-import { cls } from "~/util";
+import { cls } from "~/utils";
 
 import styles from "./button.module.css";
 

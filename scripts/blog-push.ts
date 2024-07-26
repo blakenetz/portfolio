@@ -13,7 +13,7 @@ import { unified } from "unified";
 import { matter } from "vfile-matter";
 
 import DB from "~/server/db.singleton.server";
-import { exists, kebobCase, parseMdxMeta } from "~/util";
+import { exists, kebobCase, parseMdxMeta } from "~/utils";
 
 interface __VFile extends VFile {
   data: {

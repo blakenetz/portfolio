@@ -9,7 +9,7 @@ import DB, {
   PostModel,
 } from "~/server/db.singleton.server";
 import { getSession } from "~/services/session.server";
-import { exists, formatDate, validate, validateString } from "~/util";
+import { exists, formatDate, validate, validateString } from "~/utils";
 
 import { inputName, sorts } from "./blog";
 

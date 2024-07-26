@@ -4,7 +4,7 @@ import { Link } from "@remix-run/react";
 import { Button } from "~/components";
 import commonStyles from "~/styles/common.module.css";
 import styles from "~/styles/index.module.css";
-import { cls } from "~/util";
+import { cls } from "~/utils";
 
 export default function Index() {
   return (

@@ -27,7 +27,7 @@ import {
 
 import { Button } from "~/components";
 import { AuthFetcher, AuthMode } from "~/server/auth";
-import { capitalize, cls } from "~/util";
+import { capitalize, cls } from "~/utils";
 
 import styles from "./post.module.css";
 

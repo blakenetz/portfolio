@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, json } from "@remix-run/node";
 import { AuthorizationError } from "remix-auth";
 
 import { AuthFetcher } from "~/server/auth";
@@ -7,9 +7,11 @@ import { commitSession, getSession } from "~/services/session.server";
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   try {
+    console.log(params, params.provider);
     const user = await authenticator.authenticate(params.provider!, request, {
       throwOnError: true,
     });
+    console.log("user", user);
 
     const session = await getSession(request.headers.get("cookie"));
     session.set("username", user.username);
@@ -23,6 +25,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     if (error instanceof AuthorizationError) {
       return json<AuthFetcher>({ ok: false, error: error.message });
     }
-    redirect("/");
+    console.log("error", error);
+    return json<AuthFetcher>({ ok: false });
   }
 };

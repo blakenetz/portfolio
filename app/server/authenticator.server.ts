@@ -1,5 +1,7 @@
 import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
+import { GitHubStrategy } from "remix-auth-github";
+import { GoogleStrategy } from "remix-auth-google";
 
 import { sessionStorage } from "~/services/session.server";
 import { hashPassword, validateString } from "~/utils";
@@ -19,68 +21,69 @@ export const errors = {
 
 export const authenticator = new Authenticator<User>(sessionStorage);
 
-authenticator.use(
-  new FormStrategy(async ({ form }) => {
-    const username = validateString(form.get("username"));
-    const password = validateString(form.get("password"));
-    const mode = validateString<AuthMode>(form.get("mode"));
+const url =
+  process.env.NODE_ENV === "production"
+    ? "https://blakenetzeband.com"
+    : "http://localhost:5173";
 
-    const hash = hashPassword(password);
+function getCallback(provider: "github" | "google") {
+  return `${url}/auth/${provider}/callback`;
+}
 
-    if (mode === "new") {
-      const email = validateString(form.get("email"));
-      const results = await DB.createOne<"newUser">("users", {
-        username,
-        password: hash,
-        email,
-      });
-      return { username, id: results.insertedId.toString() };
-    }
+const formStrategy = new FormStrategy(async ({ form }) => {
+  const username = validateString(form.get("username"));
+  const password = validateString(form.get("password"));
+  const mode = validateString<AuthMode>(form.get("mode"));
 
-    const user = await DB.findOne("users", { username });
+  const hash = hashPassword(password);
 
-    if (!user) throw new Error(errors.notFound);
+  if (mode === "new") {
+    const email = validateString(form.get("email"));
+    const results = await DB.createOne<"newUser">("users", {
+      username,
+      password: hash,
+      email,
+    });
+    return { username, id: results.insertedId.toString() };
+  }
 
-    if (hash !== user.password) {
-      throw new Error(errors.badPassword);
-    }
+  const user = await DB.findOne("users", { username });
 
-    return { username: user.username, id: user._id.toString() };
-  }),
-  "form"
+  if (!user) throw new Error(errors.notFound);
+
+  if (hash !== user.password) {
+    throw new Error(errors.badPassword);
+  }
+
+  return { username: user.username, id: user._id.toString() };
+});
+
+const githubStrategy = new GitHubStrategy(
+  {
+    clientID: process.env.GITHUB_CLIENT_ID!,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    callbackURL: getCallback("github"),
+    scope: "user",
+  },
+  async ({ accessToken, extraParams, profile, ...rest }) => {
+    console.log("github", { profile, accessToken, extraParams, rest });
+    return { username: "", id: "" };
+  }
 );
 
-// export const authenticator = new Authenticator(session, {
-//   sessionKey: "_session",
-// });
+const googleStrategy = new GoogleStrategy(
+  {
+    clientID: process.env.GOOGLE_CLIENT_ID!,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    callbackURL: getCallback("google"),
+  },
+  async ({ profile, accessToken, extraParams, ...rest }) => {
+    console.log("google", { profile, accessToken, extraParams, rest });
+    return { username: "", id: "" };
+  }
+);
 
-// const getCallback = (provider: SocialsProvider) => {
-//   return `${url}/auth/${provider}/callback`;
-// };
-
-// authenticator.use(
-//   new GoogleStrategy(
-//     {
-//       clientID: process.env.GOOGLE_CLIENT_ID!,
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-//       callbackURL: getCallback(SocialsProvider.GOOGLE),
-//     },
-//     async ({ profile }) => {
-//       console.log(profile);
-//       return profile;
-//     }
-//   )
-// );
-// authenticator.use(
-//   new GitHubStrategy(
-//     {
-//       clientID: process.env.GITHUB_CLIENT_ID!,
-//       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-//       callbackURL: getCallback(SocialsProvider.FACEBOOK),
-//     },
-//     async ({ profile }) => {
-//       console.log(profile);
-//       return profile;
-//     }
-//   )
-// );
+authenticator
+  .use(formStrategy, "form")
+  .use(githubStrategy, "github")
+  .use(googleStrategy, "google");

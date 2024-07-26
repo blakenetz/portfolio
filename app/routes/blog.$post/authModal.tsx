@@ -136,9 +136,9 @@ export default function AuthModal() {
     <>
       <Modal opened={opened} onClose={actions.close} withCloseButton={false}>
         <fetcher.Form
+          className={styles.flex}
           method="POST"
           action="/auth/form"
-          className={styles.flex}
           onSubmit={handleSubmit}
           onChange={handleChange}
         >
@@ -170,12 +170,24 @@ export default function AuthModal() {
                 <MantineButton
                   variant="outline"
                   classNames={{ label: styles.row }}
+                  onClick={() =>
+                    fetcher.submit(null, {
+                      method: "POST",
+                      action: "/auth/github",
+                    })
+                  }
                 >
                   <IconBrandGithub /> Sign up with Github
                 </MantineButton>
                 <MantineButton
                   variant="outline"
                   classNames={{ label: styles.row }}
+                  onClick={() =>
+                    fetcher.submit(null, {
+                      method: "POST",
+                      action: "/auth/google",
+                    })
+                  }
                 >
                   <IconBrandGoogle /> Sign up with Google
                 </MantineButton>

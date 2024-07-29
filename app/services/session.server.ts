@@ -12,7 +12,7 @@ export const sessionStorage = createCookieSessionStorage<
   SessionFlashData
 >({
   cookie: {
-    name: "session",
+    name: "__auth",
     path: "/",
     httpOnly: true,
     sameSite: "lax",

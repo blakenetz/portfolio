@@ -11,7 +11,7 @@ import {
   TextInputProps,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useFetcher } from "@remix-run/react";
+import { useFetcher, useLocation } from "@remix-run/react";
 import {
   IconBrandGithub,
   IconBrandGoogle,
@@ -89,6 +89,7 @@ export default function AuthModal() {
   const [errors, setErrors] = useState<Field[]>([]);
   const [showNotification, notificationActions] = useDisclosure();
   const [opened, actions] = useDisclosure();
+  const location = useLocation();
 
   const { cta } = modeMap.get(mode)!;
   const data = Array.from(modeMap.values()).map(({ data }) => data);
@@ -171,10 +172,13 @@ export default function AuthModal() {
                   variant="outline"
                   classNames={{ label: styles.row }}
                   onClick={() =>
-                    fetcher.submit(null, {
-                      method: "POST",
-                      action: "/auth/github",
-                    })
+                    fetcher.submit(
+                      { redirectUrl: encodeURIComponent(location.pathname) },
+                      {
+                        method: "POST",
+                        action: `/auth/github`,
+                      }
+                    )
                   }
                 >
                   <IconBrandGithub /> Sign up with Github

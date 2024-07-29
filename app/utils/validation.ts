@@ -1,5 +1,5 @@
 export function validate<T>(
-  val: string | null,
+  val: string | null | undefined,
   arr: ReadonlyArray<T>
 ): T | null {
   const sort = val as T | null;

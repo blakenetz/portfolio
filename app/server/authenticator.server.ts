@@ -3,10 +3,11 @@ import { FormStrategy } from "remix-auth-form";
 import { GitHubStrategy } from "remix-auth-github";
 import { GoogleStrategy } from "remix-auth-google";
 
+import Cache from "~/server/cache.server";
 import { sessionStorage } from "~/services/session.server";
 import { hashPassword, validateString } from "~/utils";
 
-import { AuthMode } from "./auth";
+import { AuthMode, AuthProvider } from "./auth";
 import DB from "./db.singleton.server";
 
 export type User = {
@@ -20,13 +21,14 @@ export const errors = {
 };
 
 export const authenticator = new Authenticator<User>(sessionStorage);
+export const redirectCache = new Cache<AuthProvider, Record<string, string>>();
 
 const url =
   process.env.NODE_ENV === "production"
     ? "https://blakenetzeband.com"
     : "http://localhost:5173";
 
-function getCallback(provider: "github" | "google") {
+function getCallback(provider: AuthProvider) {
   return `${url}/auth/${provider}/callback`;
 }
 

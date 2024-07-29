@@ -1,31 +1,24 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { AuthorizationError } from "remix-auth";
 
-import { AuthFetcher } from "~/server/auth";
-import { authenticator } from "~/server/authenticator.server";
-import { commitSession, getSession } from "~/services/session.server";
+import { authProviders } from "~/server/auth";
+import { authenticator, redirectCache } from "~/server/authenticator.server";
+import { getSession } from "~/services/session.server";
+import { validate } from "~/utils";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  console.log("callback", params, request);
+  const provider = validate(params.provider, authProviders);
 
-  try {
-    const user = await authenticator.authenticate(params.provider!, request, {
-      throwOnError: true,
-    });
+  const session = await getSession(request.headers.get("cookie"));
+  const key = session.id || (request.headers.get("user-agent") as string);
 
-    const session = await getSession(request.headers.get("cookie"));
-    session.set("username", user.username);
-    session.set("user-id", user.id);
-    session.set(authenticator.sessionKey, user.username);
-
-    const headers = new Headers({ "Set-Cookie": await commitSession(session) });
-
-    return json<AuthFetcher>({ ok: true }, { headers });
-  } catch (error) {
-    if (error instanceof AuthorizationError) {
-      return json<AuthFetcher>({ ok: false, error: error.message });
-    }
-    console.log("error in callback", error);
-    return json<AuthFetcher>({ ok: false });
+  if (!provider) {
+    return json({ ok: false, error: "invalid provider" });
   }
+
+  const cacheItem = await redirectCache.fetchFromCache(provider);
+  const redirectUrl = cacheItem?.[key] ?? "/blog";
+
+  return await authenticator.authenticate(provider, request, {
+    failureRedirect: decodeURIComponent(redirectUrl),
+  });
 };

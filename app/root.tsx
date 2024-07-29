@@ -6,9 +6,7 @@ import {
   MantineProvider,
   Title,
 } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
-import { Notifications, notifications } from "@mantine/notifications";
-import mantineNotificationStyles from "@mantine/notifications/styles.css?url";
+import { useLocalStorage, useToggle } from "@mantine/hooks";
 import type {
   HeadersFunction,
   LinksFunction,
@@ -25,11 +23,10 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import { useEffect } from "react";
 
-import { Button, Layout } from "~/components";
+import { Button, Layout, Notification } from "~/components";
 import styles from "~/styles/root.css?url";
-import { messages, Status, status as httpStatus } from "~/utils";
+import { Status, status as httpStatus } from "~/utils";
 
 import ColorSchemeContext from "./styles/colorSchemeContext";
 
@@ -50,7 +47,6 @@ export const meta: MetaFunction = () => [
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
-  { rel: "stylesheet", href: mantineNotificationStyles },
   // fonts
   {
     href: "https://fonts.googleapis.com/css?family=Poiret+One|Monoton|Rajdhani:400,700",
@@ -145,23 +141,14 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function App() {
   const { status } = useLoaderData<typeof loader>();
-
-  useEffect(() => {
-    if (status !== "ok") {
-      const isSuccess = status === httpStatus["authSuccess"];
-      notifications.show({
-        title: isSuccess ? "Yay!" : "Sorry!",
-        color: isSuccess ? "green" : "red",
-        withBorder: true,
-        message: messages.get(status),
-      });
-    }
-  }, [status]);
+  const [hide, setHide] = useToggle();
 
   const [ada, setAda] = useLocalStorage({
     key: "ada",
     defaultValue: false,
   });
+
+  console.log(status);
 
   return (
     <html lang="en">
@@ -178,11 +165,11 @@ export default function App() {
             theme={{ other: { ada }, primaryColor: "indigo" }}
             cssVariablesResolver={resolver}
           >
-            <Notifications />
             <Layout>
               <Outlet />
               <Scripts />
             </Layout>
+            <Notification hide={hide} handleClose={setHide} status={status} />
           </MantineProvider>
         </ColorSchemeContext.Provider>
       </body>

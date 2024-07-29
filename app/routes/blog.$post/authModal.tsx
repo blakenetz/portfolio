@@ -7,7 +7,6 @@ import {
   Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
 import { useFetcher, useLocation } from "@remix-run/react";
 import {
   IconBrandGithub,
@@ -29,7 +28,7 @@ import {
   AuthProvider,
   authProviders,
 } from "~/server/auth";
-import { capitalize, cls, messages } from "~/utils";
+import { capitalize, cls } from "~/utils";
 
 import Field, { fields, FieldType } from "./field";
 import styles from "./post.module.css";
@@ -66,18 +65,18 @@ export default function AuthModal() {
 
   const loading = fetcher.state !== "idle";
 
-  useEffect(() => {
-    const message =
-      fetcher.data?.error ?? messages.get(fetcher.data?.status ?? "unknown");
+  // useEffect(() => {
+  //   const message =
+  //     fetcher.data?.error ?? messages.get(fetcher.data?.status ?? "unknown");
 
-    if (fetcher.data?.ok === false)
-      notifications.show({
-        title: "Sorry!",
-        color: "red",
-        withBorder: true,
-        message: message,
-      });
-  }, [fetcher.data]);
+  //   if (fetcher.data?.ok === false)
+  //     notifications.show({
+  //       title: "Sorry!",
+  //       color: "red",
+  //       withBorder: true,
+  //       message: message,
+  //     });
+  // }, [fetcher.data]);
 
   useEffect(() => {
     let id: NodeJS.Timeout;

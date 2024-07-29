@@ -6,7 +6,9 @@ import {
   MantineProvider,
   Title,
 } from "@mantine/core";
-import { useLocalStorage, useToggle } from "@mantine/hooks";
+import { useLocalStorage } from "@mantine/hooks";
+import { Notifications, notifications } from "@mantine/notifications";
+import mantineNotificationStyles from "@mantine/notifications/styles.css?url";
 import type {
   HeadersFunction,
   LinksFunction,
@@ -23,10 +25,11 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
+import { useEffect } from "react";
 
-import { Button, Layout, Notification } from "~/components";
+import { Button, Layout } from "~/components";
 import styles from "~/styles/root.css?url";
-import { Status, status as errorStatus } from "~/utils";
+import { messages, Status, status as errorStatus } from "~/utils";
 
 import ColorSchemeContext from "./styles/colorSchemeContext";
 
@@ -47,6 +50,7 @@ export const meta: MetaFunction = () => [
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
+  { rel: "stylesheet", href: mantineNotificationStyles },
   // fonts
   {
     href: "https://fonts.googleapis.com/css?family=Poiret+One|Monoton|Rajdhani:400,700",
@@ -141,7 +145,17 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function App() {
   const { status } = useLoaderData<typeof loader>();
-  const [hide, setHide] = useToggle();
+
+  useEffect(() => {
+    if (status !== "ok")
+      notifications.show({
+        title: "Sorry!",
+        color: "red",
+        withBorder: true,
+        message: messages.get(status),
+        // className: "notification",
+      });
+  }, [status]);
 
   const [ada, setAda] = useLocalStorage({
     key: "ada",
@@ -163,11 +177,11 @@ export default function App() {
             theme={{ other: { ada }, primaryColor: "indigo" }}
             cssVariablesResolver={resolver}
           >
+            <Notifications />
             <Layout>
               <Outlet />
               <Scripts />
             </Layout>
-            <Notification hide={hide} handleClose={setHide} status={status} />
           </MantineProvider>
         </ColorSchemeContext.Provider>
       </body>

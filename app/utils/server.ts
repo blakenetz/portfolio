@@ -10,6 +10,12 @@ export const status = {
 } as const;
 export type Status = (typeof status)[keyof typeof status];
 
+export const messages = new Map<Status, string | null>([
+  ["octokit-fail", "We seemed to hit a snag fetching data from Github."],
+  ["ok", null],
+  ["unknown", "Something has gone horrible wrong, so we sent you home."],
+]);
+
 export function hashPassword(password: string) {
   return crypto
     .pbkdf2Sync(password, process.env.AUTH_HASH!, 1000, 64, `sha512`)

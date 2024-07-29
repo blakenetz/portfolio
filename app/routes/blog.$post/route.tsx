@@ -13,7 +13,7 @@ import { Button } from "~/components";
 import { authenticator } from "~/server/authenticator.server";
 import { getPost, postComment } from "~/server/blog.server";
 import commonStyles from "~/styles/common.module.css";
-import { cls, status } from "~/utils";
+import { cls } from "~/utils";
 
 import Comments from "./comments";
 import components from "./components";
@@ -34,7 +34,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const post = await getPost(request, params);
   const user = await authenticator.isAuthenticated(request);
 
-  if (post.ok === false) return redirect(`/blog?status=${status.unknown}`);
+  if (post.ok === false) return redirect(`/blog?status=${post.errorStatus}`);
 
   const { ok: _ok, ...data } = post;
 

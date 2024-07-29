@@ -1,73 +1,43 @@
 import {
-  Alert,
   Button as MantineButton,
   Divider,
   Modal,
-  PasswordInput,
   SegmentedControl,
   SegmentedControlItem,
   Text,
-  TextInput,
-  TextInputProps,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 import { useFetcher, useLocation } from "@remix-run/react";
 import {
   IconBrandGithub,
   IconBrandGoogle,
   IconCheck,
-  IconKey,
-  IconMoodConfuzed,
-  IconMoodTongue,
-  IconSend,
 } from "@tabler/icons-react";
 import {
   ChangeEventHandler,
   FormEventHandler,
+  MouseEventHandler,
   useEffect,
   useState,
 } from "react";
 
 import { Button } from "~/components";
-import { AuthFetcher, AuthMode } from "~/server/auth";
-import { capitalize, cls } from "~/utils";
+import {
+  AuthFetcher,
+  AuthMode,
+  AuthProvider,
+  authProviders,
+} from "~/server/auth";
+import { capitalize, cls, messages } from "~/utils";
 
+import Field, { fields, FieldType } from "./field";
 import styles from "./post.module.css";
 
-const fields = ["username", "email", "password"] as const;
-type Field = (typeof fields)[number];
-
-interface FieldProps {
-  field: Field;
-  mode: AuthMode;
-  errors: Field[];
-}
-
-const iconMap = new Map<Field, React.ReactElement>([
-  ["email", <IconSend key="email-icon" />],
-  ["password", <IconKey key="password-icon" />],
-  ["username", <IconMoodTongue key="username-icon" />],
+const providerIconMap = new Map<AuthProvider, React.ReactElement>([
+  ["github", <IconBrandGithub key="github" />],
+  ["google", <IconBrandGoogle key="google" />],
 ]);
-
-function Field({ field, mode, errors }: FieldProps) {
-  const label = capitalize(field);
-  const error = errors.includes(field) && `${label} is required`;
-
-  const props: TextInputProps = {
-    size: "md",
-    label,
-    error,
-    name: field,
-    leftSection: iconMap.get(field),
-  };
-
-  const Component: React.ElementType =
-    field === "password" ? PasswordInput : TextInput;
-
-  const isHidden = mode === "existing" && field === "email";
-
-  return isHidden ? null : <Component {...props} />;
-}
 
 const modeMap = new Map<AuthMode, { cta: string; data: SegmentedControlItem }>([
   [
@@ -86,8 +56,8 @@ const modeMap = new Map<AuthMode, { cta: string; data: SegmentedControlItem }>([
 export default function AuthModal() {
   const fetcher = useFetcher<AuthFetcher>();
   const [mode, setMode] = useState<AuthMode>("new");
-  const [errors, setErrors] = useState<Field[]>([]);
-  const [showNotification, notificationActions] = useDisclosure();
+  const [errors, setErrors] = useState<FieldType[]>([]);
+
   const [opened, actions] = useDisclosure();
   const location = useLocation();
 
@@ -95,7 +65,19 @@ export default function AuthModal() {
   const data = Array.from(modeMap.values()).map(({ data }) => data);
 
   const loading = fetcher.state !== "idle";
-  const showError = !loading && showNotification && fetcher.data?.ok === false;
+
+  useEffect(() => {
+    const message =
+      fetcher.data?.error ?? messages.get(fetcher.data?.status ?? "unknown");
+
+    if (fetcher.data?.ok === false)
+      notifications.show({
+        title: "Sorry!",
+        color: "red",
+        withBorder: true,
+        message: message,
+      });
+  }, [fetcher.data]);
 
   useEffect(() => {
     let id: NodeJS.Timeout;
@@ -114,7 +96,7 @@ export default function AuthModal() {
     const password = formData.get("password");
     const email = formData.get("email");
 
-    const nextErrors: Field[] = [];
+    const nextErrors: FieldType[] = [];
 
     if (!username) nextErrors.push("username");
     if (!password) nextErrors.push("password");
@@ -124,13 +106,23 @@ export default function AuthModal() {
 
     if (!nextErrors.length) {
       fetcher.submit(e.currentTarget);
-      notificationActions.open();
     }
   };
 
   const handleChange: ChangeEventHandler<HTMLFormElement> = (e) => {
-    const name = e.target.name as Field;
+    const name = e.target.name as FieldType;
     setErrors((prev) => prev.filter((v) => v !== name));
+  };
+
+  const handleSocialClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    const provider = e.currentTarget.name;
+    fetcher.submit(
+      { redirectUrl: encodeURIComponent(location.pathname) },
+      {
+        method: "POST",
+        action: `/auth/${provider}`,
+      }
+    );
   };
 
   return (
@@ -168,51 +160,22 @@ export default function AuthModal() {
             <>
               <Divider label="Or" labelPosition="center" />
               <div className={styles.flex}>
-                <MantineButton
-                  variant="outline"
-                  classNames={{ label: styles.row }}
-                  onClick={() =>
-                    fetcher.submit(
-                      { redirectUrl: encodeURIComponent(location.pathname) },
-                      {
-                        method: "POST",
-                        action: `/auth/github`,
-                      }
-                    )
-                  }
-                >
-                  <IconBrandGithub /> Sign up with Github
-                </MantineButton>
-                <MantineButton
-                  variant="outline"
-                  classNames={{ label: styles.row }}
-                  onClick={() =>
-                    fetcher.submit(null, {
-                      method: "POST",
-                      action: "/auth/google",
-                    })
-                  }
-                >
-                  <IconBrandGoogle /> Sign up with Google
-                </MantineButton>
+                {authProviders.map((provider) => (
+                  <MantineButton
+                    key={provider}
+                    name={provider}
+                    variant="outline"
+                    classNames={{ label: styles.row }}
+                    onClick={handleSocialClick}
+                  >
+                    {providerIconMap.get(provider)}
+                    {`Sign up with ${capitalize(provider)}`}
+                  </MantineButton>
+                ))}
               </div>
             </>
           )}
         </fetcher.Form>
-
-        {showError && (
-          <Alert
-            color="red"
-            variant="light"
-            onClose={notificationActions.close}
-            className={styles.authNotification}
-            withCloseButton
-            closeButtonLabel="Dismiss"
-            icon={<IconMoodConfuzed />}
-          >
-            {fetcher.data?.error}
-          </Alert>
-        )}
       </Modal>
 
       <div className={cls(styles.flex, styles.authRoot)}>

@@ -27,14 +27,14 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       if (error instanceof AuthorizationError) {
         return json<AuthFetcher>({ ok: false, error: error.message });
       }
-      return json<AuthFetcher>({ ok: false });
+      return json<AuthFetcher>({ ok: false, status: "unknown" });
     }
   }
 
   const provider = validate(params.provider, authProviders);
 
   if (!provider) {
-    return json<AuthFetcher>({ ok: false, error: "invalid provider" });
+    return json<AuthFetcher>({ ok: false, status: "provider" });
   }
 
   const key = session.id || (request.headers.get("user-agent") as string);

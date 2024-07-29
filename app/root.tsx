@@ -29,7 +29,7 @@ import { useEffect } from "react";
 
 import { Button, Layout } from "~/components";
 import styles from "~/styles/root.css?url";
-import { messages, Status, status as errorStatus } from "~/utils";
+import { messages, Status, status as httpStatus } from "~/utils";
 
 import ColorSchemeContext from "./styles/colorSchemeContext";
 
@@ -138,7 +138,7 @@ export function ErrorBoundary() {
 export const loader: LoaderFunction = async ({ request }) => {
   const status =
     (new URL(request.url).searchParams.get("status") as Status) ??
-    errorStatus.ok;
+    httpStatus.ok;
 
   return json({ status });
 };
@@ -147,14 +147,15 @@ export default function App() {
   const { status } = useLoaderData<typeof loader>();
 
   useEffect(() => {
-    if (status !== "ok")
+    if (status !== "ok") {
+      const isSuccess = status === httpStatus["authSuccess"];
       notifications.show({
-        title: "Sorry!",
-        color: "red",
+        title: isSuccess ? "Yay!" : "Sorry!",
+        color: isSuccess ? "green" : "red",
         withBorder: true,
         message: messages.get(status),
-        // className: "notification",
       });
+    }
   }, [status]);
 
   const [ada, setAda] = useLocalStorage({

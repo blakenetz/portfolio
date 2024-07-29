@@ -9,7 +9,14 @@ import DB, {
   PostModel,
 } from "~/server/db.singleton.server";
 import { getSession } from "~/services/session.server";
-import { exists, formatDate, validate, validateString } from "~/utils";
+import {
+  exists,
+  formatDate,
+  Status,
+  status,
+  validate,
+  validateString,
+} from "~/utils";
 
 import { inputName, sorts } from "./blog";
 
@@ -74,13 +81,13 @@ export async function getPost(
       comments: Comment[];
       commentsTotal: number;
     }
-  | { ok: false }
+  | { ok: false; errorStatus: Status }
 > {
   const post = await getPostByParams(params);
-  if (!post) return { ok: false };
+  if (!post) return { ok: false, errorStatus: status.post };
 
   const verified = await verifyMdxFile(post);
-  if (!verified) return { ok: false };
+  if (!verified) return { ok: false, errorStatus: status.mdx };
 
   const { searchParams } = new URL(request.url);
   const batch = Number(searchParams.get("batch"));

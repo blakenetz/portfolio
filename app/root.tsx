@@ -148,8 +148,6 @@ export default function App() {
     defaultValue: false,
   });
 
-  console.log(status);
-
   return (
     <html lang="en">
       <head>

@@ -12,19 +12,27 @@ import {
 } from "mongodb";
 import { Attribute } from "types/modules";
 
+import { AuthProvider } from "./auth";
+
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_CLUSTER}.eqg93nd.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.NODE_ENV}`;
 
 export type Documents = {
   users: UserModel;
   newUser: NewUserModel;
+  socialUser: SocialUserModel;
   posts: PostModel;
   comments: CommentModel;
 };
 
-export type Collection = Exclude<keyof Documents, "newUser">;
+export type Collection = Exclude<keyof Documents, "newUser" & "socialUser">;
 
-export type UserModel = { username: string; password: string };
+export type UserModel = {
+  username: string;
+  password: string;
+  source: AuthProvider | "form";
+};
 export type NewUserModel = UserModel & { email: string };
+export type SocialUserModel = Omit<UserModel, "password">;
 
 export interface PostModel {
   meta: Pick<Attribute, "source" | "url"> & {
@@ -124,6 +132,18 @@ class DB {
 
   async findAll<T extends Collection>(collection: T) {
     return this.getCollection<T>(collection).find();
+  }
+
+  async findOrCreateOne<T extends keyof Documents>(
+    collection: Collection,
+    filter: Filter<Documents[T]>,
+    doc: Documents[T]
+  ) {
+    return this.getCollection<T>(collection).findOneAndUpdate(
+      filter,
+      { $set: doc },
+      { upsert: true, returnDocument: "after" }
+    );
   }
 
   async count<T extends Collection>(

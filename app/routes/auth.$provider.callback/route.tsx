@@ -16,7 +16,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   }
 
   const cacheItem = await redirectCache.fetchFromCache(provider);
-  console.log(cacheItem, key);
   const redirectUrl = decodeURIComponent(cacheItem?.[key] ?? "/blog");
 
   return await authenticator.authenticate(provider, request, {

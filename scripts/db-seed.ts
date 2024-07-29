@@ -19,6 +19,7 @@ const today = new Date();
         arr.map((i) => ({
           username: `User ${i}`,
           password: hashPassword("1234" + i),
+          source: "form",
         }))
       ),
       DB.createMany<"posts">(

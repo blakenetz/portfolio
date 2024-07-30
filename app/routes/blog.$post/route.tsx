@@ -45,9 +45,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
-  const comments = await postComment(request, params);
+  const results = await postComment(request, params);
 
-  return json({ ok: true, data: comments });
+  return json(results);
 }
 
 export default function Post() {

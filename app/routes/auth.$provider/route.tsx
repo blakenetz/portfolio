@@ -2,8 +2,9 @@ import { ActionFunctionArgs, json } from "@remix-run/node";
 import { AuthorizationError } from "remix-auth";
 
 import { AuthError, AuthFetcher, authProviders } from "~/server/auth";
+import { handleUserSession } from "~/server/auth.server";
 import { authenticator, redirectCache } from "~/server/authenticator.server";
-import { commitSession, getSession } from "~/services/session.server";
+import { getSession } from "~/services/session.server";
 import { validate } from "~/utils";
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
@@ -14,13 +15,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       const user = await authenticator.authenticate("form", request, {
         throwOnError: true,
       });
-
-      session.set("username", user.username);
-      session.set("user-id", user.id);
-
-      const headers = new Headers({
-        "Set-Cookie": await commitSession(session),
-      });
+      const headers = await handleUserSession(session, user);
 
       return json<AuthFetcher>({ ok: true }, { headers });
     } catch (error) {

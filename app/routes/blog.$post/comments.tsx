@@ -99,6 +99,7 @@ export default function Comments({
       <fetcher.Form
         className={styles.flex}
         onSubmit={handleSubmit}
+        onFocus={() => setError(false)}
         method="POST"
         action="."
       >

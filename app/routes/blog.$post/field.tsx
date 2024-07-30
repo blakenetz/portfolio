@@ -1,5 +1,6 @@
 import { PasswordInput, TextInput, TextInputProps } from "@mantine/core";
 import { IconKey, IconMoodTongue, IconSend } from "@tabler/icons-react";
+import { HTMLInputAutoCompleteAttribute } from "react";
 
 import { AuthMode } from "~/server/auth";
 import { capitalize } from "~/utils";
@@ -12,6 +13,16 @@ const iconMap = new Map<FieldType, React.ReactElement>([
   ["password", <IconKey key="password-icon" />],
   ["username", <IconMoodTongue key="username-icon" />],
 ]);
+
+function getAutocompleteAttribute(
+  field: FieldType,
+  mode: AuthMode
+): HTMLInputAutoCompleteAttribute {
+  if (field === "password") {
+    return mode === "new" ? "new-password" : "current-password";
+  }
+  return field;
+}
 
 interface FieldProps {
   field: FieldType;
@@ -28,6 +39,7 @@ export default function Field({ field, mode, error }: FieldProps) {
     error,
     name: field,
     leftSection: iconMap.get(field),
+    autoComplete: getAutocompleteAttribute(field, mode),
   };
 
   const Component: React.ElementType =

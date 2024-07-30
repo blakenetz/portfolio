@@ -20,6 +20,7 @@ const today = new Date();
           username: `User ${i}`,
           password: hashPassword("1234" + i),
           source: "form",
+          email: `user${i}@test.com`,
         }))
       ),
       DB.createMany<"posts">(

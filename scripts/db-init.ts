@@ -14,7 +14,7 @@ async function restart() {
     DB.createIndex<"users">("users", { username: 1 }),
     DB.createIndex<"newUsers">("users", { email: 1 }, { sparse: true }),
   ]);
-  console.log("Successfully restarted!");
+  console.log("Successfully initialized db!");
 
   process.exit();
 }

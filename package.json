@@ -16,9 +16,9 @@
     "create:post": "tsx scripts/new-blog-post.ts",
     "db:blog-pull": "npm run tsx-dev scripts/blog-pull.ts",
     "db:blog-push": "npm run tsx-dev scripts/blog-push.ts",
-    "db:restart": "npm run tsx-dev scripts/db-restart",
+    "db:init": "npm run tsx-dev scripts/db-init",
     "db:seed": "npm run tsx-dev scripts/db-seed",
-    "db:setup": "npm run db:restart && npm run db:seed && npm run db:blog-push && npm run db:blog-pull"
+    "db:setup": "npm run db:init && npm run db:seed && npm run db:blog-push && npm run db:blog-pull"
   },
   "dependencies": {
     "@mantine/core": "^7.11.1",

@@ -1,3 +1,4 @@
+import { MongoServerError } from "mongodb";
 import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 import { GitHubProfile, GitHubStrategy } from "remix-auth-github";
@@ -7,17 +8,12 @@ import Cache from "~/server/cache.server";
 import { sessionStorage } from "~/services/session.server";
 import { hashPassword, validateString } from "~/utils";
 
-import { AuthMode, AuthProvider } from "./auth";
+import { AuthError, authErrors, AuthMode, AuthProvider } from "./auth";
 import DB, { SocialUserModel } from "./db.singleton.server";
 
 export type User = {
   username: string;
   id: string;
-};
-
-export const errors = {
-  notFound: "User not Found",
-  badPassword: "Incorrect username or password",
 };
 
 export const authenticator = new Authenticator<User>(sessionStorage);
@@ -40,9 +36,9 @@ async function handleStrategyCallback(
     username: profile.displayName,
     source: provider,
   };
-  const results = await DB.findOrCreateOne<"socialUser">("users", doc, doc);
+  const results = await DB.findOrCreateOne<"socialUsers">("users", doc, doc);
 
-  if (!results) throw new Error(errors.notFound);
+  if (!results) throw new Error(authErrors.notFound);
 
   return { username: results.username, id: results._id.toString() };
 }
@@ -56,21 +52,35 @@ const formStrategy = new FormStrategy(async ({ form }) => {
 
   if (mode === "new") {
     const email = validateString(form.get("email"));
-    const results = await DB.createOne<"newUser">("users", {
+
+    const results = await DB.createOne<"newUsers">("users", {
       username,
       password: hash,
       email,
       source: "form",
+    }).catch((err) => {
+      if (err instanceof MongoServerError && err?.code === 11000) {
+        const key = Object.keys(
+          err.errorResponse.keyPattern
+        ).pop() as AuthError;
+        const message = authErrors[key];
+
+        throw new Error(message ?? authErrors.unknown, {
+          cause: { field: key },
+        });
+      }
+      throw new Error(authErrors.unknown);
     });
+
     return { username, id: results.insertedId.toString() };
   }
 
   const user = await DB.findOne("users", { username });
 
-  if (!user) throw new Error(errors.notFound);
+  if (!user) throw new Error(authErrors.notFound);
 
   if (hash !== user.password) {
-    throw new Error(errors.badPassword);
+    throw new Error(authErrors.badPassword);
   }
 
   return { username: user.username, id: user._id.toString() };

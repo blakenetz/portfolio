@@ -16,12 +16,11 @@ const iconMap = new Map<FieldType, React.ReactElement>([
 interface FieldProps {
   field: FieldType;
   mode: AuthMode;
-  errors: FieldType[];
+  error?: string;
 }
 
-export default function Field({ field, mode, errors }: FieldProps) {
+export default function Field({ field, mode, error }: FieldProps) {
   const label = capitalize(field);
-  const error = errors.includes(field) && `${label} is required`;
 
   const props: TextInputProps = {
     size: "md",

@@ -2,8 +2,11 @@ import {
   AggregationCursor,
   Binary,
   Collection as MongoCollection,
+  CreateIndexesOptions,
   Db,
   Filter,
+  IndexDirection,
+  IndexSpecification,
   InsertManyResult,
   InsertOneResult,
   MongoClient,
@@ -18,13 +21,13 @@ const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@$
 
 export type Documents = {
   users: UserModel;
-  newUser: NewUserModel;
-  socialUser: SocialUserModel;
+  newUsers: NewUserModel;
+  socialUsers: SocialUserModel;
   posts: PostModel;
   comments: CommentModel;
 };
 
-export type Collection = Exclude<keyof Documents, "newUser" & "socialUser">;
+export type Collection = Exclude<keyof Documents, "newUsers" & "socialUsers">;
 
 export type UserModel = {
   username: string;
@@ -62,6 +65,12 @@ type WithJoin<
 > = Documents[T] & {
   [key in Exclude<Collection, T> as `${key}_model`]: Documents[L];
 };
+
+type MappedDocument<T extends keyof Documents> = T extends "newUsers"
+  ? "users"
+  : T extends "socialUsers"
+  ? "users"
+  : T;
 
 class DB {
   #client: MongoClient;
@@ -114,6 +123,17 @@ class DB {
     doc: Array<Documents[T]>
   ): Promise<InsertManyResult> {
     return this.getCollection(collection).insertMany(doc);
+  }
+
+  async createIndex<T extends keyof Documents>(
+    collection: MappedDocument<T>,
+    indexSpec: Partial<Record<keyof Documents[T], IndexDirection>>,
+    options?: CreateIndexesOptions
+  ) {
+    return this.getCollection(collection).createIndex(
+      indexSpec as IndexSpecification,
+      { ...options, unique: true }
+    );
   }
 
   async findOne<T extends Collection>(

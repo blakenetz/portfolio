@@ -1,7 +1,7 @@
 import { ActionFunctionArgs, json } from "@remix-run/node";
 import { AuthorizationError } from "remix-auth";
 
-import { AuthFetcher, authProviders } from "~/server/auth";
+import { AuthError, AuthFetcher, authProviders } from "~/server/auth";
 import { authenticator, redirectCache } from "~/server/authenticator.server";
 import { commitSession, getSession } from "~/services/session.server";
 import { validate } from "~/utils";
@@ -25,7 +25,12 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       return json<AuthFetcher>({ ok: true }, { headers });
     } catch (error) {
       if (error instanceof AuthorizationError) {
-        return json<AuthFetcher>({ ok: false, error: error.message });
+        const cause = error.cause?.cause as { field?: AuthError };
+        return json<AuthFetcher>({
+          ok: false,
+          error: error.message,
+          field: cause?.field,
+        });
       }
       return json<AuthFetcher>({ ok: false, status: "unknown" });
     }

@@ -18,6 +18,7 @@ import {
   FormEventHandler,
   MouseEventHandler,
   useEffect,
+  useReducer,
   useState,
 } from "react";
 
@@ -28,10 +29,12 @@ import {
   AuthProvider,
   authProviders,
 } from "~/server/auth";
-import { capitalize, cls } from "~/utils";
+import { capitalize, cls, validate } from "~/utils";
 
 import Field, { fields, FieldType } from "./field";
 import styles from "./post.module.css";
+
+type FieldErrors = Partial<Record<FieldType, string>>;
 
 const providerIconMap = new Map<AuthProvider, React.ReactElement>([
   ["github", <IconBrandGithub key="github" />],
@@ -52,11 +55,30 @@ const modeMap = new Map<AuthMode, { cta: string; data: SegmentedControlItem }>([
   ],
 ]);
 
+function reducer(
+  state: FieldErrors,
+  action:
+    | { type: "error"; value: FieldErrors }
+    | { type: "reset" }
+    | { type: "resetField"; value: FieldType }
+) {
+  if (action.type === "reset") {
+    return {};
+  }
+  if (action.type === "resetField") {
+    const nextState = { ...state };
+    delete nextState[action.value];
+    return nextState;
+  }
+
+  return { ...state, ...action.value };
+}
+
 export default function AuthModal() {
   const fetcher = useFetcher<AuthFetcher>();
   const [mode, setMode] = useState<AuthMode>("new");
-  const [errors, setErrors] = useState<FieldType[]>([]);
 
+  const [errors, setErrors] = useReducer(reducer, {});
   const [opened, actions] = useDisclosure();
   const location = useLocation();
 
@@ -65,27 +87,21 @@ export default function AuthModal() {
 
   const loading = fetcher.state !== "idle";
 
-  // useEffect(() => {
-  //   const message =
-  //     fetcher.data?.error ?? messages.get(fetcher.data?.status ?? "unknown");
-
-  //   if (fetcher.data?.ok === false)
-  //     notifications.show({
-  //       title: "Sorry!",
-  //       color: "red",
-  //       withBorder: true,
-  //       message: message,
-  //     });
-  // }, [fetcher.data]);
-
   useEffect(() => {
     let id: NodeJS.Timeout;
-    if (fetcher.data?.ok === true) {
+    const { ok, field, error } = fetcher.data ?? {};
+    if (ok === true) {
       id = setTimeout(() => actions.close(), 750);
+    } else if (ok === false) {
+      const errorField = validate(field, fields);
+      if (errorField) {
+        setErrors({ type: "error", value: { [errorField]: error } });
+      }
     }
 
     return () => clearTimeout(id);
-  }, [actions, fetcher]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetcher]);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -95,25 +111,26 @@ export default function AuthModal() {
     const password = formData.get("password");
     const email = formData.get("email");
 
-    const nextErrors: FieldType[] = [];
+    const nextErrors: FieldErrors = {};
 
-    if (!username) nextErrors.push("username");
-    if (!password) nextErrors.push("password");
-    if (mode === "new" && !email) nextErrors.push("email");
+    if (!username) nextErrors.username = "Required";
+    if (!password) nextErrors.password = "Required";
+    if (mode === "new" && !email) nextErrors.email = "Required";
 
-    setErrors(nextErrors);
-
-    if (!nextErrors.length) {
+    if (Object.keys(nextErrors).length) {
+      setErrors({ type: "error", value: nextErrors });
+    } else {
       fetcher.submit(e.currentTarget);
     }
   };
 
   const handleChange: ChangeEventHandler<HTMLFormElement> = (e) => {
     const name = e.target.name as FieldType;
-    setErrors((prev) => prev.filter((v) => v !== name));
+    setErrors({ type: "resetField", value: name });
   };
 
   const handleSocialClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    setErrors({ type: "reset" });
     const provider = e.currentTarget.name;
     fetcher.submit(
       { redirectUrl: encodeURIComponent(location.pathname) },
@@ -143,7 +160,12 @@ export default function AuthModal() {
           />
 
           {fields.map((field) => (
-            <Field key={field} field={field} mode={mode} errors={errors} />
+            <Field
+              key={field}
+              field={field}
+              mode={mode}
+              error={errors[field]}
+            />
           ))}
 
           <Button
@@ -155,25 +177,21 @@ export default function AuthModal() {
             {fetcher.data?.ok === true ? <IconCheck /> : cta}
           </Button>
 
-          {mode === "new" && (
-            <>
-              <Divider label="Or" labelPosition="center" />
-              <div className={styles.flex}>
-                {authProviders.map((provider) => (
-                  <MantineButton
-                    key={provider}
-                    name={provider}
-                    variant="outline"
-                    classNames={{ label: styles.row }}
-                    onClick={handleSocialClick}
-                  >
-                    {providerIconMap.get(provider)}
-                    {`Sign up with ${capitalize(provider)}`}
-                  </MantineButton>
-                ))}
-              </div>
-            </>
-          )}
+          <Divider label="Or" labelPosition="center" />
+          <div className={styles.flex}>
+            {authProviders.map((provider) => (
+              <MantineButton
+                key={provider}
+                name={provider}
+                variant="outline"
+                classNames={{ label: styles.row }}
+                onClick={handleSocialClick}
+              >
+                {providerIconMap.get(provider)}
+                {`Continue with ${capitalize(provider)}`}
+              </MantineButton>
+            ))}
+          </div>
         </fetcher.Form>
       </Modal>
 

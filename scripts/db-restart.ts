@@ -9,6 +9,11 @@ async function restart() {
     DB.createCollect("posts"),
     DB.createCollect("comments"),
   ]);
+  console.log("Creating unique index");
+  await Promise.all([
+    DB.createIndex<"users">("users", { username: 1 }),
+    DB.createIndex<"newUsers">("users", { email: 1 }, { sparse: true }),
+  ]);
   console.log("Successfully restarted!");
 
   process.exit();

@@ -56,7 +56,7 @@ async function getPostByParams(params: Params<"post">) {
 async function verifyMdxFile(post: PostModel): Promise<boolean> {
   const rootPath = path.resolve(".", "app/blog");
   const filePath = path.resolve(rootPath, post.meta.slug + ".mdx");
-  const fileExists = exists(filePath);
+  const fileExists = await exists(filePath);
 
   // if not try to write
   if (!fileExists) {

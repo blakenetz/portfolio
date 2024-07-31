@@ -76,11 +76,11 @@ function reducer(
 
 export default function AuthModal() {
   const fetcher = useFetcher<AuthFetcher>();
-  const [mode, setMode] = useState<AuthMode>("new");
+  const location = useLocation();
 
+  const [mode, setMode] = useState<AuthMode>("new");
   const [errors, setErrors] = useReducer(reducer, {});
   const [opened, actions] = useDisclosure();
-  const location = useLocation();
 
   const { cta } = modeMap.get(mode)!;
   const data = Array.from(modeMap.values()).map(({ data }) => data);

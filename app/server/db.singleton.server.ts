@@ -31,8 +31,7 @@ if (missing.length) {
   throw new Error(`Missing Mongodb env variables: ${missing.join(", ")}`);
 }
 
-const uri = `mongodb+srv://${config.user}:${config.pass}@${config.cluster}.${config.host}.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.NODE_ENV}&directConnection=true
-`;
+const uri = `mongodb+srv://${config.user}:${config.pass}@${config.cluster}.${config.host}.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.NODE_ENV}`;
 
 export type Documents = {
   users: UserModel;

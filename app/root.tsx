@@ -115,7 +115,7 @@ export function ErrorBoundary() {
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider cssVariablesResolver={resolver}>
+        <MantineProvider>
           <Layout>
             <Title order={4} component="h1">
               Crap. We hit an issue.

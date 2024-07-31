@@ -29,9 +29,11 @@ COPY --link . .
 # Build application
 RUN npm run build
 
+# Sync blog posts
+RUN npm run tsx-prod scripts/blog-pull.ts
+
 # Remove development dependencies
 RUN npm prune --omit=dev
-
 
 # Final stage for app image
 FROM base
@@ -39,8 +41,6 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
-# Sync blog posts
-RUN npm run tsx-prod scripts/blog-pull.ts
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000

@@ -27,7 +27,7 @@ const posts = import.meta.glob<Mdx>("/app/blog/*.mdx", {
 export const meta: MetaFunction = ({ location }) => {
   const module = posts[`/app${location.pathname}.mdx`];
 
-  return module.meta;
+  return module?.meta;
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

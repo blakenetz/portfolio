@@ -17,7 +17,21 @@ import { Attribute } from "types/modules";
 
 import { AuthProvider } from "./auth";
 
-const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_CLUSTER}.eqg93nd.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.NODE_ENV}`;
+const config = {
+  user: process.env.MONGO_USER,
+  pass: process.env.MONGO_PASS,
+  cluster: process.env.MONGO_CLUSTER,
+  host: process.env.MONGO_HOST,
+};
+const missing = Object.keys(config).filter(
+  (k) => !config[k as keyof typeof config]
+);
+
+if (missing.length) {
+  throw new Error(`Missing Mongodb env variables: ${missing.join(", ")}`);
+}
+
+const uri = `mongodb+srv://${config.user}:${config.pass}@${config.cluster}.${config.host}.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.NODE_ENV}`;
 
 export type Documents = {
   users: UserModel;

@@ -46,26 +46,12 @@ class ProjectsApi {
   #usernames: { personal: UserName<"personal">; work: UserName<"work"> };
   #cache: Cache<Key, CacheItem<Endpoint>>;
 
-  // /**
-  //  * 2 caches for 2 reasons:
-  //  *
-  //  * 1. This is an exploratory project, so wanted to analyze different caching solutions
-  //  * 2. Unstorage was easier to inspect in dev enviros since all items are stored in the `.cache` dir
-  //  */
-  // #cache: LRUCache<Key, CacheItem>;
-  // #devStorage: Storage<CacheItem<Endpoint>>;
-
   constructor() {
     // create API drivers/storage
     this.#octokit = new Octokit({
       auth: process.env.GITHUB_AUTH_TOKEN,
     });
     this.#cache = new Cache<Key, CacheItem<Endpoint>>();
-
-    // this.#cache = new LRUCache({ ttl: 1000 * 60 * 60, max: 100 });
-    // this.#devStorage = createStorage({
-    //   driver: fsDriver({ base: path.resolve(".", ".cache") }),
-    // });
 
     // data used in request calls
     this.#usernames = {

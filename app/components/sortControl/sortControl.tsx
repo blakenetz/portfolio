@@ -6,7 +6,7 @@ import {
 } from "@mantine/core";
 import { useCallback, useState } from "react";
 
-import { capitalize, validate } from "~/util";
+import { capitalize, validate } from "~/utils";
 
 import styles from "./sortControl.module.css";
 

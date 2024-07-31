@@ -1,77 +1,73 @@
+import { Flex } from "@mantine/core";
 import {
-  Anchor,
-  AnchorProps,
-  Blockquote,
-  Flex,
-  Image,
-  List,
-  ListItem,
-  Text,
-  Title,
-} from "@mantine/core";
-import { json, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+  ActionFunctionArgs,
+  json,
+  LoaderFunctionArgs,
+  MetaFunction,
+  redirect,
+} from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { MDXComponents } from "node_modules/@mdx-js/react/lib";
-import { HTMLAttributes } from "react";
+import { Mdx } from "types/modules";
 
 import { Button } from "~/components";
+import { authenticator } from "~/server/authenticator.server";
+import { getPost, postComment } from "~/server/blog.server";
 import commonStyles from "~/styles/common.module.css";
-import { blogPath, cls, getPosts, postFromModule } from "~/util";
+import { cls } from "~/utils";
 
-import CodeBlock from "./codeBlock";
+import Comments from "./comments";
+import components from "./components";
 import styles from "./post.module.css";
 import Source from "./source";
 
-// generic html props
-type HTMLProps = HTMLAttributes<HTMLElement>;
-
-const components: MDXComponents = {
-  a: (props: AnchorProps) => (
-    <Anchor {...props} target="_blank" rel="noopener noreferrer" />
-  ),
-  p: (props: HTMLProps) => <Text {...props} />,
-  h1: (props: HTMLProps) => <Title {...props} order={2} />,
-  h2: (props: HTMLProps) => <Title {...props} order={3} />,
-  h3: (props: HTMLProps) => <Title {...props} order={4} />,
-  h4: (props: HTMLProps) => <Title {...props} order={5} />,
-  code: CodeBlock,
-  img: (props: HTMLProps) => <Image {...props} />,
-  blockquote: (props: HTMLProps) => <Blockquote {...props} p="md" />,
-  ul: (props: HTMLProps) => <List {...props} withPadding type="unordered" />,
-  ol: (props: HTMLProps) => <List {...props} withPadding type="ordered" />,
-  li: ListItem,
-};
-
-const posts = getPosts();
+const posts = import.meta.glob<Mdx>("/app/blog/*.mdx", {
+  eager: true,
+});
 
 export const meta: MetaFunction = ({ location }) => {
-  const module = posts[`.${location.pathname}.mdx`];
+  const module = posts[`/app${location.pathname}.mdx`];
 
   return module.meta;
 };
 
-export function loader({ params }: LoaderFunctionArgs) {
-  const filename = `${blogPath}/${params.post}.mdx`;
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  const post = await getPost(request, params);
+  const user = await authenticator.isAuthenticated(request);
 
-  const { render: _render, ...attributes } = postFromModule(
-    filename,
-    posts[filename]
-  );
+  if (post.ok === false) return redirect(`/blog?status=${post.errorStatus}`);
 
-  return json({ key: filename, attributes });
+  const { ok: _ok, ...data } = post;
+
+  return json({
+    data,
+    user,
+  });
+}
+
+export async function action({ request, params }: ActionFunctionArgs) {
+  const results = await postComment(request, params);
+
+  return json(results);
 }
 
 export default function Post() {
-  const { key, attributes } = useLoaderData<typeof loader>();
-  const post = posts[key];
+  const { data, user } = useLoaderData<typeof loader>();
+  const pathName = `/app/blog/${data.meta.slug}.mdx`;
+  const post = posts[pathName];
 
   return (
     <>
       <Flex className={cls(commonStyles.column, styles.reader)}>
-        <Source source={attributes.source} url={attributes.url} />
-
+        <Source source={data.meta.source} url={data.meta.url} />
         {post && post.default({ components })}
       </Flex>
+
+      <Comments
+        user={user}
+        comments={data.comments}
+        commentsTotal={data.commentsTotal}
+      />
+
       <Button component={Link} to="/blog">
         Take me back
       </Button>

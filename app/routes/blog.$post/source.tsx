@@ -2,7 +2,7 @@ import { Anchor, Notification, Text } from "@mantine/core";
 import { IconBrandGithub, IconBrandMedium } from "@tabler/icons-react";
 import { Attribute } from "types/modules";
 
-import { capitalize, cls } from "~/util";
+import { capitalize, cls } from "~/utils";
 
 import styles from "./post.module.css";
 
@@ -14,7 +14,7 @@ interface SourceProps {
   /**
    * External link
    */
-  url: string;
+  url: Attribute["url"];
 }
 
 const iconMap = new Map<
@@ -38,9 +38,11 @@ const iconMap = new Map<
 ]);
 
 export default function Source({ source, url }: SourceProps) {
-  const { icon, text } = iconMap.get(source) ?? {};
+  if (!source || !url) return null;
 
-  return icon ? (
+  const { icon, text } = iconMap.get(source)!;
+
+  return (
     <Notification
       color="violet"
       className={cls(styles.alert, styles.notification)}
@@ -58,5 +60,5 @@ export default function Source({ source, url }: SourceProps) {
         </Anchor>
       </Text>
     </Notification>
-  ) : null;
+  );
 }

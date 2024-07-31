@@ -1,7 +1,7 @@
 import { Paper } from "@mantine/core";
 import { HTMLAttributes, PropsWithChildren } from "react";
 
-import { cls } from "~/util";
+import { cls } from "~/utils";
 
 import styles from "./card.module.css";
 

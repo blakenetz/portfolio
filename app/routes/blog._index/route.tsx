@@ -1,16 +1,19 @@
-import { Anchor, Text } from "@mantine/core";
+import { Anchor, Pagination, PaginationProps, Text } from "@mantine/core";
 import { json, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import {
   Form,
   Link,
   useLoaderData,
+  useLocation,
   useSearchParams,
   useSubmit,
 } from "@remix-run/react";
+import { useState } from "react";
 
-import { fetchPosts, inputName, sorts } from "~/api/blog";
 import { Card, SortControl } from "~/components";
-import { validate } from "~/util";
+import { inputName, sorts } from "~/server/blog";
+import { getPosts } from "~/server/blog.server";
+import { getSearchString, validate } from "~/utils";
 
 import styles from "./blog.module.css";
 
@@ -19,8 +22,8 @@ export const meta: MetaFunction = () => [
   { description: "My thoughts. some complete... others not... 😜" },
 ];
 
-export function loader({ request }: LoaderFunctionArgs) {
-  const posts = fetchPosts(request);
+export async function loader({ request }: LoaderFunctionArgs) {
+  const posts = await getPosts(request);
 
   return json(posts);
 }
@@ -28,9 +31,52 @@ export function loader({ request }: LoaderFunctionArgs) {
 export default function Blog() {
   const [searchParams] = useSearchParams();
   const submit = useSubmit();
-  const posts = useLoaderData<typeof loader>();
+  const { data, count } = useLoaderData<typeof loader>();
+  const location = useLocation();
+
+  const [activePage, setPage] = useState(1);
 
   const initialValue = validate(searchParams.get(inputName), sorts) ?? "desc";
+
+  const sortControl = (
+    <SortControl name={inputName} values={sorts} initialValue={initialValue} />
+  );
+
+  const getItemProp: PaginationProps["getItemProps"] = (page) => ({
+    component: Link,
+    to: { search: getSearchString(location, { page }) },
+  });
+
+  const getControlProps: PaginationProps["getControlProps"] = (control) => {
+    let page;
+    let disabled = false;
+    switch (control) {
+      case "first":
+        page = 0;
+        disabled = activePage <= 1;
+        break;
+      case "last":
+        page = count;
+        disabled = activePage >= count;
+        break;
+      case "next":
+        page = activePage + 1;
+        disabled = activePage >= count;
+        break;
+      case "previous":
+        page = activePage - 1;
+        disabled = activePage <= 1;
+        break;
+    }
+
+    return {
+      component: disabled ? "button" : Link,
+      disabled,
+      to: disabled
+        ? undefined
+        : { search: getSearchString(location, { page }) },
+    };
+  };
 
   return (
     <Form
@@ -38,13 +84,9 @@ export default function Blog() {
       method="GET"
       onChange={(e) => submit(e.currentTarget)}
     >
-      {posts.map((post) => (
-        <Card key={post.slug}>
-          <Anchor
-            component={Link}
-            to={`.${post.slug}`}
-            className={styles.title}
-          >
+      {data.map((post) => (
+        <Card key={post.title}>
+          <Anchor component={Link} to={post.slug} className={styles.title}>
             {post.title}
           </Anchor>
 
@@ -54,11 +96,20 @@ export default function Blog() {
         </Card>
       ))}
 
-      <SortControl
-        name={inputName}
-        values={sorts}
-        initialValue={initialValue}
-      />
+      {count > 1 ? (
+        <div className={styles.controls}>
+          <Pagination
+            total={count}
+            getItemProps={getItemProp}
+            getControlProps={getControlProps}
+            value={activePage}
+            onChange={setPage}
+          />
+          {sortControl}
+        </div>
+      ) : (
+        sortControl
+      )}
     </Form>
   );
 }

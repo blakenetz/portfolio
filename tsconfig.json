@@ -1,5 +1,11 @@
 {
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "types/*.ts"],
+  "include": [
+    "remix.env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "types/*.ts",
+    "scripts/*.ts"
+  ],
   "compilerOptions": {
     "types": ["@remix-run/node", "vite/client"],
     "lib": ["DOM", "DOM.Iterable", "ES2022"],

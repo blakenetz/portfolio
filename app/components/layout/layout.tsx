@@ -3,7 +3,7 @@ import { IconAccessible } from "@tabler/icons-react";
 import { HTMLAttributes, PropsWithChildren, useContext } from "react";
 
 import ColorSchemeContext from "~/styles/colorSchemeContext";
-import { cls } from "~/util";
+import { cls } from "~/utils";
 
 import Header from "./header";
 import styles from "./layout.module.css";

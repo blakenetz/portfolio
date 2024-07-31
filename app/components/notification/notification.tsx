@@ -1,6 +1,6 @@
 import { Notification as MantineNotification } from "@mantine/core";
 
-import { Status } from "~/util";
+import { messages, Status, status as notificationStatus } from "~/utils";
 
 import styles from "./notification.module.css";
 
@@ -21,12 +21,6 @@ interface NotificationProps {
   handleClose: VoidFunction;
 }
 
-const messages = new Map<Status, string | null>([
-  ["octokit-fail", "We seemed to hit a snag fetching data from Github."],
-  ["ok", null],
-  ["unknown", "Something has gone horrible wrong, so we sent you home."],
-]);
-
 export default function Notification({
   hide,
   status,
@@ -35,13 +29,14 @@ export default function Notification({
   if (hide === true) return null;
 
   const message = messages.get(status);
+  const isSuccess = status === notificationStatus["authSuccess"];
 
   return (
     message && (
       <MantineNotification
-        title="Sorry!"
+        title={isSuccess ? "Yay!" : "Sorry!"}
         onClose={handleClose}
-        color="red"
+        color={isSuccess ? "green" : "red"}
         className={styles.notification}
         withBorder
       >

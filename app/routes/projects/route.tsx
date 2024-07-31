@@ -1,9 +1,9 @@
 import { LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 
-import { getRepos } from "~/api/projects.server";
 import { Button } from "~/components";
-import { status } from "~/util";
+import { getRepos } from "~/server/projects.server";
+import { status } from "~/utils";
 
 import styles from "./projects.module.css";
 import Repos from "./repos";

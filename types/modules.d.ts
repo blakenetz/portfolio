@@ -15,8 +15,8 @@ export type MDXComponent = (
 
 export type Attribute = {
   date: string;
-  url: string;
-  source: "github" | "medium";
+  url?: string;
+  source?: "github" | "medium";
 };
 
 export interface Mdx {

@@ -26,7 +26,7 @@ import {
 
 import { Button, Layout, Notification } from "~/components";
 import styles from "~/styles/root.css?url";
-import { Status, status as errorStatus } from "~/util";
+import { Status, status as httpStatus } from "~/utils";
 
 import ColorSchemeContext from "./styles/colorSchemeContext";
 
@@ -134,7 +134,7 @@ export function ErrorBoundary() {
 export const loader: LoaderFunction = async ({ request }) => {
   const status =
     (new URL(request.url).searchParams.get("status") as Status) ??
-    errorStatus.ok;
+    httpStatus.ok;
 
   return json({ status });
 };

@@ -1,5 +1,5 @@
 .notification {
-  position: absolute;
+  position: fixed;
   bottom: var(--mantine-spacing-xl);
   right: var(--mantine-spacing-xl);
   z-index: 100;

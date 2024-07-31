@@ -29,9 +29,6 @@ COPY --link . .
 # Build application
 RUN npm run build
 
-# Sync blog posts
-RUN npm run tsx-prod scripts/blog-pull.ts
-
 # Remove development dependencies
 RUN npm prune --omit=dev
 

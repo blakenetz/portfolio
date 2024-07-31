@@ -98,10 +98,21 @@ class DB {
         deprecationErrors: true,
       },
     });
-    client.connect();
+
+    this.initialize();
 
     this.#client = client;
     this.#db = client.db();
+  }
+
+  private async initialize() {
+    try {
+      await this.#client.connect();
+      await this.#client.db("admin").command({ ping: 1 });
+    } catch (error) {
+      console.log("unable to connect to db");
+      console.log(error);
+    }
   }
 
   private getCollection<T extends Collection>(

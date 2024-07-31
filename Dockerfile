@@ -40,7 +40,7 @@ FROM base
 COPY --from=build /app /app
 
 # Sync blog posts
-RUN npm tsx-prod scripts/blog-pull.ts
+RUN npm run tsx-prod scripts/blog-pull.ts
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000

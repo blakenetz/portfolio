@@ -54,16 +54,22 @@ export default async function push() {
       const binary = Binary.createFromBase64(base64);
       const { attributes, meta } = results.data.matter;
       const metaValues = parseMdxMeta(meta);
+      const slug = kebobCase(metaValues.title);
 
-      await DB.createOne<"posts">("posts", {
-        content: binary,
-        meta: {
-          ...attributes,
-          ...metaValues,
-          date: new Date(attributes.date),
-          slug: kebobCase(metaValues.title),
-        },
-      });
+      await DB.findOrCreateOne<"posts">(
+        "posts",
+        { "meta.slug": slug },
+        {
+          content: binary,
+          meta: {
+            ...attributes,
+            ...metaValues,
+            date: new Date(attributes.date),
+            slug,
+          },
+        }
+      );
+
       console.log(`File ${file} uploaded successfully`);
     }
   } catch (error) {

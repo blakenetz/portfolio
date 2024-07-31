@@ -64,6 +64,7 @@ async function verifyMdxFile(post: PostModel): Promise<boolean> {
       await writeFile(filePath, post.content.buffer);
       return true;
     } catch (error) {
+      console.log("error writing file", error);
       return false;
     }
   }

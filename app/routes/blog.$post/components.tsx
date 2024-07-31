@@ -8,7 +8,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { MDXComponents } from "node_modules/@mdx-js/react/lib";
+import type { MDXComponents } from "node_modules/@mdx-js/react/lib";
 import { HTMLAttributes } from "react";
 
 import CodeBlock from "./codeBlock";

@@ -8,7 +8,7 @@ import { generateBaseMDxContent } from "./util";
 
 const today = new Date();
 
-(async () => {
+export default async function seed() {
   console.log("Seeding users and posts...");
   const arr = Array.from({ length: 20 }, (_v, i) => i + 1);
 
@@ -61,4 +61,6 @@ const today = new Date();
   console.log("Successfully seeded!");
 
   process.exit();
-})();
+}
+
+await seed().finally(() => process.exit());

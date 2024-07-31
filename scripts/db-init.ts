@@ -1,6 +1,6 @@
 import DB from "~/server/db.singleton.server";
 
-async function restart() {
+export default async function init() {
   console.log("Dropping existing collections...");
   await DB.destroy();
   console.log("Creating new collections...");
@@ -19,4 +19,4 @@ async function restart() {
   process.exit();
 }
 
-restart();
+await init().finally(() => process.exit());

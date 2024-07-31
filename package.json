@@ -13,7 +13,7 @@
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "tsc",
     "tsx-dev": "NODE_ENV=development tsx --env-file .env --env-file .env.development",
-    "tsx-prod": "NODE_ENV=development tsx --env-file .env --env-file .env.production",
+    "tsx-prod": "NODE_ENV=production tsx --env-file .env --env-file .env.production",
     "script:dev": "npm run tsx-dev scripts/index.ts",
     "script:prod": "npm run tsx-prod scripts/index.ts",
     "create:post": "tsx scripts/new-blog-post.ts"

@@ -1,10 +1,11 @@
-import path from "path";
-
-import { dirname } from "./util";
+import pull from "./blog-pull";
+import push from "./blog-push";
+import init from "./db-init";
+import seed from "./db-seed";
 
 (async () => {
-  await import(path.resolve(dirname, "db-init.ts"));
-  await import(path.resolve(dirname, "db-seed.ts"));
-  await import(path.resolve(dirname, "blog-push.ts"));
-  await import(path.resolve(dirname, "blog-pull.ts"));
+  await init();
+  await seed();
+  await pull();
+  await push();
 })();

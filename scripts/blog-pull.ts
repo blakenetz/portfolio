@@ -7,7 +7,7 @@ import { exists, kebobCase } from "~/utils";
 
 const dir = path.resolve(".", "app/blog");
 
-(async () => {
+export default async function pull() {
   const dirExists = await exists(dir);
   if (!dirExists) await fs.mkdir(dir);
 
@@ -27,6 +27,6 @@ const dir = path.resolve(".", "app/blog");
       await fs.writeFile(resolvedPath, content);
     }
   }
+}
 
-  process.exit();
-})();
+await pull().finally(() => process.exit());

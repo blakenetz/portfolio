@@ -29,7 +29,7 @@ function matterify() {
   };
 }
 
-(async () => {
+export default async function push() {
   const dirExists = await exists(dir);
   if (!dirExists) {
     console.log("No posts to sync...");
@@ -70,6 +70,6 @@ function matterify() {
     console.log("Error uploading document: " + error);
     return;
   }
+}
 
-  process.exit();
-})();
+await push().finally(() => process.exit());

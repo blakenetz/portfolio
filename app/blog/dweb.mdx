@@ -1,0 +1,351 @@
+---
+meta:
+  - title: BN | Blog | The Dweb
+  - name: description
+    content: Using Beaker + Dat to Surf and Publish on the Decentralized Web
+
+attributes:
+  date: Oct 13, 2018
+  source: medium
+  url: https://medium.com/coinmonks/dat-decentralized-web-tutorial-5ece6238bc84
+---
+
+export const meta = frontmatter.meta;
+export const headers = frontmatter.headers;
+export const attributes = frontmatter.attributes;
+
+![Cover photo](https://miro.medium.com/v2/1*v2JRq4k7o4xgQy19oICzCQ.jpeg)
+
+# 🏄‍♀️ The Dweb: Using Beaker + Dat to Surf and Publish on the Decentralized Web!
+
+The Internet is beautiful dumpster fire. One of the more profound inventions of
+our time, it was designed to liberate and empower the billions of people on
+earth by making information readily available. Yet somewhere along the way, the
+power has shifted and information is now being funneled through a select few
+players before it reaches you and me. The consequences of this design change has
+created a negative rippled effect in almost all factors of human life, to the
+extent that even Sir Tim Berners-Lee, the inventor of the World Wide Web,
+[has spoke out against this trend](https://webfoundation.org/2017/03/web-turns-28-letter/).
+The decentralized web is predicted to be our saving grace. This article is aimed
+to teach you<sup>\*</sup> how to get your foot in the door and surf the next
+generation of the Internet.
+
+```note
+Though at some point we might dive into the weeds and get into some technical concepts, this article is intended for everyone… just like the original Internet 😉
+```
+
+## First, Some History
+
+The Internet was built on the concept of decentralization. Information would be
+distributed through a fault-tolerant network of independently-run nodes. If one
+node went down or become insecure, the information could be re-routed through a
+series of neighboring nodes to reach it's final destination. This much has
+remained true to today.
+
+When people bellyache that the Internet has become centralized, they're either
+referring to the fact that the ownership of these nodes has been funneled to a
+few major players(i.e. Google, Facebook, Amazon, etc.) or the exclusive access
+to these nodes has been limited to a few dominant companies (i.e. your Internet
+Service Provider: Comcast, Verizon, AT&T, etc.).
+
+This concentration of power has opened the doors to
+[massive censorship](https://en.wikipedia.org/wiki/Great_Firewall), the
+[widespread](https://www.aljazeera.com/news/2018/3/13/un-facebook-had-a-role-in-rohingya-genocide)
+[dissemination](https://www.buzzfeednews.com/article/daveyalba/facebook-philippines-dutertes-drug-war)
+of [“Fake News”](https://www.npr.org/tags/502124007/fake-news), and the
+unwinding of the
+[network's neutrality](https://www.vox.com/2015/2/26/18073512/network-neutrality)<sup>\*</sup>.
+As for-profit companies strengthen their grip on the Internet, ours will weaken.
+
+```note
+If you choose one topic to dive further into, pick net neutrality. In a nut shell, a non-neutral Internet allows ISPs to prioritize traffic, which means the website of a higher paying customer (i.e a wealthy corporation) would load exponentially faster. Considering most users will abandon a page if it doesn't load within a 4-second window, this could be detrimental for companies and individuals who can't afford to **bribe** the ISPs for a faster loading time. I will point out that we're still in the early days of a post-neutral net, so many of these dystopic predictions are still years away.
+```
+
+## Decentralize It
+
+It wouldn't be an tech article without some TLAs (three-letter acronyms), so
+here we go: P2P!
+
+Peer-to-peer is networking strategy that partitions workloads and resources to a
+vast network of peers. Our current distribution strategy is structured around
+client-server interactions via spoke-hub model. I (the client) request
+information from a website (the server), which returns a packet of information
+that travels through a series of spoke and hubs (we previously referred to these
+as nodes).
+
+![Hub-and-spoke network of the United States](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*hNN5weGjR-1CU_eU5PWtjA.jpeg)
+
+A P2P paradigm fractures the client-server interaction. Instead of a central
+data warehouse holding all the files for a website, these files would be
+fragmented and distributed across an assemblage of computers/phones/servers.
+Those of us who have lived in the weird world of torrents will remember this
+interaction: you can download a file from a constellation of peers, while
+simultaneously “seed” the file (i.e. make it available for others to download).
+
+However, with all it's splendor, P2P networks still face some sizable privacy,
+security, and social hurdles…
+
+## Dat For The Win
+
+[Dat](https://datproject.org/) is one of a few impressive solution in the P2P
+space. Dat is a protocol that's sprinkled with a few sugary features to resolve
+some of the issues surrounding the P2P architecture. It's designed for
+file-sharing among research groups, but it's applicable to the Internet at
+large. Let's dive into these issues and solutions:
+
+### Integrity and Versioning
+
+Integrity issues take 2 forms:
+
+- **link rot:** websites will change their URL, so expired URLs lead users to
+  404 “uh-oh” pages.
+- **content drift:** websites update the content of a page, but the URL doesn't
+  reflect the changes.
+
+  Dat resolves these issues by creating a
+  [Merkle tree](https://brilliant.org/wiki/merkle-tree/) for every project. For
+  the sake of brevity and readability, a Merkle tree is a complicated and secure
+  data structure which encrypts and organizes a multitude of files. Merkle trees
+  are common with versioning tools (such as Git and Subversion) and blockchain
+  tech. Dat's Merkle trees contain 2 sections:
+
+- **Metadata:** this is where information about the project lives, such as name,
+  author, size, last modify date, etc.
+- **Content:** this is where the project data/content lives. The data is
+  splintered in an arrangement of easily-transferable packets, which are
+  represented as leaves on the Merkle tree.
+
+With this architecture in place, if I update my fabulous/mind-melting website
+and a client doesn't take kindly to my changes, they could then request to see
+the previous version of the site<sup>\*</sup>. Perhaps more importantly, every
+distributed leaf uses a top hash to correlate itself to a tree; meaning, when a
+project gets chunked into a series of packets, each packet links back to the
+root of the project through some cryptographic wizardry.
+
+```note
+I'll admit that this process doesn't sound very user friendly, but remember that Dat is simply the protocol. At some point a browser would then take over all the heavy UI/UX lifting.
+```
+
+### Privacy and Security
+
+We now have every web site split into a multitude of small packets and
+distributed across the world via a network of peers. When I try to visit your
+website via the Dat protocol, I will first look for peers that possess the data
+for your website in a process called **Source Discovery**. Once I get a list of
+peers, I'll establish a connection with them and begin downloading. This
+symbiotic group of peers downloading and seeding data is called a **swarm**.
+Because of Dat's end-to-end encryption, I'm assured that the data I'm receiving
+isn't going to be intercepted or manipulated, and due to some nifty
+cryptographic features of the Merkle tree, I'm ensured that the data I receive
+is the data I'm expecting.
+
+### Into the weeds
+
+_(Feel free to skip this part if you're not technically inclined)_
+
+There's 2 additional levels of customization that makes the Dat protocol even
+more charming. The source discovery phases uses any combination of 3 networks,
+with the ability to add networks if needed:
+
+- **DNS:** The most prevalent network for naming and identifying Internet
+  entities (websites, email servers, etc.). It's essentially the phone book of
+  the Internet.
+- **Multicast DNS:** A zero-config extension of DNS that useful for local
+  networks.
+- **Mainline DHT:** A Kademlia-based Distributed Hash Table 😳. Simply put, it's
+  a decentralized network designed and used by BitTorrent to manage their peers.
+
+Then, during the swarming phase, clients have an option to customize their
+transportation layer: TCP, UTP, or HTTP (Dat's default protocol).
+
+This article doesn't have the bandwidth to hash out the pros and cons of each
+networks and protocol- what's important is that the Dat protocol is empowering
+clients to tailor their discovery networks and communication protocols in order
+to meet their privacy needs.
+
+## Surf The Web
+
+The quickest way to surf the Dweb is with the
+[Beaker browser](https://github.com/beakerbrowser/beaker/blob/master/archive-notice.md).
+Beaker is built on Chromium, so it feels and looks just like Chrome. The big
+difference is, it supports the dat:// protocol. To download the beaker browser,
+head on over to their installation page.
+
+Once your on Beaker… surf! You can visit any ol' centralized website (including
+this one!), but the real magic is the dat:// sites
+
+## Publish on the Dweb
+
+Choose your own adventure! You have two options in contributing to the Dweb: the
+command line way or the browser way. I'll walk you through both.
+
+### Option 1: Cool Techy Command Line Way
+
+```note
+The following section is catered to mac users, the general workflow should be the same for non-mac users, but you'll have to amend the process here-and-there to get by
+```
+
+Already have a website you want to publish? Great! If not, just go to here,
+right click, select “Save Page As…”, then name it index.html or something more
+sexy if you'd like.
+
+In your terminal, download Dat using npm (don't have npm? get it)<sup>1</sup>:
+
+```console
+npm install -g dat
+```
+
+Now plop your html file into a new directory and dat-ify it<sup>2</sup>:
+
+```console
+mkdir ~/Sites/dweb
+mv ~/Downloads/Index.html ~/Sites/dweb
+cd ~/Sites/dweb
+dat share .
+```
+
+```note
+1. If you're using a package manager and already have a project build out, feel free to download dat locally.
+
+2. Again, if you have you're publishing a previously created site, then skip the first two lines and just run `dat share <path-to-directory>`
+```
+
+![Visual illustrations of the "Option 1" section](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*WF7EqaY1xPhpI9HeShCevg.jpeg)
+
+Cool! You've successfully contributed to the Dweb! But what the heck just
+happened? Let's break it down.
+
+#### The .dat directory
+
+A newly created directory should pop up in your project's directory. If we dive
+into it, we'll see a handful of binary files that start with either content or
+metadata. Since you're an observant reader, you'll remember these two keywords
+when we broke down the Merkle tree… we've gone full circle!
+
+If your some sort of wizard, you could re-code these files into human language
+and inspect them further, but for now, be happy knowing that it's your website
+converted into a fancy new Merkle tree. Neat!
+
+#### Dat Statistics
+
+The last 3 printed lines in your terminal are some general stats about your
+site. As of now, your site has been published, but sadly, your dat doesn't have
+an audience 😞… yet! This can be read as:
+
+> Sharing Dat: 1 files (x.x KB)
+>
+> 0 connections | Downloads 0 B/s Connections 0 B/s
+
+#### Dat URL
+
+In your terminal, you'll see a bizarre URL that's something like this:
+
+> dat://\<64-character hex-encoded Ed25519 hash>
+
+This is your address on the Dweb! Let's check it out: copy-and-paste it into the
+Beaker browser.
+
+#### Next Steps
+
+Neato, it works! Now go back to your terminal and witness the updates. You
+should see something like:
+
+> 1 connection | Download 0 B/S Upload 0 B/S
+
+Again: neato! Now let's make an update. Open up your html file (maybe located in
+
+`~/Sites/dweb`) in some cool IDE, such as Sublime, WebStorm, etc or just a plan
+ol' text-editor, such as TextEdit. Do something weird (I wrapped a section in
+note blocks to give you a good starting point). Save it. Then back to the
+terminal:
+
+```console
+dat sync
+```
+
+Wammy! That's about all she wrote. There's some more neat things, such as…
+
+cloning someone else's (i.e. mine!) dat project:
+
+```console
+dat clone dat://dat-webgl.hashbase.io <path-to-directory>
+```
+
+Doctoring<sup>\*</sup> a bonked project:
+
+```console
+dat doctor
+```
+
+Getting a little help:
+
+```console
+dat status (shows information about the current dat project)
+dat help (general information about the dat command line tool)
+```
+
+```note
+dat doctor runs two tests:
+
+1. Verifies peer connection via a public server.
+2. Returns a link that allows you to test direct peer connections
+```
+
+### Option 2: The Beaker route
+
+Fire up Beaker, click the hamburger, and then click Create New. Choose your own
+adventure! From here, either select:
+
+- **Website:** Creates a pretty boring “Hello World” site for you, which
+  includes your garden variety files: `index.html`, `script.js`, and
+  `styles.css`. Plus some dat-specific files: `.datignore` and `dat.json`
+- **Empty project:** Creates a project with only the `.datignore` and `dat.json`
+  files. You add your own website assets.
+- **From folder:** Imports an existing dat project and auto-magically sync it
+  with your local directory.
+
+![Visual illustrations of the "Option 2" section](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*bn4tOakI5qpfQcMZ8ANDHQ.jpeg)
+_Red arrows point to some fun features: add files to a project, change sync
+location, and add a favicon image_
+
+## Stay Stoked
+
+Give yourself a pat on the back; you've successful pushed the enveloped and
+surfed/developed on the distributed web. Don't stop now though, ensure some
+longevity to your site with some neat hosting options.
+
+If you enjoyed this article, check out my other stuff
+[here](https://medium.com/@blakenetz) or help me become a better coder by
+joining me on some [fun projects](https://github.com/blakenetz).
+
+Adios 🤙
+
+## Resources
+
+### 🖇 Linked Articles
+
+- [Three challenges for the web, according to its inventor](https://webfoundation.org/2017/03/web-turns-28-letter/)
+  _World Wide Web Foundation_
+- [Great Firewall](https://en.wikipedia.org/wiki/Great_Firewall) _Wikipedia_
+- [UN: Facebook had a 'role' in Rohingya genocide](https://www.aljazeera.com/news/2018/3/13/un-facebook-had-a-role-in-rohingya-genocide)
+  _Al Jazeera_
+- [How Duterte Used Facebook To Fuel the Philippine Drug War](https://www.buzzfeednews.com/article/daveyalba/facebook-philippines-dutertes-drug-war)
+  _BuzzFeed_
+- [Network Neutrality, Explained](https://www.vox.com/2015/2/26/18073512/network-neutrality)
+  _Vox_
+- [Dat Project](https://datproject.org/) _Dat_
+- [Merkle Tree](https://brilliant.org/wiki/merkle-tree/) _Brilliant_
+
+### 📖 Further Readings
+
+- [Dat Whitepaper](https://github.com/dat-ecosystem-archive/whitepaper/blob/master/dat-paper.pdf)
+  _Dat_
+- [Code Repository for my Dat Website with WebGL](https://github.com/blakenetz/dat-webgl)
+  _GitHub_
+- [Solid](https://www.inrupt.com/solid) _Sir Tim Berners-Lee + MIT's Dweb
+  Solution_
+- [Dweb Articles](https://hacks.mozilla.org/category/dweb/) _Mozilla_
+
+### 🛠 Tools
+
+- [Beaker](https://github.com/beakerbrowser/beaker/blob/master/archive-notice.md)

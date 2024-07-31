@@ -31,7 +31,8 @@ if (missing.length) {
   throw new Error(`Missing Mongodb env variables: ${missing.join(", ")}`);
 }
 
-const uri = `mongodb+srv://${config.user}:${config.pass}@${config.cluster}.${config.host}.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.NODE_ENV}`;
+const uri = `mongodb+srv://${config.user}:${config.pass}@${config.cluster}.${config.host}.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.NODE_ENV}&directConnection=true
+`;
 
 export type Documents = {
   users: UserModel;
@@ -99,20 +100,13 @@ class DB {
       },
     });
 
-    this.initialize();
+    client
+      .connect()
+      .then(() => console.log("successfully connected to db"))
+      .catch((e) => console.log("error connecting to db", e));
 
     this.#client = client;
     this.#db = client.db();
-  }
-
-  private async initialize() {
-    try {
-      await this.#client.connect();
-      await this.#client.db("admin").command({ ping: 1 });
-    } catch (error) {
-      console.log("unable to connect to db");
-      console.log(error);
-    }
   }
 
   private getCollection<T extends Collection>(

@@ -1,3 +1,7 @@
+import { fileURLToPath } from "node:url";
+
+import path from "path";
+
 import { formatDate } from "~/utils";
 
 export function generateBaseMDxContent(fileName: string) {
@@ -38,3 +42,6 @@ will have unique styles
 \`\`\`
 `;
 }
+
+export const filename = fileURLToPath(import.meta.url);
+export const dirname = path.resolve(filename, "..");

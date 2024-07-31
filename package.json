@@ -13,12 +13,10 @@
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "tsc",
     "tsx-dev": "NODE_ENV=development tsx --env-file .env --env-file .env.development",
-    "create:post": "tsx scripts/new-blog-post.ts",
-    "db:blog-pull": "npm run tsx-dev scripts/blog-pull.ts",
-    "db:blog-push": "npm run tsx-dev scripts/blog-push.ts",
-    "db:init": "npm run tsx-dev scripts/db-init",
-    "db:seed": "npm run tsx-dev scripts/db-seed",
-    "db:setup": "npm run db:init && npm run db:seed && npm run db:blog-push && npm run db:blog-pull"
+    "tsx-prod": "NODE_ENV=development tsx --env-file .env --env-file .env.production",
+    "script:dev": "npm run tsx-dev scripts/index.ts",
+    "script:prod": "npm run tsx-prod scripts/index.ts",
+    "create:post": "tsx scripts/new-blog-post.ts"
   },
   "dependencies": {
     "@mantine/core": "^7.11.1",
@@ -45,6 +43,7 @@
     "@mdx-js/react": "^3.0.1",
     "@mdx-js/rollup": "^3.0.1",
     "@remix-run/dev": "^2.10.2",
+    "@types/prompts": "^2.4.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
@@ -59,6 +58,7 @@
     "postcss": "^8.4.39",
     "postcss-preset-mantine": "^1.15.0",
     "postcss-simple-vars": "^7.0.1",
+    "prompts": "^2.4.2",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.0.0",
     "remark-parse": "^11.0.0",

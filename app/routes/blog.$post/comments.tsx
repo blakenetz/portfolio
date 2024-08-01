@@ -1,10 +1,14 @@
 import { Avatar, Button, Text, Textarea, Title } from "@mantine/core";
 import { useToggle } from "@mantine/hooks";
 import { useFetcher, useSearchParams } from "@remix-run/react";
-import { FormEventHandler, useState } from "react";
+import {
+  IconBrandGithubFilled,
+  IconBrandGoogleFilled,
+} from "@tabler/icons-react";
+import React, { FormEventHandler, useState } from "react";
 
 import { User } from "~/server/authenticator.server";
-import { Comment } from "~/server/db.singleton.server";
+import { Comment, UserModel } from "~/server/db.singleton.server";
 import { cls } from "~/utils";
 
 import AuthModal from "./authModal";
@@ -26,6 +30,11 @@ interface CommentsProps {
    */
   user: User | null;
 }
+
+const iconMap = new Map<UserModel["source"], React.ReactElement>([
+  ["github", <IconBrandGithubFilled key="github" />],
+  ["google", <IconBrandGoogleFilled key="google" />],
+]);
 
 export default function Comments({
   commentsTotal,
@@ -78,21 +87,30 @@ export default function Comments({
         <Text>None yet 😕... but you can be the first!</Text>
       ) : (
         <div className={cls(styles.flex, styles.comments)}>
-          {comments.map((comment, i) => (
-            <section
-              key={i}
-              className={cls(styles.flex, styles.row, styles.comment)}
-            >
-              <Avatar name={comment.user} color="initials" />
-              <div className={cls(styles.flex, styles.commentBody)}>
-                <div className={cls(styles.flex, styles.row, styles.header)}>
-                  <Title order={4}>{comment.user}</Title>
-                  <Text>{comment.date}</Text>
+          {comments.map((comment, i) => {
+            const icon = iconMap.get(comment.user.source);
+            const iconEl = icon
+              ? React.cloneElement(icon, { className: styles.icon })
+              : null;
+
+            return (
+              <section
+                key={i}
+                className={cls(styles.flex, styles.row, styles.comment)}
+              >
+                <Avatar name={comment.user.username} color="initials" />
+                <div className={cls(styles.flex, styles.commentBody)}>
+                  <div className={cls(styles.flex, styles.row, styles.header)}>
+                    <Title order={4}>
+                      {iconEl} {comment.user.username}
+                    </Title>
+                    <Text>{comment.date}</Text>
+                  </div>
+                  <Text>{comment.content}</Text>
                 </div>
-                <Text>{comment.content}</Text>
-              </div>
-            </section>
-          ))}
+              </section>
+            );
+          })}
         </div>
       )}
 

@@ -10,7 +10,7 @@ const today = new Date();
 
 export default async function seed() {
   console.log("Seeding users and posts...");
-  const arr = Array.from({ length: 20 }, (_v, i) => i + 1);
+  const arr = Array.from({ length: 10 }, (_v, i) => i + 1);
 
   const [{ insertedIds: userIds }, { insertedIds: postIds }] =
     await Promise.all([
@@ -21,6 +21,20 @@ export default async function seed() {
           password: hashPassword("1234" + i),
           source: "form",
           email: `user${i}@test.com`,
+        }))
+      ),
+      DB.createMany<"socialUsers">(
+        "users",
+        arr.map((i) => ({
+          username: `User ${i}`,
+          source: "github",
+        }))
+      ),
+      DB.createMany<"socialUsers">(
+        "users",
+        arr.map((i) => ({
+          username: `User ${i}`,
+          source: "google",
         }))
       ),
       DB.createMany<"posts">(

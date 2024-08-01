@@ -7,14 +7,7 @@ import DB, {
   PostModel,
 } from "~/server/db.singleton.server";
 import { getSession } from "~/services/session.server";
-import {
-  exists,
-  formatDate,
-  Status,
-  status,
-  validate,
-  validateString,
-} from "~/utils";
+import { formatDate, Status, status, validate, validateString } from "~/utils";
 
 import { inputName, sorts } from "./blog";
 
@@ -81,7 +74,7 @@ export async function getPost(
     .limit(limit * 5)
     .map<Comment>((comment) => {
       return {
-        user: comment.users_model.username,
+        user: comment.users_model,
         content: comment.content,
         date: formatDate(comment.date),
       };

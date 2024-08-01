@@ -7,6 +7,9 @@ import {
   redirect,
 } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+import Markdown from "react-markdown";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { Mdx } from "types/modules";
 
 import { Button } from "~/components";
@@ -31,16 +34,19 @@ export const meta: MetaFunction = ({ location }) => {
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const post = await getPost(request, params);
+  const results = await getPost(request, params);
   const user = await authenticator.isAuthenticated(request);
 
-  if (post.ok === false) return redirect(`/blog?status=${post.errorStatus}`);
-
-  const { ok: _ok, ...data } = post;
+  if (results.ok === false) {
+    return redirect(`/blog?status=${results.errorStatus}`);
+  }
 
   return json({
-    data,
     user,
+    comments: results.comments,
+    commentsTotal: results.commentsTotal,
+    meta: results.post.meta,
+    component: results.post.content.toString(),
   });
 }
 
@@ -51,22 +57,23 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function Post() {
-  const { data, user } = useLoaderData<typeof loader>();
-  const pathName = `/app/blog/${data.meta.slug}.mdx`;
-  const post = posts[pathName];
+  const { user, meta, component, comments, commentsTotal } =
+    useLoaderData<typeof loader>();
 
   return (
     <>
+      <Source meta={meta} />
+
       <Flex className={cls(commonStyles.column, styles.reader)}>
-        <Source source={data.meta.source} url={data.meta.url} />
-        {post && post.default({ components })}
+        <Markdown
+          components={components}
+          remarkPlugins={[remarkFrontmatter, remarkMdxFrontmatter]}
+        >
+          {component}
+        </Markdown>
       </Flex>
 
-      <Comments
-        user={user}
-        comments={data.comments}
-        commentsTotal={data.commentsTotal}
-      />
+      <Comments user={user} comments={comments} commentsTotal={commentsTotal} />
 
       <Button component={Link} to="/blog">
         Take me back

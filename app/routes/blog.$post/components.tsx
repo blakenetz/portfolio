@@ -8,28 +8,36 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import type { MDXComponents } from "node_modules/@mdx-js/react/lib";
 import { HTMLAttributes } from "react";
+import { Options } from "react-markdown";
 
 import CodeBlock from "./codeBlock";
 
 // generic html props
 type HTMLProps = HTMLAttributes<HTMLElement>;
 
-const components: MDXComponents = {
+const components: Options["components"] = {
   a: (props: AnchorProps) => (
     <Anchor {...props} target="_blank" rel="noopener noreferrer" />
   ),
   p: (props: HTMLProps) => <Text {...props} />,
-  h1: (props: HTMLProps) => <Title {...props} order={2} />,
-  h2: (props: HTMLProps) => <Title {...props} order={3} />,
-  h3: (props: HTMLProps) => <Title {...props} order={4} />,
-  h4: (props: HTMLProps) => <Title {...props} order={5} />,
+  h1: (props: HTMLProps) => (
+    <Title {...props} order={2} component="h1" mb="md" />
+  ),
+  h2: (props: HTMLProps) => (
+    <Title {...props} order={3} component="h2" mt="sm" />
+  ),
+  h3: (props: HTMLProps) => (
+    <Title {...props} order={4} component="h3" mt="sm" />
+  ),
+  h4: (props: HTMLProps) => (
+    <Title {...props} order={5} component="h4" mt="sm" />
+  ),
   code: CodeBlock,
   img: (props: HTMLProps) => <Image {...props} />,
   blockquote: (props: HTMLProps) => <Blockquote {...props} p="md" />,
   ul: (props: HTMLProps) => <List {...props} withPadding type="unordered" />,
   ol: (props: HTMLProps) => <List {...props} withPadding type="ordered" />,
-  li: ListItem,
+  li: (props: HTMLProps) => <ListItem {...props} />,
 };
 export default components;

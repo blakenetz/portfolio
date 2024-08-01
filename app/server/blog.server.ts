@@ -1,7 +1,5 @@
 import { Params } from "@remix-run/react";
-import { writeFile } from "fs/promises";
 import { Filter, ObjectId } from "mongodb";
-import path from "path";
 
 import DB, {
   Comment,
@@ -53,32 +51,13 @@ async function getPostByParams(params: Params<"post">) {
   return DB.findOne("posts", { "meta.slug": params.post });
 }
 
-async function verifyMdxFile(post: PostModel): Promise<boolean> {
-  const rootPath = path.resolve(".", "app/blog");
-  const filePath = path.resolve(rootPath, post.meta.slug + ".mdx");
-  const fileExists = await exists(filePath);
-
-  // if not try to write
-  if (!fileExists) {
-    try {
-      await writeFile(filePath, post.content.buffer);
-      return true;
-    } catch (error) {
-      console.log("error writing file", error);
-      return false;
-    }
-  }
-
-  return true;
-}
-
 export async function getPost(
   request: Request,
   params: Params<"post">
 ): Promise<
   | {
       ok: true;
-      meta: PostModel["meta"];
+      post: PostModel;
       comments: Comment[];
       commentsTotal: number;
     }
@@ -86,9 +65,6 @@ export async function getPost(
 > {
   const post = await getPostByParams(params);
   if (!post) return { ok: false, errorStatus: status.post };
-
-  const verified = await verifyMdxFile(post);
-  if (!verified) return { ok: false, errorStatus: status.mdx };
 
   const { searchParams } = new URL(request.url);
   const batch = Number(searchParams.get("batch"));
@@ -113,7 +89,7 @@ export async function getPost(
     .toArray()
     .then((v) => v.reverse());
 
-  return { ok: true, meta: post.meta, comments, commentsTotal };
+  return { ok: true, post, comments, commentsTotal };
 }
 
 export async function postComment(request: Request, params: Params<"post">) {

@@ -10,11 +10,13 @@
 .center {
   display: inline-flex;
   align-items: center;
-  gap: var(--mantine-spacing-xs);
+  gap: calc(var(--mantine-spacing-xs) / 2);
 }
 
 .notification {
   background-color: var(--mantine-color-violet-light);
+  max-width: var(--mantine-breakpoint-md);
+  width: 100%;
 }
 
 .flex {

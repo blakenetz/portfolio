@@ -14,8 +14,8 @@
     "typecheck": "tsc",
     "tsx-dev": "NODE_ENV=development tsx --env-file .env --env-file .env.development",
     "tsx-prod": "NODE_ENV=production tsx --env-file .env --env-file .env.production",
-    "script:dev": "npm run tsx-dev scripts/index.ts",
-    "script:prod": "npm run tsx-prod scripts/index.ts",
+    "scripts:dev": "npm run tsx-dev scripts/index.ts",
+    "scripts:prod": "npm run tsx-prod scripts/index.ts",
     "create:post": "tsx scripts/new-blog-post.ts"
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "octokit": "^3.1.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-markdown": "^9.0.1",
     "remix-auth": "^3.7.0",
     "remix-auth-form": "^1.5.0",
     "remix-auth-github": "^1.7.0",

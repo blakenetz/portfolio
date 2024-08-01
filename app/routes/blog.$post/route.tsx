@@ -7,6 +7,9 @@ import {
   redirect,
 } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+import Markdown from "react-markdown";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { Mdx } from "types/modules";
 
 import { Button } from "~/components";
@@ -39,8 +42,11 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   }
 
   return json({
-    ...results,
     user,
+    comments: results.comments,
+    commentsTotal: results.commentsTotal,
+    meta: results.post.meta,
+    component: results.post.content.toString(),
   });
 }
 
@@ -51,14 +57,23 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function Post() {
-  const { user, post, comments, commentsTotal } =
+  const { user, meta, component, comments, commentsTotal } =
     useLoaderData<typeof loader>();
 
   return (
     <>
       <Flex className={cls(commonStyles.column, styles.reader)}>
-        <Source meta={post.meta} />
+        <Source meta={meta} />
       </Flex>
+
+      <section>
+        <Markdown
+          components={components}
+          remarkPlugins={[remarkFrontmatter, remarkMdxFrontmatter]}
+        >
+          {component}
+        </Markdown>
+      </section>
 
       <Comments user={user} comments={comments} commentsTotal={commentsTotal} />
 

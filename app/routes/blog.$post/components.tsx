@@ -8,15 +8,15 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import type { MDXComponents } from "node_modules/@mdx-js/react/lib";
 import { HTMLAttributes } from "react";
+import { Options } from "react-markdown";
 
 import CodeBlock from "./codeBlock";
 
 // generic html props
 type HTMLProps = HTMLAttributes<HTMLElement>;
 
-const components: MDXComponents = {
+const components: Options["components"] = {
   a: (props: AnchorProps) => (
     <Anchor {...props} target="_blank" rel="noopener noreferrer" />
   ),
@@ -30,6 +30,6 @@ const components: MDXComponents = {
   blockquote: (props: HTMLProps) => <Blockquote {...props} p="md" />,
   ul: (props: HTMLProps) => <List {...props} withPadding type="unordered" />,
   ol: (props: HTMLProps) => <List {...props} withPadding type="ordered" />,
-  li: ListItem,
+  li: (props: HTMLProps) => <ListItem {...props} />,
 };
 export default components;

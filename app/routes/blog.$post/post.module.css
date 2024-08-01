@@ -66,3 +66,8 @@
 .commentHeader {
   justify-content: space-between;
 }
+
+.icon {
+  width: var(--mantine-font-size-sm);
+  height: var(--mantine-font-size-sm);
+}

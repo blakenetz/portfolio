@@ -69,7 +69,7 @@ export interface CommentModel {
 }
 
 export interface Comment extends Pick<CommentModel, "content"> {
-  user: UserModel["username"];
+  user: UserModel;
   date: string;
 }
 

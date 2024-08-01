@@ -11,7 +11,7 @@ export default async function init() {
   ]);
   console.log("Creating unique index");
   await Promise.all([
-    DB.createIndex<"users">("users", { username: 1 }),
+    DB.createIndex<"users">("users", { username: 1, source: 1 }),
     DB.createIndex<"newUsers">("users", { email: 1 }, { sparse: true }),
   ]);
   console.log("Successfully initialized db!");

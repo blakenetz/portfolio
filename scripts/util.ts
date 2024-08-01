@@ -17,10 +17,6 @@ attributes:
   url: ADD URL TO SOURCE HERE
 ---
 
-export const meta = frontmatter.meta;
-export const headers = frontmatter.headers;
-export const attributes = frontmatter.attributes;
-
 # ${fileName}
 
 Use standard mdx syntax. The exceptions being:

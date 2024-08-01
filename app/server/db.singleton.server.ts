@@ -98,7 +98,11 @@ class DB {
         deprecationErrors: true,
       },
     });
-    client.connect();
+
+    client
+      .connect()
+      .then(() => console.log("successfully connected to db"))
+      .catch((e) => console.log("error connecting to db", e));
 
     this.#client = client;
     this.#db = client.db();

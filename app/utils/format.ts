@@ -21,5 +21,5 @@ export function capitalize(val: string) {
 }
 
 export function kebobCase(val: string) {
-  return val.replace(/\s/, "-").toLowerCase();
+  return val.replace(/\s/g, "-").toLowerCase();
 }

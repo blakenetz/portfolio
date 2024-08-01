@@ -21,10 +21,18 @@ const components: Options["components"] = {
     <Anchor {...props} target="_blank" rel="noopener noreferrer" />
   ),
   p: (props: HTMLProps) => <Text {...props} />,
-  h1: (props: HTMLProps) => <Title {...props} order={2} />,
-  h2: (props: HTMLProps) => <Title {...props} order={3} />,
-  h3: (props: HTMLProps) => <Title {...props} order={4} />,
-  h4: (props: HTMLProps) => <Title {...props} order={5} />,
+  h1: (props: HTMLProps) => (
+    <Title {...props} order={2} component="h1" mb="md" />
+  ),
+  h2: (props: HTMLProps) => (
+    <Title {...props} order={3} component="h2" mt="sm" />
+  ),
+  h3: (props: HTMLProps) => (
+    <Title {...props} order={4} component="h3" mt="sm" />
+  ),
+  h4: (props: HTMLProps) => (
+    <Title {...props} order={5} component="h4" mt="sm" />
+  ),
   code: CodeBlock,
   img: (props: HTMLProps) => <Image {...props} />,
   blockquote: (props: HTMLProps) => <Blockquote {...props} p="md" />,

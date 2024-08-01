@@ -1,12 +1,12 @@
 import { Anchor, Notification, Text } from "@mantine/core";
+import { SerializeFrom } from "@remix-run/node";
 import { IconBrandGithub, IconBrandMedium } from "@tabler/icons-react";
 import { Attribute } from "types/modules";
 
+import { PostModel } from "~/server/db.singleton.server";
 import { capitalize, cls } from "~/utils";
 
 import styles from "./post.module.css";
-import { PostModel } from "~/server/db.singleton.server";
-import { SerializeFrom } from "@remix-run/node";
 
 const iconMap = new Map<
   Attribute["source"],
@@ -44,7 +44,7 @@ export default function Source({
       withCloseButton={false}
     >
       <Text className={styles.center}>
-        {text}{" "}
+        {text}
         <Anchor
           href={meta.url}
           target="_blank"

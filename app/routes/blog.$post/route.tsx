@@ -62,18 +62,16 @@ export default function Post() {
 
   return (
     <>
-      <Flex className={cls(commonStyles.column, styles.reader)}>
-        <Source meta={meta} />
-      </Flex>
+      <Source meta={meta} />
 
-      <section>
+      <Flex className={cls(commonStyles.column, styles.reader)}>
         <Markdown
           components={components}
           remarkPlugins={[remarkFrontmatter, remarkMdxFrontmatter]}
         >
           {component}
         </Markdown>
-      </section>
+      </Flex>
 
       <Comments user={user} comments={comments} commentsTotal={commentsTotal} />
 

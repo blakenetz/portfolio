@@ -31,15 +31,15 @@ export const meta: MetaFunction = ({ location }) => {
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const post = await getPost(request, params);
+  const results = await getPost(request, params);
   const user = await authenticator.isAuthenticated(request);
 
-  if (post.ok === false) return redirect(`/blog?status=${post.errorStatus}`);
-
-  const { ok: _ok, ...data } = post;
+  if (results.ok === false) {
+    return redirect(`/blog?status=${results.errorStatus}`);
+  }
 
   return json({
-    data,
+    ...results,
     user,
   });
 }
@@ -51,22 +51,16 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function Post() {
-  const { data, user } = useLoaderData<typeof loader>();
-  const pathName = `/app/blog/${data.meta.slug}.mdx`;
-  const post = posts[pathName];
+  const { user, post, comments, commentsTotal } =
+    useLoaderData<typeof loader>();
 
   return (
     <>
       <Flex className={cls(commonStyles.column, styles.reader)}>
-        <Source source={data.meta.source} url={data.meta.url} />
-        {post && post.default({ components })}
+        <Source meta={post.meta} />
       </Flex>
 
-      <Comments
-        user={user}
-        comments={data.comments}
-        commentsTotal={data.commentsTotal}
-      />
+      <Comments user={user} comments={comments} commentsTotal={commentsTotal} />
 
       <Button component={Link} to="/blog">
         Take me back

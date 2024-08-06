@@ -40,6 +40,7 @@
     "remix-auth-form": "^1.5.0",
     "remix-auth-github": "^1.7.0",
     "remix-auth-google": "^2.0.0",
+    "tsx": "^4.16.2",
     "unstorage": "^1.10.2"
   },
   "devDependencies": {
@@ -65,7 +66,6 @@
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "to-vfile": "^8.0.0",
-    "tsx": "^4.16.2",
     "typescript": "~5.4.0",
     "unified": "^11.0.5",
     "vfile-matter": "^5.0.0",

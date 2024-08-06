@@ -123,7 +123,7 @@ class DB {
   }
 
   close() {
-    this.#client.close();
+    return this.#client.close();
   }
 
   async createCollect(name: Collection) {

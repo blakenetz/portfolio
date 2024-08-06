@@ -5,12 +5,12 @@ import prompts from "prompts";
 
 import { dirname } from "./util";
 
+const blacklisted = ["index.ts", "util.ts", "start.ts"];
+
 (async () => {
   const scripts = await fs
     .readdir(dirname)
-    .then((files) =>
-      files.filter((file) => file !== "index.ts" && file !== "util.ts")
-    );
+    .then((files) => files.filter((file) => !blacklisted.includes(file)));
 
   const response = await prompts({
     type: "select",

@@ -6,9 +6,9 @@
   "type": "module",
   "version": "3.0.0",
   "scripts": {
-    "dev": "remix vite:dev",
+    "dev": "npm run tsx-dev scripts/start.ts development",
     "build": "remix vite:build",
-    "start": "NODE_ENV=production remix-serve ./build/server/index.js",
+    "start": "npm run tsx-prod scripts/start.ts production",
     "deploy": "fly deploy --remote-only",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "tsc",

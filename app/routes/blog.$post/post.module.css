@@ -35,7 +35,7 @@
   align-items: flex-end;
 }
 
-.comments {
+.footer {
   max-width: var(--mantine-breakpoint-sm);
   align-items: flex-start;
 }

@@ -51,8 +51,10 @@ export default function Share({ url, meta }: ShareProps) {
       .replace(/\+/g, "%20");
 
   return (
-    <section className={cls(styles.flex, styles.comments)}>
-      <Title order={3}>Share</Title>
+    <section className={cls(styles.flex, styles.footer)}>
+      <Title order={5} component="p">
+        Share on...
+      </Title>
       <div className={cls(styles.flex, styles.row)}>
         <Button
           leftSection={<IconBrandLinkedin />}

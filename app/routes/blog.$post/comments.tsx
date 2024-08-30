@@ -70,7 +70,7 @@ export default function Comments({
   };
 
   return (
-    <section className={cls(styles.flex, styles.comments)}>
+    <section className={cls(styles.flex, styles.footer)}>
       <div className={cls(styles.flex, styles.row, styles.commentHeader)}>
         <Title order={3} component="h4">
           Comments
@@ -88,7 +88,7 @@ export default function Comments({
       {!comments.length ? (
         <Text>None yet 😕... but you can be the first!</Text>
       ) : (
-        <div className={cls(styles.flex, styles.comments)}>
+        <div className={cls(styles.flex, styles.footer)}>
           {comments.map((comment, i) => {
             const icon = iconMap.get(comment.user.source);
             const iconEl = icon

@@ -29,7 +29,7 @@ console.log(`🌻 Starting vite server in ${mode} mode`);
 
 const options: SpawnOptions = {
   stdio: "inherit",
-  env: { ...process.env, NODE_ENV: "production" },
+  env: { ...process.env, NODE_ENV: mode as NodeJS.ProcessEnv["NODE_ENV"] },
 };
 
 const args =

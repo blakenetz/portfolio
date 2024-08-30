@@ -36,13 +36,6 @@ export const meta: MetaFunction = () => [
     name: "description",
     content: "Hi! I'm Blake and this is my chunk of the internet",
   },
-  // search engine, etc
-  { name: "referrer", content: "origin-when-crossorigin" },
-  { name: "robots", content: "index, follow" },
-  { name: "googlebot", content: "index, follow" },
-  // general
-  { name: "subject", content: "portfolio" },
-  { name: "rating", content: "General" },
 ];
 
 export const links: LinksFunction = () => [
@@ -56,7 +49,7 @@ export const links: LinksFunction = () => [
   //  about
   {
     rel: "license",
-    href: "https://github.com/blakeface/portfolio/blob/master/LICENSE",
+    href: "https://github.com/blakenetz/portfolio/blob/master/LICENSE",
   },
   { rel: "me", href: "https://www.blakenetzeband.com", type: "text/html" },
   { rel: "me", href: "mailto:blake.netzeband@gmail.com" },
@@ -153,6 +146,13 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* search engine, etc */}
+        <meta name="referrer" content="origin-when-crossorigin" />
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+        {/*  general */}
+        <meta name="subject" content="portfolio" />
+        <meta name="rating" content="General" />
         <Meta />
         <Links />
         <ColorSchemeScript />

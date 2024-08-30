@@ -28,8 +28,6 @@ import Source from "./source";
 export const meta: MetaFunction<LoaderFunction> = ({ data, location }) => {
   const { meta } = data as PostModel;
 
-  console.log(meta);
-
   const tags = [
     { title: ["BN", "Blog", meta.title].join(" | ") },
     { name: "description", content: meta.description },

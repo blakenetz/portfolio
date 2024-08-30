@@ -29,7 +29,7 @@ export const meta: MetaFunction<LoaderFunction> = ({ data, location }) => {
   const { meta } = data as PostModel;
 
   return [
-    meta,
+    { ...meta, title: ["BN", "Blog", meta.title].join(" | ") },
     /** @see https://www.linkedin.com/help/linkedin/answer/a521928/making-your-website-shareable-on-linkedin?lang=en */
     { property: "og:title", content: meta.title },
     { property: "og:description", content: meta.description },

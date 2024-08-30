@@ -72,9 +72,7 @@ export default function Comments({
   return (
     <section className={cls(styles.flex, styles.footer)}>
       <div className={cls(styles.flex, styles.row, styles.commentHeader)}>
-        <Title order={3} component="h4">
-          Comments
-        </Title>
+        <Title order={3}>Comments</Title>
         {showMore && (
           <Button
             className={styles.cta}
@@ -103,7 +101,7 @@ export default function Comments({
                 <Avatar name={comment.user.username} color="initials" />
                 <div className={cls(styles.flex, styles.commentBody)}>
                   <div className={cls(styles.flex, styles.row, styles.header)}>
-                    <Title order={4} component="h5">
+                    <Title order={4}>
                       {iconEl} {comment.user.username}
                     </Title>
                     <Text>{comment.date}</Text>

@@ -12,7 +12,6 @@ export default async function seed() {
   console.log("Seeding users and posts...");
   const arr = Array.from({ length: 10 }, (_v, i) => i + 1);
 
-  // const [{ insertedIds: userIds }, { insertedIds: postIds }] =
   const results = await Promise.all([
     DB.createMany<"users">(
       "users",
@@ -63,7 +62,7 @@ export default async function seed() {
   }, []);
 
   const comments: CommentModel[] = postIds.flatMap((post) => {
-    // give every post 5 comments
+    // give every post 10 comments
     return Array.from({ length: 10 }, (_el, i) => i + 1).map((i) => {
       const user = userIds[Math.floor(Math.random() * userIds.length)];
       return {

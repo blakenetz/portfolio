@@ -28,8 +28,11 @@ import Source from "./source";
 export const meta: MetaFunction<LoaderFunction> = ({ data, location }) => {
   const { meta } = data as PostModel;
 
-  return [
-    { ...meta, title: ["BN", "Blog", meta.title].join(" | ") },
+  console.log(meta);
+
+  const tags = [
+    { title: ["BN", "Blog", meta.title].join(" | ") },
+    { name: "description", content: meta.description },
     /** @see https://www.linkedin.com/help/linkedin/answer/a521928/making-your-website-shareable-on-linkedin?lang=en */
     { property: "og:title", content: meta.title },
     { property: "og:description", content: meta.description },
@@ -37,7 +40,23 @@ export const meta: MetaFunction<LoaderFunction> = ({ data, location }) => {
       property: "og:url",
       content: "https://blakenetzeband.com" + location.pathname,
     },
+    { property: "og:type", content: "article" },
   ];
+
+  /** @see https://search.gov/indexing/metadata.html#created-date */
+  if (meta.date) {
+    const date = new Date(meta.date).toISOString().split("T")[0];
+    tags.push(
+      ...[
+        { property: "article:published_time", content: date },
+        { name: "dc.date", content: date },
+        { name: "dc.date.created", content: date },
+        { name: "dcterms.created", content: date },
+      ]
+    );
+  }
+
+  return tags;
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

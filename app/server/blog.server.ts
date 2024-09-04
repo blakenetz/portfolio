@@ -105,7 +105,7 @@ export async function postComment(request: Request, params: Params<"post">) {
 
   const results = await DB.createOne<"comments">("comments", document);
 
-  Email.sendCommentNotification(document, post!);
+  Email.sendCommentNotification(document, post!, request.url);
 
   return { ok: results.acknowledged };
 }

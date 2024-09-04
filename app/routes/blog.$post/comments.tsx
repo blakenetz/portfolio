@@ -72,7 +72,9 @@ export default function Comments({
   return (
     <section className={cls(styles.flex, styles.footer)}>
       <div className={cls(styles.flex, styles.row, styles.commentHeader)}>
-        <Title order={3}>Comments</Title>
+        <Title order={3} id="comments">
+          Comments
+        </Title>
         {showMore && (
           <Button
             className={styles.cta}

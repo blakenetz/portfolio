@@ -19,6 +19,8 @@
     "create:post": "tsx scripts/new-blog-post.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.637.0",
+    "@aws-sdk/credential-provider-node": "^3.637.0",
     "@mantine/core": "^7.11.1",
     "@mantine/hooks": "^7.11.1",
     "@mdx-js/react": "^3.0.1",
@@ -47,6 +49,7 @@
     "@flydotio/dockerfile": "^0.5.2",
     "@mdx-js/rollup": "^3.0.1",
     "@remix-run/dev": "^2.10.2",
+    "@types/nodemailer": "^6.4.15",
     "@types/prompts": "^2.4.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

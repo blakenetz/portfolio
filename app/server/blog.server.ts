@@ -6,6 +6,7 @@ import DB, {
   CommentModel,
   PostModel,
 } from "~/server/db.singleton.server";
+import Email from "~/server/email.singleton.server";
 import { getSession } from "~/services/session.server";
 import { formatDate, Status, status, validate, validateString } from "~/utils";
 
@@ -95,12 +96,16 @@ export async function postComment(request: Request, params: Params<"post">) {
   if (!user) return { ok: false, error: "Please login" };
 
   const post = await getPostByParams(params);
-  const results = await DB.createOne<"comments">("comments", {
+  const document: CommentModel = {
     user: new ObjectId(user),
     post: post!._id,
     content: comment,
     date: new Date(),
-  });
+  };
+
+  const results = await DB.createOne<"comments">("comments", document);
+
+  Email.sendCommentNotification(document, post!);
 
   return { ok: results.acknowledged };
 }

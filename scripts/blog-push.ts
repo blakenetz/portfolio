@@ -52,6 +52,8 @@ export default async function push() {
     console.log("Error uploading document: " + error);
     return;
   }
+
+  console.log("Did you update the sitemap?");
 }
 
 await push().finally(() => process.exit());

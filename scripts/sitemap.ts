@@ -8,6 +8,10 @@ import { extractVFile, formatMeta } from "./util";
 
 type NodeData = { [tagName: string]: string };
 
+function formatDate(date?: string | Date | number) {
+  return format(date ?? new Date(), "yyyy-MM-dd");
+}
+
 /**
  * @see https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap#xml
  */
@@ -31,7 +35,9 @@ export default async function createSiteMap() {
   function getByLocation(location: string) {
     for (let i = 0; i < urlNodes.length; i++) {
       const node = urlNodes[i];
-      if (node?.textContent?.trim() === location) {
+      const children = Array.from(node.childNodes);
+
+      if (children.some((child) => child.textContent === location)) {
         return node;
       }
     }
@@ -55,7 +61,7 @@ export default async function createSiteMap() {
   // iterate over routes
   ["", "projects/", "blog/"].forEach((route) => {
     const loc = new URL(`./${route}`, urlBase).toString();
-    const today = format(new Date(), "MM-dd-yyyy");
+    const today = formatDate();
 
     const node = getByLocation(loc);
 
@@ -77,17 +83,19 @@ export default async function createSiteMap() {
 
     const meta = formatMeta(vFile.data.matter);
     const loc = new URL(`./${meta.slug}`, blogBase).toString() + "/";
+    const lastModified = formatDate(meta.date);
 
-    // continue to next iteration if node exists
-    if (getByLocation(loc)) continue;
+    // if node exists update lastModified
+    const node = getByLocation(loc);
+    if (node) {
+      const [lastmod] = node.getElementsByTagName("lastmod");
+      lastmod.textContent = lastModified;
+    } else {
+      const data: NodeData = { loc, lastmod: lastModified };
+      const urlNode = generateUrlNode(data);
 
-    const data: NodeData = {
-      loc,
-      lastmod: format(meta.date ?? new Date(), "MM-dd-yyyy"),
-    };
-    const urlNode = generateUrlNode(data);
-
-    urlsetNode.appendChild(urlNode);
+      urlsetNode.appendChild(urlNode);
+    }
   }
 
   await fs.writeFile(siteMapPath, serializer.serializeToString(document));

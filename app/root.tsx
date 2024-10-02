@@ -51,9 +51,9 @@ export const links: LinksFunction = () => [
     rel: "license",
     href: "https://github.com/blakenetz/portfolio/blob/master/LICENSE",
   },
-  { rel: "me", href: "https://www.blakenetzeband.com", type: "text/html" },
+  { rel: "me", href: "https://blakenetzeband.com", type: "text/html" },
   { rel: "me", href: "mailto:blake.netzeband@gmail.com" },
-  { rel: "index", href: "https://www.blakenetzeband.com" },
+  { rel: "index", href: "https://blakenetzeband.com" },
 ];
 
 export const headers: HeadersFunction = () => ({

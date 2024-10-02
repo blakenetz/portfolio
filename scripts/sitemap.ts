@@ -81,7 +81,10 @@ export default async function createSiteMap() {
     // continue to next iteration if node exists
     if (getByLocation(loc)) continue;
 
-    const data: NodeData = { loc, lastmod: format(meta.date, "MM-dd-yyyy") };
+    const data: NodeData = {
+      loc,
+      lastmod: format(meta.date ?? new Date(), "MM-dd-yyyy"),
+    };
     const urlNode = generateUrlNode(data);
 
     urlsetNode.appendChild(urlNode);

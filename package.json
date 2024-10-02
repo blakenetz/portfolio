@@ -53,6 +53,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
+    "@xmldom/xmldom": "^0.9.3",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",

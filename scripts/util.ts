@@ -1,8 +1,24 @@
 import { fileURLToPath } from "node:url";
 
+import { Node } from "node_modules/unified/lib";
+import { VFile } from "node_modules/vfile-matter/lib";
 import path from "path";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkParse from "remark-parse";
+import remarkStringify from "remark-stringify";
+import { read } from "to-vfile";
+import { Mdx } from "types/modules";
+import { unified } from "unified";
+import { matter } from "vfile-matter";
 
-import { formatDate } from "~/utils";
+import { PostModel } from "~/server/db.singleton.server";
+import { formatDate, kebobCase, parseMdxMeta } from "~/utils";
+
+interface __VFile extends VFile {
+  data: {
+    matter: Mdx["frontmatter"];
+  };
+}
 
 export function generateBaseMDxContent(fileName: string) {
   return `---
@@ -41,3 +57,33 @@ will have unique styles
 
 export const filename = fileURLToPath(import.meta.url);
 export const dirname = path.resolve(filename, "..");
+
+function matterify() {
+  return function (_tree: Node, file: VFile) {
+    matter(file);
+  };
+}
+
+export async function extractVFile(filePath: string) {
+  const vFile = await read(filePath);
+
+  return unified()
+    .use(remarkParse)
+    .use(remarkStringify)
+    .use(remarkFrontmatter)
+    .use(matterify)
+    .process(vFile) as Promise<__VFile>;
+}
+
+export function formatMeta(frontmatter: Mdx["frontmatter"]): PostModel["meta"] {
+  const { attributes, meta } = frontmatter;
+  const metaValues = parseMdxMeta(meta);
+  const slug = kebobCase(metaValues.title);
+
+  return {
+    ...attributes,
+    ...metaValues,
+    date: new Date(attributes.date),
+    slug,
+  };
+}

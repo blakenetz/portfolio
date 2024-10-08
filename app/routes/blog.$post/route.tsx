@@ -17,7 +17,7 @@ import { authenticator } from "~/server/authenticator.server";
 import { getPost, postComment } from "~/server/blog.server";
 import { PostModel } from "~/server/db.singleton.server";
 import commonStyles from "~/styles/common.module.css";
-import { cls } from "~/utils";
+import { baseURL, cls, getCanonicalLink } from "~/utils";
 
 import Comments from "./comments";
 import components from "./components";
@@ -27,17 +27,18 @@ import Source from "./source";
 
 export const meta: MetaFunction<LoaderFunction> = ({ data, location }) => {
   const { meta } = data as PostModel;
+  const url = new URL(location.pathname, baseURL);
+
+  const canonicalLink = getCanonicalLink(location);
 
   const tags = [
     { title: ["BN", "Blog", meta.title].join(" | ") },
     { name: "description", content: meta.description },
+    canonicalLink,
     /** @see https://www.linkedin.com/help/linkedin/answer/a521928/making-your-website-shareable-on-linkedin?lang=en */
     { property: "og:title", content: meta.title },
     { property: "og:description", content: meta.description },
-    {
-      property: "og:url",
-      content: "https://blakenetzeband.com" + location.pathname,
-    },
+    { property: "og:url", content: url.toString() },
     { property: "og:type", content: "article" },
   ];
 

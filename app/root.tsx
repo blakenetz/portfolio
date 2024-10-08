@@ -1,9 +1,13 @@
 import "@mantine/core/styles.css";
 
 import {
+  Button as MantineButton,
+  Code,
   ColorSchemeScript,
   CSSVariablesResolver,
   MantineProvider,
+  Stack,
+  Text,
   Title,
 } from "@mantine/core";
 import { useLocalStorage, useToggle } from "@mantine/hooks";
@@ -14,6 +18,7 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import {
+  isRouteErrorResponse,
   json,
   Link,
   Links,
@@ -24,9 +29,9 @@ import {
   useRouteError,
 } from "@remix-run/react";
 
-import { Button, Layout, Notification } from "~/components";
+import { Layout, Notification } from "~/components";
 import styles from "~/styles/root.css?url";
-import { Status, status as httpStatus } from "~/utils";
+import { baseURL, Status, status as httpStatus } from "~/utils";
 
 import ColorSchemeContext from "./styles/colorSchemeContext";
 
@@ -51,9 +56,9 @@ export const links: LinksFunction = () => [
     rel: "license",
     href: "https://github.com/blakenetz/portfolio/blob/master/LICENSE",
   },
-  { rel: "me", href: "https://blakenetzeband.com", type: "text/html" },
+  { rel: "me", href: baseURL, type: "text/html" },
   { rel: "me", href: "mailto:blake.netzeband@gmail.com" },
-  { rel: "index", href: "https://blakenetzeband.com" },
+  { rel: "index", href: baseURL },
 ];
 
 export const headers: HeadersFunction = () => ({
@@ -94,6 +99,11 @@ const resolver: CSSVariablesResolver = (theme) => {
 export function ErrorBoundary() {
   const error = useRouteError();
 
+  const status = isRouteErrorResponse(error) ? error.status : 520;
+  const statusText = isRouteErrorResponse(error)
+    ? error.statusText
+    : (error as Error)?.message ?? "Unknown";
+
   if (process.env.NODE_ENV === "development") {
     console.error("aw shit!", error);
   }
@@ -103,6 +113,7 @@ export function ErrorBoundary() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="noindex" />
         <Meta />
         <Links />
         <ColorSchemeScript />
@@ -110,12 +121,25 @@ export function ErrorBoundary() {
       <body>
         <MantineProvider>
           <Layout>
-            <Title order={4} component="h1">
-              Crap. We hit an issue.
-            </Title>
-            <Button component={Link} to="/">
-              Send me home!
-            </Button>
+            <Stack>
+              <Title order={4} component="h1">
+                <Text fw="900" component="span">
+                  {status}
+                </Text>
+                ... Crap. We hit an issue
+              </Title>
+              <Text>This is all we know:</Text>
+              <Code>{statusText}</Code>
+
+              <MantineButton
+                component={Link}
+                to="/"
+                prefetch="none"
+                reloadDocument
+              >
+                Send me home!
+              </MantineButton>
+            </Stack>
             <Scripts />
           </Layout>
         </MantineProvider>

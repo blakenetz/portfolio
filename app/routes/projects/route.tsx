@@ -3,15 +3,18 @@ import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 
 import { Button } from "~/components";
 import { getRepos } from "~/server/projects.server";
-import { status } from "~/utils";
+import { getCanonicalLink, status } from "~/utils";
 
 import styles from "./projects.module.css";
 import Repos from "./repos";
 
-export const meta: MetaFunction = () => [
-  { title: "BN | Projects" },
-  { description: "My personal and work Github repositories" },
-];
+export const meta: MetaFunction = ({ location }) => {
+  return [
+    getCanonicalLink(location),
+    { title: "BN | Projects" },
+    { description: "My personal and work Github repositories" },
+  ];
+};
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const repos = await getRepos(request);

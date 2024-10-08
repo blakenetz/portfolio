@@ -4,6 +4,8 @@ import { DOMParser, XMLSerializer } from "@xmldom/xmldom";
 import { format } from "date-fns";
 import path from "path";
 
+import { baseURL } from "~/utils";
+
 import { extractVFile, formatMeta } from "./util";
 
 type NodeData = { [tagName: string]: string };
@@ -22,8 +24,8 @@ export default async function createSiteMap() {
   const siteMapPath = path.resolve(".", "public/sitemap.xml");
   const blogDir = path.resolve(".", "app/blog");
   // trailing slash is important
-  const urlBase = "https://blakenetzeband.com/";
-  const blogBase = new URL("./blog", urlBase) + "/";
+
+  const blogBase = new URL("./blog", baseURL) + "/";
 
   const siteMap = await fs.readFile(siteMapPath, "utf-8");
 
@@ -60,7 +62,7 @@ export default async function createSiteMap() {
 
   // iterate over routes
   ["", "projects/", "blog/"].forEach((route) => {
-    const loc = new URL(`./${route}`, urlBase).toString();
+    const loc = new URL(`./${route}`, baseURL).toString();
     const today = formatDate();
 
     const node = getByLocation(loc);

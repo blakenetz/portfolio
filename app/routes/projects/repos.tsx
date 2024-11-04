@@ -2,8 +2,8 @@ import { Anchor, Divider, Flex, Text, Title, Tooltip } from "@mantine/core";
 import { useSearchParams } from "@remix-run/react";
 import { IconGitFork, IconUserCircle } from "@tabler/icons-react";
 
-import { getParam, RepoData, sorts, UserScope } from "~/server/projects";
 import { Card, SortControl } from "~/components";
+import { getParam, RepoData, sorts, UserScope } from "~/server/projects";
 import commonStyles from "~/styles/common.module.css";
 import { capitalize, validate } from "~/utils";
 

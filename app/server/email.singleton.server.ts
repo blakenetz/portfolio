@@ -1,7 +1,8 @@
-import Mail from "nodemailer/lib/mailer";
-import { CommentModel, PostModel } from "./db.singleton.server";
 import nodemailer from "nodemailer";
+import Mail from "nodemailer/lib/mailer";
 import SendmailTransport from "nodemailer/lib/sendmail-transport";
+
+import { CommentModel, PostModel } from "./db.singleton.server";
 
 function getEmailBodyData(
   comment: CommentModel,

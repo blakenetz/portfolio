@@ -19,8 +19,9 @@
     "create:post": "tsx scripts/new-blog-post.ts"
   },
   "dependencies": {
-    "@mantine/core": "^7.11.1",
-    "@mantine/hooks": "^7.11.1",
+    "@mantine/code-highlight": "^7.14.3",
+    "@mantine/core": "^7.14.3",
+    "@mantine/hooks": "^7.14.3",
     "@mdx-js/react": "^3.0.1",
     "@remix-run/node": "^2.10.2",
     "@remix-run/react": "^2.10.2",

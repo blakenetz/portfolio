@@ -52,6 +52,12 @@ For notifications codeblocks, use
 This multiline block
 will have unique styles
 \`\`\`
+
+To hide copy button
+\`\`\`language no-copy
+This multiline block
+will have unique styles
+\`\`\`
 `;
 }
 

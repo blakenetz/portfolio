@@ -7,9 +7,9 @@ import {
 } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 
-import { Button, Reader } from "~/components";
+import { Button, markdownComponents, Reader } from "~/components";
 import { getMdx, getModulePosts } from "~/server/mdx";
-import { components, getCanonicalLink } from "~/utils";
+import { getCanonicalLink } from "~/utils";
 
 const mdxFiles = getModulePosts();
 
@@ -41,7 +41,9 @@ export default function Post() {
 
   return (
     <>
-      <Reader>{post && post.default({ components })}</Reader>
+      <Reader>
+        {post && post.default({ components: markdownComponents })}
+      </Reader>
 
       <Button component={Link} to="/mdx">
         Take me back

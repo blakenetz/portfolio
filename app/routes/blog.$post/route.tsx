@@ -11,11 +11,11 @@ import Markdown from "react-markdown";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 
-import { Button, Reader } from "~/components";
+import { Button, markdownComponents, Reader } from "~/components";
 import { authenticator } from "~/server/authenticator.server";
 import { getPost, postComment } from "~/server/blog.server";
 import { PostModel } from "~/server/db.singleton.server";
-import { baseURL, components, getCanonicalLink } from "~/utils";
+import { baseURL, getCanonicalLink } from "~/utils";
 
 import Comments from "./comments";
 import Share from "./share";
@@ -90,7 +90,7 @@ export default function Post() {
 
       <Reader>
         <Markdown
-          components={components}
+          components={markdownComponents}
           remarkPlugins={[remarkFrontmatter, remarkMdxFrontmatter]}
         >
           {component}

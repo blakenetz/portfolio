@@ -8,6 +8,7 @@ import { dirname } from "./util";
 const blacklisted = ["index.ts", "util.ts", "start.ts"];
 
 (async () => {
+  console.log(dirname);
   const scripts = await fs
     .readdir(dirname)
     .then((files) => files.filter((file) => !blacklisted.includes(file)));

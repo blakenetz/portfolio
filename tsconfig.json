@@ -4,8 +4,7 @@
     "**/*.ts",
     "**/*.tsx",
     "types/*.ts",
-    "scripts/*.ts",
-    "*.css"
+    "scripts/*.ts"
   ],
   "compilerOptions": {
     "types": ["@remix-run/node", "vite/client"],

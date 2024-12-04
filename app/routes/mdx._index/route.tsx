@@ -15,6 +15,10 @@ export const meta: MetaFunction = ({ location }) => {
 };
 
 export async function loader() {
+  if (process.env.NODE_ENV !== "development") {
+    throw new Response("Not Found", { status: 404 });
+  }
+
   const posts = getAllMdx();
 
   return json(posts);

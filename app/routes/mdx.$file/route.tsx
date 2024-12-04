@@ -20,6 +20,10 @@ export const meta: MetaFunction<LoaderFunction> = ({ data, location }) => {
 };
 
 export async function loader({ params }: LoaderFunctionArgs) {
+  if (process.env.NODE_ENV !== "development") {
+    throw new Response("Not Found", { status: 404 });
+  }
+
   const result = getMdx(params);
 
   if (result.ok === false) {

@@ -2,7 +2,7 @@ import { Anchor, Divider, Flex, Text, Title, Tooltip } from "@mantine/core";
 import { useSearchParams } from "@remix-run/react";
 import { IconGitFork, IconUserCircle } from "@tabler/icons-react";
 
-import { Card, SortControl } from "~/components";
+import { CardPaper, SortControl } from "~/components";
 import { getParam, RepoData, sorts, UserScope } from "~/server/projects";
 import commonStyles from "~/styles/common.module.css";
 import { capitalize, validate } from "~/utils";
@@ -40,7 +40,7 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
 
       <div className={styles.grid}>
         {data.map((repo) => (
-          <Card key={repo.name}>
+          <CardPaper key={repo.name}>
             <Flex>
               {repo.fork && (
                 <Tooltip label="This repo was forked" withArrow>
@@ -98,7 +98,7 @@ export default function Repos({ data, name, subtitle }: ReposProps) {
               <Divider orientation="vertical" />
               <Text>{`Updated ${repo.updated_at}`}</Text>
             </div>
-          </Card>
+          </CardPaper>
         ))}
       </div>
 

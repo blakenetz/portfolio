@@ -1,4 +1,3 @@
-import { Flex } from "@mantine/core";
 import {
   ActionFunctionArgs,
   json,
@@ -12,16 +11,13 @@ import Markdown from "react-markdown";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 
-import { Button } from "~/components";
+import { Button, Reader } from "~/components";
 import { authenticator } from "~/server/authenticator.server";
 import { getPost, postComment } from "~/server/blog.server";
 import { PostModel } from "~/server/db.singleton.server";
-import commonStyles from "~/styles/common.module.css";
-import { baseURL, cls, getCanonicalLink } from "~/utils";
+import { baseURL, components, getCanonicalLink } from "~/utils";
 
 import Comments from "./comments";
-import components from "./components";
-import styles from "./post.module.css";
 import Share from "./share";
 import Source from "./source";
 
@@ -92,14 +88,14 @@ export default function Post() {
     <>
       <Source meta={meta} />
 
-      <Flex className={cls(commonStyles.column, styles.reader)}>
+      <Reader>
         <Markdown
           components={components}
           remarkPlugins={[remarkFrontmatter, remarkMdxFrontmatter]}
         >
           {component}
         </Markdown>
-      </Flex>
+      </Reader>
 
       <Share url={shareUrl} meta={meta} />
 

@@ -15,3 +15,13 @@
 .repo img {
   height: var(--mantine-font-size-md);
 }
+
+.title {
+  font-size: var(--mantine-h4-font-size);
+  line-height: var(--mantine-h4-line-height);
+  font-weight: var(--mantine-h4-font-weight);
+}
+
+.text {
+  font-size: var(--mantine-font-size-xs);
+}

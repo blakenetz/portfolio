@@ -9,14 +9,14 @@ import {
   Title,
 } from "@mantine/core";
 import { HTMLAttributes } from "react";
-import { Options } from "react-markdown";
+import { Components } from "react-markdown";
 
-import CodeBlock from "./codeBlock";
+import { CodeBlock } from "~/components";
 
 // generic html props
 type HTMLProps = HTMLAttributes<HTMLElement>;
 
-const components: Options["components"] = {
+export const components: Components = {
   a: (props: AnchorProps) => (
     <Anchor {...props} target="_blank" rel="noopener noreferrer" />
   ),
@@ -33,11 +33,10 @@ const components: Options["components"] = {
   h4: (props: HTMLProps) => (
     <Title {...props} order={5} component="h4" mt="sm" />
   ),
-  code: CodeBlock,
+  code: (props) => <CodeBlock {...props} />,
   img: (props: HTMLProps) => <Image {...props} />,
   blockquote: (props: HTMLProps) => <Blockquote {...props} p="md" />,
   ul: (props: HTMLProps) => <List {...props} withPadding type="unordered" />,
   ol: (props: HTMLProps) => <List {...props} withPadding type="ordered" />,
   li: (props: HTMLProps) => <ListItem {...props} />,
 };
-export default components;

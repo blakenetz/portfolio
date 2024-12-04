@@ -30,6 +30,9 @@ export interface Mdx {
   default: MDXComponent;
 }
 
+export type ModulePost = Record<"slug" | "title" | "description", string> &
+  Attribute & { render: Mdx["default"] };
+
 declare module "*.mdx" {
   let mdx: Mdx;
   export const meta: mdx.meta;

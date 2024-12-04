@@ -1,4 +1,4 @@
-import { Anchor, Pagination, PaginationProps, Text } from "@mantine/core";
+import { Pagination, PaginationProps } from "@mantine/core";
 import { json, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import {
   Form,
@@ -86,15 +86,7 @@ export default function Blog() {
       onChange={(e) => submit(e.currentTarget)}
     >
       {data.map((post) => (
-        <Card key={post.title}>
-          <Anchor component={Link} to={post.slug} className={styles.title}>
-            {post.title}
-          </Anchor>
-
-          <Text>{post.description}</Text>
-
-          <Text className={styles.text}>{`Published ${post.date}`}</Text>
-        </Card>
+        <Card key={post.title} post={post} />
       ))}
 
       {count > 1 ? (

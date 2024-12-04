@@ -1,0 +1,4 @@
+.reader {
+  max-width: var(--mantine-breakpoint-md);
+  width: 100%;
+}

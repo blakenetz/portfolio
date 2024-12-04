@@ -15,10 +15,9 @@ import { Button, Reader } from "~/components";
 import { authenticator } from "~/server/authenticator.server";
 import { getPost, postComment } from "~/server/blog.server";
 import { PostModel } from "~/server/db.singleton.server";
-import { baseURL, getCanonicalLink } from "~/utils";
+import { baseURL, components, getCanonicalLink } from "~/utils";
 
 import Comments from "./comments";
-import components from "./components";
 import Share from "./share";
 import Source from "./source";
 

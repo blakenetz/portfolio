@@ -3,8 +3,8 @@ import { Alert, Code, CodeProps, Flex } from "@mantine/core";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { ExtraProps } from "react-markdown";
 
+import styles from "./codeBlock.module.css";
 import CopyButton from "./copyButton";
-import styles from "./post.module.css";
 
 interface CodeBlockProps
   extends Omit<CodeProps, "vars" | "classNames" | "styles">,

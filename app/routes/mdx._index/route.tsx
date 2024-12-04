@@ -3,7 +3,7 @@ import { json, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import { Card } from "~/components";
-import { getAllMdx } from "~/server/mdx.server";
+import { getAllMdx } from "~/server/mdx";
 import { getCanonicalLink } from "~/utils";
 
 export const meta: MetaFunction = ({ location }) => {

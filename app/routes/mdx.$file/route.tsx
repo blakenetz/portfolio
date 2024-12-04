@@ -8,7 +8,7 @@ import {
 import { Link, useLoaderData } from "@remix-run/react";
 
 import { Button, Reader } from "~/components";
-import { getMdx, getModulePosts } from "~/server/mdx.server";
+import { getMdx, getModulePosts } from "~/server/mdx";
 import { components, getCanonicalLink } from "~/utils";
 
 const mdxFiles = getModulePosts();
@@ -16,7 +16,7 @@ const mdxFiles = getModulePosts();
 export const meta: MetaFunction<LoaderFunction> = ({ data, location }) => {
   const canonicalLink = getCanonicalLink(location);
 
-  return [...data.frontmatter.meta, canonicalLink];
+  return [...data.meta, canonicalLink];
 };
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -28,7 +28,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   const filename = `../blog/${params.file}.mdx`;
 
-  return json({ filename });
+  return json({ filename, meta: mdxFiles[filename].frontmatter.meta });
 }
 
 export default function Post() {

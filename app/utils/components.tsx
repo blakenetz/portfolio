@@ -33,7 +33,7 @@ export const components: Components = {
   h4: (props: HTMLProps) => (
     <Title {...props} order={5} component="h4" mt="sm" />
   ),
-  code: CodeBlock,
+  code: (props) => <CodeBlock {...props} />,
   img: (props: HTMLProps) => <Image {...props} />,
   blockquote: (props: HTMLProps) => <Blockquote {...props} p="md" />,
   ul: (props: HTMLProps) => <List {...props} withPadding type="unordered" />,

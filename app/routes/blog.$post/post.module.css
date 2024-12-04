@@ -2,11 +2,6 @@
   white-space: break-spaces;
 }
 
-.reader {
-  max-width: var(--mantine-breakpoint-md);
-  width: 100%;
-}
-
 .center {
   display: inline-flex;
   align-items: center;

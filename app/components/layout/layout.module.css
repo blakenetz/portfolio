@@ -27,6 +27,7 @@
   background: var(--mantine-color-white);
   color: var(--mantine-color-black);
   max-width: var(--mantine-breakpoint-xl);
+  width: 100%;
   flex: 1;
   position: relative;
   gap: var(--mantine-spacing-xl);

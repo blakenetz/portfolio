@@ -2,15 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://blakenetzeband.com/</loc>
-    <lastmod>2024-12-17</lastmod>
+    <lastmod>2024-12-18</lastmod>
   </url>
   <url>
     <loc>https://blakenetzeband.com/projects/</loc>
-    <lastmod>2024-12-17</lastmod>
+    <lastmod>2024-12-18</lastmod>
   </url>
   <url>
     <loc>https://blakenetzeband.com/blog/</loc>
-    <lastmod>2024-12-17</lastmod>
+    <lastmod>2024-12-18</lastmod>
   </url>
   <url>
     <loc>https://blakenetzeband.com/blog/bike-ride/</loc>
@@ -36,4 +36,12 @@
     <loc>https://blakenetzeband.com/blog/isolated-ai-with-nextjs/</loc>
     <lastmod>2024-11-11</lastmod>
   </url>
-<url><loc>https://blakenetzeband.com/blog/gbbo-scraper/</loc><lastmod>2024-12-16</lastmod></url></urlset>
+  <url>
+    <loc>https://blakenetzeband.com/blog/gbbo-scraper/</loc>
+    <lastmod>2024-12-16</lastmod>
+  </url>
+  <url>
+    <loc>https://blakenetzeband.com/blog/node-readable-stream/</loc>
+    <lastmod>2024-12-18</lastmod>
+  </url>
+</urlset>

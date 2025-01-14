@@ -16,7 +16,7 @@ export default function Header(props: React.HTMLAttributes<HTMLElement>) {
   const fixedClass = Boolean(rect && scroll.y > rect.bottom) && styles.fixed;
 
   const home = location.pathname === "/";
-  const paths = location.pathname.split("/");
+  const paths = location.pathname.split("/").map((v) => v.replace(/-/g, " "));
 
   return home ? (
     <div

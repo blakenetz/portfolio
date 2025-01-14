@@ -21,6 +21,7 @@ export const components: Components = {
     <Anchor {...props} target="_blank" rel="noopener noreferrer" />
   ),
   p: (props: HTMLProps) => <Text {...props} />,
+  strong: (props: HTMLProps) => <Text fw={700} {...props} />,
   h1: (props: HTMLProps) => (
     <Title {...props} order={2} component="h1" mb="md" />
   ),

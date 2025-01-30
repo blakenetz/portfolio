@@ -1,22 +1,15 @@
 {
-  "name": "portfolio",
-  "description": "personal portfolio site",
+  "name": "@portfolio/remix",
+  "description": "personal portfolio site built with Remix",
   "private": true,
   "sideEffects": false,
   "type": "module",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "scripts": {
-    "dev": "npm run tsx-dev scripts/start.ts development",
+    "dev": "pnpm run -F scripts start:dev",
     "build": "remix vite:build",
-    "start": "npm run tsx-prod scripts/start.ts production",
-    "deploy": "fly deploy --remote-only",
-    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "typecheck": "tsc",
-    "tsx-dev": "NODE_ENV=development tsx --env-file .env --env-file .env.development",
-    "tsx-prod": "NODE_ENV=production tsx --env-file .env --env-file .env.production",
-    "scripts:dev": "npm run tsx-dev scripts/index.ts",
-    "scripts:prod": "npm run tsx-prod scripts/index.ts",
-    "create:post": "tsx scripts/new-blog-post.ts"
+    "start": "pnpm run -F scripts start",
+    "deploy": "fly deploy --remote-only"
   },
   "dependencies": {
     "@mantine/code-highlight": "^7.14.3",
@@ -42,7 +35,6 @@
     "remix-auth-form": "^1.5.0",
     "remix-auth-github": "^1.7.0",
     "remix-auth-google": "^2.0.0",
-    "tsx": "^4.19.2",
     "unstorage": "^1.13.1"
   },
   "devDependencies": {
@@ -53,16 +45,8 @@
     "@types/prompts": "^2.4.9",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@typescript-eslint/eslint-plugin": "^7.16.0",
     "@xmldom/xmldom": "^0.9.3",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.57.0",
-    "eslint-import-resolver-typescript": "^3.7.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-react": "^7.37.2",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
     "postcss": "^8.4.49",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
@@ -70,7 +54,6 @@
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "to-vfile": "^8.0.0",
-    "typescript": "~5.7.2",
     "unified": "^11.0.5",
     "vfile-matter": "^5.0.0",
     "vite": "^5.4.14",
@@ -78,18 +61,5 @@
   },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/blakenetz/portfolio.git"
-  },
-  "keywords": [
-    "portfolio"
-  ],
-  "author": "me... obviously <blake.netzeband@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/blakenetz/portfolio/issues"
-  },
-  "homepage": "https://github.com/blakenetz/portfolio#readme"
+  }
 }

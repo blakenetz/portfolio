@@ -1,0 +1,14 @@
+{
+  "include": ["./apps/**/*"],
+  "compilerOptions": {
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "target": "ES2022",
+    "strict": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "noEmit": true
+  }
+}

@@ -9,7 +9,7 @@ export function useElementRect<T extends HTMLElement>() {
       setRect(ref.current.getBoundingClientRect());
     }
     // add ref.current as dep or else hook won't fire
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [ref.current]);
 
   return [ref, rect] as const;

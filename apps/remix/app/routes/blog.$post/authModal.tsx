@@ -100,7 +100,6 @@ export default function AuthModal() {
     }
 
     return () => clearTimeout(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetcher]);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {

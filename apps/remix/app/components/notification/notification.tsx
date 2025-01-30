@@ -18,7 +18,7 @@ interface NotificationProps {
   /**
    * onClose handler
    */
-  handleClose: VoidFunction;
+  handleClose: () => void;
 }
 
 export default function Notification({

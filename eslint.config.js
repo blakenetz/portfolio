@@ -8,6 +8,7 @@ import globals from "globals";
 export default [
   // Base JS config
   js.configs.recommended,
+  react.configs.flat["jsx-runtime"],
 
   // Global settings
   {
@@ -23,6 +24,8 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.node,
+        React: true,
+        NodeJS: true,
       },
     },
     settings: {
@@ -50,14 +53,13 @@ export default [
 
   // React files
   {
-    files: ["**/*.jsx", "**/*.tsx", "**/*.js", "**/*.ts"],
+    files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
     plugins: {
       react,
       "react-hooks": reactHooks,
     },
     rules: {
-      ...react.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
+      ...react.configs.flat.recommended.rules,
       "react/react-in-jsx-scope": "off",
       "react/jsx-uses-react": "off",
       "react/prop-types": "off",

@@ -1,14 +1,14 @@
 import { ActionIcon, Tooltip } from "@mantine/core";
 import { useClipboard } from "@mantine/hooks";
 import { IconClipboard } from "@tabler/icons-react";
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 
 interface CopyButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "content"> {
   /**
    * Content to send to clipboard api
    */
-  content?: React.ReactNode;
+  content?: ReactNode;
 }
 
 export default function CopyButton({ content, ...rest }: CopyButtonProps) {

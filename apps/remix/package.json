@@ -6,10 +6,15 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "dev": "pnpm run -F scripts start:dev",
+    "dev": "pnpm run -F remix tsx-dev start.ts development",
+    "start": "pnpm run -F remix tsx-prod start.ts production",
     "build": "remix vite:build",
-    "start": "pnpm run -F scripts start",
-    "deploy": "fly deploy --remote-only"
+    "deploy": "fly deploy --remote-only",
+    "tsx-dev": "NODE_ENV=development tsx --env-file ../../.env --env-file ../../.env.development",
+    "tsx-prod": "NODE_ENV=production tsx --env-file ../../.env --env-file ../../.env.production",
+    "run:dev": "pnpm run -F remix tsx-dev index.ts",
+    "run:prod": "npm run -F remix tsx-prod index.ts",
+    "create:post": "tsx new-blog-post.ts"
   },
   "dependencies": {
     "@mantine/code-highlight": "^7.14.3",

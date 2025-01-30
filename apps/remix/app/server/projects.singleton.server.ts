@@ -27,7 +27,7 @@ type Endpoint = (typeof endpoints)[number];
 type ReposItem = CacheItem<(typeof endpoints)[0]>;
 type EmojisItem = CacheItem<(typeof endpoints)[1]>;
 
-const keys = [
+const _keys = [
   "emojis",
   "blakenetz:created",
   "blakenetz:updated",
@@ -38,7 +38,7 @@ const keys = [
   "blake-discover:created",
   "blake-discover:updated",
 ] as const;
-type Key = (typeof keys)[number];
+type Key = (typeof _keys)[number];
 
 class ProjectsApi {
   #emojis: EmojiData | null;

@@ -11,7 +11,7 @@ type UnionToIntersection<U> = (
 
 export type MDXComponent = (
   props?: React.PropsWithChildren<MDXProps>
-) => JSX.Element;
+) => React.JSX.Element;
 
 export type Attribute = {
   date: string;
@@ -35,18 +35,18 @@ export type ModulePost = Record<"slug" | "title" | "description", string> &
 
 declare module "*.mdx" {
   let mdx: Mdx;
-  export const meta: mdx.meta;
-  export const headers: mdx.headers;
-  export const frontmatter: mdx.frontmatter;
+  export const meta: Mdx.meta;
+  export const headers: Mdx.headers;
+  export const frontmatter: Mdx.frontmatter;
   let MDXComponent: MDXComponent;
   export default MDXComponent;
 }
 
 declare module "*.md" {
   let mdx: Mdx;
-  export const meta: mdx.meta;
-  export const headers: mdx.headers;
-  export const frontmatter: mdx.frontmatter;
+  export const meta: Mdx.meta;
+  export const headers: Mdx.headers;
+  export const frontmatter: Mdx.frontmatter;
   let MDXComponent: MDXComponent;
   export default MDXComponent;
 }

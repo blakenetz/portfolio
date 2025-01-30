@@ -45,7 +45,11 @@ export default [
       ...typescript.configs["recommended"].rules,
       "@typescript-eslint/no-unused-vars": [
         "warn",
-        { argsIgnorePattern: "^_" },
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
       ],
       "@typescript-eslint/no-explicit-any": "warn",
     },
@@ -63,22 +67,6 @@ export default [
       "react/react-in-jsx-scope": "off",
       "react/jsx-uses-react": "off",
       "react/prop-types": "off",
-    },
-  },
-
-  // Remix app specific
-  {
-    files: ["apps/remix/**/*.{js,jsx,ts,tsx}"],
-    rules: {
-      "no-console": "warn",
-    },
-  },
-
-  // Scripts app specific
-  {
-    files: ["apps/scripts/**/*.{js,jsx,ts,tsx}"],
-    rules: {
-      "no-console": "off", // Allow console logs in scripts
     },
   },
 ];

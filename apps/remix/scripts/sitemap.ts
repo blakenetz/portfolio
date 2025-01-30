@@ -22,9 +22,10 @@ export default async function createSiteMap() {
   const serializer = new XMLSerializer();
 
   const siteMapPath = path.resolve(".", "public/sitemap.xml");
-  const blogDir = path.resolve(".", "app/blog");
-  // trailing slash is important
 
+  const blogDir = path.resolve("../..", "blog");
+
+  // trailing slash is important
   const blogBase = new URL("./blog", baseURL) + "/";
 
   const siteMap = await fs.readFile(siteMapPath, "utf-8");

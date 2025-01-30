@@ -13,7 +13,7 @@
     "tsx-dev": "NODE_ENV=development tsx --env-file ../../.env --env-file ../../.env.development",
     "tsx-prod": "NODE_ENV=production tsx --env-file ../../.env --env-file ../../.env.production",
     "run:dev": "pnpm run -F remix tsx-dev scripts/index.ts",
-    "run:prod": "npm run -F remix tsx-prod scripts/index.ts",
+    "run:prod": "pnpm run -F remix tsx-prod scripts/index.ts",
     "create:post": "tsx scripts/new-blog-post.ts"
   },
   "dependencies": {

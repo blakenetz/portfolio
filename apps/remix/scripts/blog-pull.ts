@@ -5,7 +5,7 @@ import path from "path";
 import DB from "~/server/db.singleton.server";
 import { exists, kebobCase } from "~/utils";
 
-const dir = path.resolve(".", "app/blog");
+const dir = path.resolve("../..", "blog");
 
 export default async function pull() {
   const dirExists = await exists(dir);

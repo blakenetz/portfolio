@@ -14,6 +14,6 @@ const file = {
   name: fileName.split(".")[0],
 };
 
-const dir = path.resolve("app/blog", file.complete);
+const dir = path.resolve("../..", "blog", file.complete);
 
 fs.writeFileSync(dir, generateBaseMDxContent(file.name));

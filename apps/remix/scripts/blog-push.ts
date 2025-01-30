@@ -16,7 +16,7 @@ interface __VFile extends VFile {
   };
 }
 
-const dir = path.resolve(".", "app/blog");
+const dir = path.resolve("../..", "blog");
 
 export default async function push() {
   const dirExists = await exists(dir);

@@ -6,5 +6,3 @@ node_modules
 .env
 .env.*
 !.env.sample
-
-/app/blog/

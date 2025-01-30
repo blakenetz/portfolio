@@ -11,6 +11,7 @@ export default [
   react.configs.flat["jsx-runtime"],
 
   // Global settings
+  { ignores: ["**/build/*", "**/node_modules/*"] },
   {
     languageOptions: {
       ecmaVersion: "latest",

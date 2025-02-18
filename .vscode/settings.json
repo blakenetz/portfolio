@@ -31,5 +31,9 @@
     "node_modules/@mantine/core/styles.css"
   ],
   "prettier.proseWrap": "always",
-  "cSpell.enabled": true
+  "cSpell.enabled": true,
+  "prettier.configPath": "./apps/astro/.prettierrc.mjs",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true
 }

@@ -7,9 +7,12 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://example.com",
+  site: "https://blakenetzeband.com",
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
+  },
+  experimental: {
+    svg: true,
   },
 });

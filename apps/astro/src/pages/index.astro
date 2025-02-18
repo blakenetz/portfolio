@@ -1,58 +1,19 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import abstractImage from "~/assets/abstract_2.jpg";
-const backgroundUrl = `url(${abstractImage.src})`;
+import BaseHead from "~/components/BaseHead.astro";
+import Blob from "~/assets/blob.svg";
 ---
-
-<style define:vars={{ backgroundUrl }}>
-  .masked {
-    color: transparent;
-    background-image: var(--backgroundUrl);
-    background-size: 200%; /* Enlarged for smooth animation */
-    background-position: 0 50%;
-    background-clip: text;
-    animation: animate-background 5s infinite alternate linear;
-  }
-
-  @keyframes animate-background {
-    0% {
-      background-position: 0 50%;
-    }
-    100% {
-      background-position: 100% 50%;
-    }
-  }
-</style>
 
 <html lang="en">
   <head>
     <BaseHead />
   </head>
   <body>
-    <main class="flex min-h-dvh min-w-dvw flex-col gap-8">
-      <div class="-mt-8 overflow-hidden">
-        <h1 class="masked w-full text-center text-9xl font-extrabold">
-          Blake Netzeband
-        </h1>
-      </div>
-      <p class="font-bold">
-        I&apos;m a full stack developer with experience building apps of all
-        shapes and sizes. I&apos;ve spent a good chunk of my life contributing
-        to products that have an environmental or social impact. The other parts
-        include living out of a van, biking around the world, or just
-        hangin&apos; with my pup :)
-      </p>
-      <p class="font-bold">
-        Are you building something interesting?{" "}
-        <a href="mailto:blakenetzeband@gmail.com" class="font-bold">
-          Let&apos;s connect
-        </a>
-      </p>
-
-      <div class="flex flex-col">
-        <a href="/projects"> Projects </a>
-        <a href="/blog"> Blog </a>
-      </div>
+    <main
+      class="relative flex min-h-dvh min-w-dvw justify-center bg-blue-400 p-8 sm:p-4 lg:p-6"
+    >
+      <section class="relative flex w-full max-w-7xl flex-1 bg-white">
+        <Blob />
+      </section>
     </main>
   </body>
 </html>

@@ -1,18 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  /* Rose */
-  --color-rose: #f72585;
-  --color-rose-100: #37021a;
-  --color-rose-200: #6e0434;
-  --color-rose-300: #a5064e;
-  --color-rose-400: #dc0868;
-  --color-rose-500: #f72585;
-  --color-rose-600: #f9529d;
-  --color-rose-700: #fa7db5;
-  --color-rose-800: #fca8ce;
-  --color-rose-900: #fdd4e6;
-
   /* Pumpkin */
   --color-pumpkin: #ff6700;
   --color-pumpkin-100: #331400;
@@ -25,18 +13,6 @@
   --color-pumpkin-800: #ffc299;
   --color-pumpkin-900: #ffe0cc;
 
-  /* Papaya Whip */
-  --color-papaya-whip: #fdf0d5;
-  --color-papaya-whip-100: #593c04;
-  --color-papaya-whip-200: #b17908;
-  --color-papaya-whip-300: #f5ae22;
-  --color-papaya-whip-400: #f9cf7b;
-  --color-papaya-whip-500: #fdf0d5;
-  --color-papaya-whip-600: #fdf2dc;
-  --color-papaya-whip-700: #fef5e5;
-  --color-papaya-whip-800: #fef9ed;
-  --color-papaya-whip-900: #fffcf6;
-
   /* Dodger Blue */
   --color-dodger-blue: #0496ff;
   --color-dodger-blue-100: #001e34;
@@ -48,6 +24,54 @@
   --color-dodger-blue-700: #69c1ff;
   --color-dodger-blue-800: #9bd5ff;
   --color-dodger-blue-900: #cdeaff;
+
+  /* Aquamarine */
+  --color-aquamarine: #6bfacd;
+  --color-aquamarine-100: #024530;
+  --color-aquamarine-200: #058a60;
+  --color-aquamarine-300: #07cf90;
+  --color-aquamarine-400: #26f7b5;
+  --color-aquamarine-500: #6bfacd;
+  --color-aquamarine-600: #89fbd7;
+  --color-aquamarine-700: #a6fce1;
+  --color-aquamarine-800: #c4fdeb;
+  --color-aquamarine-900: #e1fef5;
+
+  /* Rose */
+  --color-rose: #f72585;
+  --color-rose-100: #37021a;
+  --color-rose-200: #6e0434;
+  --color-rose-300: #a5064e;
+  --color-rose-400: #dc0868;
+  --color-rose-500: #f72585;
+  --color-rose-600: #f9529d;
+  --color-rose-700: #fa7db5;
+  --color-rose-800: #fca8ce;
+  --color-rose-900: #fdd4e6;
+
+  /* Sunglow */
+  --color-sunglow: #ffd24c;
+  --color-sunglow-100: #423200;
+  --color-sunglow-200: #856300;
+  --color-sunglow-300: #c79500;
+  --color-sunglow-400: #ffc20a;
+  --color-sunglow-500: #ffd24c;
+  --color-sunglow-600: #ffdb70;
+  --color-sunglow-700: #ffe494;
+  --color-sunglow-800: #ffedb8;
+  --color-sunglow-900: #fff6db;
+
+  /* Papaya Whip */
+  --color-papaya-whip: #fdf0d5;
+  --color-papaya-whip-100: #593c04;
+  --color-papaya-whip-200: #b17908;
+  --color-papaya-whip-300: #f5ae22;
+  --color-papaya-whip-400: #f9cf7b;
+  --color-papaya-whip-500: #fdf0d5;
+  --color-papaya-whip-600: #fdf2dc;
+  --color-papaya-whip-700: #fef5e5;
+  --color-papaya-whip-800: #fef9ed;
+  --color-papaya-whip-900: #fffcf6;
 
   /* Rich Black */
   --color-rich-black: #001021;

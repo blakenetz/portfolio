@@ -6,11 +6,12 @@
    * @see {@link file://./../styles/global.css} for color variables
    */
   const colors = [
-    "rich-black",
     "rose",
-    "pumpkin",
+    "sunglow",
     "papaya-whip",
     "dodger-blue",
+    "pumpkin",
+    "aquamarine",
   ].map((color) =>
     getComputedStyle(document.documentElement).getPropertyValue(
       `--color-${color}`
@@ -38,36 +39,41 @@
   const layer = new Konva.Layer();
   stage.add(layer);
 
-  const blobs: { node: Konva.Line; tween: Konva.Tween }[] = colors.map(
-    (fill, i) => {
-      const node = new Konva.Line({
-        points: generateRandomPoints(i),
-        fill,
-        stroke: "black",
-        strokeWidth: 5,
-        closed: true,
-        tension: 0.3,
-        offsetX: stage.width() / 2,
-        offsetY: stage.height() / 2,
-        x: stage.width() * 0.66,
-        y: stage.height() * 0.33,
-      });
-
-      return {
+  /**
+   * Generate blobs
+   * Add to layer in reverse order
+   * Create tween for each blob in original order
+   */
+  const blobs = colors
+    .map(
+      (fill, i) =>
+        new Konva.Line({
+          points: generateRandomPoints(i),
+          fill,
+          stroke: "black",
+          strokeWidth: 5,
+          closed: true,
+          tension: 0.3,
+          offsetX: stage.width() / 2,
+          offsetY: stage.height() / 2,
+          x: stage.width() * 0.66,
+          y: stage.height() * 0.33,
+        })
+    )
+    .reverse()
+    .map((node) => {
+      layer.add(node);
+      return node;
+    })
+    .reverse()
+    .map((node) => ({
+      node,
+      tween: new Konva.Tween({
         node,
-        tween: new Konva.Tween({
-          node,
-          duration: 0.5,
-          x: node.x(),
-          y: node.y(),
-          easing: Konva.Easings.EaseOut,
-        }),
-      };
-    }
-  );
-
-  // add blobs in reverse order to make them appear on top of each other
-  blobs.reverse().forEach(({ node }) => layer.add(node));
+        duration: 2,
+        easing: Konva.Easings.Linear,
+      }),
+    }));
 
   const period = 2000;
   let baseScale = 1;
@@ -75,11 +81,11 @@
   const anim = new Konva.Animation((frame) => {
     if (!frame) return;
     // Add slow expansion to the base scale (0.1 size increase per second)
-    baseScale += frame.timeDiff / 10000;
-    // Combine base expansion with the sine wave animation
-    const sineWave = Math.sin((frame.time * 2 * Math.PI) / period) * 0.1;
-    const scale = baseScale + sineWave;
-    blobs.forEach(({ node }) => node.scale({ x: scale, y: scale }));
+    // baseScale += frame.timeDiff / 10000;
+    // // Combine base expansion with the sine wave animation
+    // const sineWave = Math.sin((frame.time * 2 * Math.PI) / period) * 0.1;
+    // const scale = baseScale + sineWave;
+    // blobs.forEach(({ node }) => node.scale({ x: scale, y: scale }));
   }, layer);
 
   anim.start();
@@ -96,10 +102,12 @@
     if (!pos) return;
 
     blobs.forEach(({ node, tween }) => {
+      tween.pause();
       tween.node.to({
         x: pos.x + node.offsetX(),
         y: pos.y + node.offsetY(),
       });
+      tween.play();
     });
   });
 </script>

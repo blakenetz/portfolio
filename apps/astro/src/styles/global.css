@@ -1,1 +1,63 @@
 @import "tailwindcss";
+
+@theme {
+  /* Rose */
+  --color-rose: #f72585;
+  --color-rose-100: #37021a;
+  --color-rose-200: #6e0434;
+  --color-rose-300: #a5064e;
+  --color-rose-400: #dc0868;
+  --color-rose-500: #f72585;
+  --color-rose-600: #f9529d;
+  --color-rose-700: #fa7db5;
+  --color-rose-800: #fca8ce;
+  --color-rose-900: #fdd4e6;
+
+  /* Pumpkin */
+  --color-pumpkin: #ff6700;
+  --color-pumpkin-100: #331400;
+  --color-pumpkin-200: #662900;
+  --color-pumpkin-300: #993d00;
+  --color-pumpkin-400: #cc5200;
+  --color-pumpkin-500: #ff6700;
+  --color-pumpkin-600: #ff8533;
+  --color-pumpkin-700: #ffa366;
+  --color-pumpkin-800: #ffc299;
+  --color-pumpkin-900: #ffe0cc;
+
+  /* Papaya Whip */
+  --color-papaya-whip: #fdf0d5;
+  --color-papaya-whip-100: #593c04;
+  --color-papaya-whip-200: #b17908;
+  --color-papaya-whip-300: #f5ae22;
+  --color-papaya-whip-400: #f9cf7b;
+  --color-papaya-whip-500: #fdf0d5;
+  --color-papaya-whip-600: #fdf2dc;
+  --color-papaya-whip-700: #fef5e5;
+  --color-papaya-whip-800: #fef9ed;
+  --color-papaya-whip-900: #fffcf6;
+
+  /* Dodger Blue */
+  --color-dodger-blue: #0496ff;
+  --color-dodger-blue-100: #001e34;
+  --color-dodger-blue-200: #003d68;
+  --color-dodger-blue-300: #005b9c;
+  --color-dodger-blue-400: #0079d0;
+  --color-dodger-blue-500: #0496ff;
+  --color-dodger-blue-600: #37acff;
+  --color-dodger-blue-700: #69c1ff;
+  --color-dodger-blue-800: #9bd5ff;
+  --color-dodger-blue-900: #cdeaff;
+
+  /* Rich Black */
+  --color-rich-black: #001021;
+  --color-rich-black-100: #000306;
+  --color-rich-black-200: #00060c;
+  --color-rich-black-300: #000912;
+  --color-rich-black-400: #000c18;
+  --color-rich-black-500: #001021;
+  --color-rich-black-600: #003d7e;
+  --color-rich-black-700: #006bde;
+  --color-rich-black-800: #3f9cff;
+  --color-rich-black-900: #9fcdff;
+}

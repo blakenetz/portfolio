@@ -1,6 +1,6 @@
 ---
 import BaseHead from "~/components/BaseHead.astro";
-import Blob from "~/assets/blob.svg";
+import Background from "~/components/Background.astro";
 ---
 
 <html lang="en">
@@ -8,12 +8,11 @@ import Blob from "~/assets/blob.svg";
     <BaseHead />
   </head>
   <body>
+    <Background />
     <main
-      class="relative flex min-h-dvh min-w-dvw justify-center bg-blue-400 p-8 sm:p-4 lg:p-6"
+      class="relative flex min-h-dvh min-w-dvw justify-center p-8 sm:p-4 lg:p-6"
     >
-      <section class="relative flex w-full max-w-7xl flex-1 bg-white">
-        <Blob />
-      </section>
+      <section class="bg-green relative flex w-full max-w-7xl flex-1"></section>
     </main>
   </body>
 </html>

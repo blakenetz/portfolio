@@ -1,0 +1,18 @@
+---
+import BaseHead from "~/components/BaseHead.astro";
+import Background from "~/components/Background.astro";
+---
+
+<html lang="en">
+  <head>
+    <BaseHead />
+  </head>
+  <body>
+    <Background />
+    <main
+      class="relative flex min-h-dvh min-w-dvw justify-center p-8 sm:p-4 lg:p-6"
+    >
+      <slot />
+    </main>
+  </body>
+</html>

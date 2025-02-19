@@ -1,18 +1,7 @@
 ---
-import BaseHead from "~/components/BaseHead.astro";
-import Background from "~/components/Background.astro";
+import RootLayout from "~/layouts/Root.astro";
 ---
 
-<html lang="en">
-  <head>
-    <BaseHead />
-  </head>
-  <body>
-    <Background />
-    <main
-      class="relative flex min-h-dvh min-w-dvw justify-center p-8 sm:p-4 lg:p-6"
-    >
-      <section class="bg-green relative flex w-full max-w-7xl flex-1"></section>
-    </main>
-  </body>
-</html>
+<RootLayout>
+  <section class="bg-green relative flex w-full max-w-7xl flex-1"></section>
+</RootLayout>

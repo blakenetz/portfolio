@@ -10,17 +10,20 @@
   const colors = [
     "rose",
     "sunglow",
-    "papaya-whip",
     "dodger-blue",
+    "papaya-whip",
     "pumpkin",
     "aquamarine",
   ];
 
-  /** Helper functions */
+  // Pythagorean theorem to get the diagonal distance of the screen
+  const maxWidth = Math.sqrt(
+    Math.pow(window.innerWidth, 2) + Math.pow(window.innerHeight, 2)
+  );
 
   function generateRandomPoints(index: number) {
     const length = 8;
-    const radius = 50 * Math.pow(1.5, index + 1);
+    const radius = 100 * Math.pow(1.5, index + 0.25);
     const variance = radius * 0.3;
 
     return Array.from({ length }, (_, i) => {
@@ -47,30 +50,44 @@
   stage.add(layer);
 
   /**
-   * Generate blob SVGs
+   * Generate blob nodes until node radius is greater than maxWidth
+   */
+  const blobNodes: Konva.Line[] = [];
+  let isFilled = false;
+  while (!isFilled) {
+    const index = blobNodes.length;
+    const color = colors[index % colors.length];
+
+    const x = stage.width() * 0.66;
+    const y = stage.height() * 0.33;
+
+    const node = new Konva.Line({
+      points: generateRandomPoints(index),
+      fillLinearGradientColorStops: getGradientStops(color),
+      fillLinearGradientStartPoint: { x: x * -1, y: y * -1 },
+      fillLinearGradientEndPoint: { x, y },
+      stroke: "black",
+      strokeWidth: 5,
+      closed: true,
+      tension: 0.3,
+      x,
+      y,
+    });
+
+    blobNodes.push(node);
+
+    if (node.width() / 2 > maxWidth) {
+      isFilled = true;
+    }
+  }
+
+  /**
+   * Add blobs to layer in reverse order
    * Rotate each blob to randomize gradient direction
-   * Add to layer in reverse order
    * Create tween for each blob in original order
    */
-  const blobs = colors
-    .map((color, i) => {
-      const x = stage.width() * 0.66;
-      const y = stage.height() * 0.33;
-
-      return new Konva.Line({
-        points: generateRandomPoints(i),
-        fillLinearGradientColorStops: getGradientStops(color),
-        fillLinearGradientStartPoint: { x: x * -1, y: y * -1 },
-        fillLinearGradientEndPoint: { x, y },
-        stroke: "black",
-        strokeWidth: 5,
-        closed: true,
-        tension: 0.3,
-        x,
-        y,
-      });
-    })
-    .reverse()
+  const blobs = blobNodes
+    .toReversed()
     .map((node) => {
       node.rotation(Math.random() * 360);
       layer.add(node);
@@ -79,20 +96,21 @@
     .reverse()
     .map((node, i) => ({
       node,
-      tween: new Konva.Tween({
-        node,
-        easing: Konva.Easings.ElasticEaseIn,
-      }),
+      tween: new Konva.Tween({ node }),
     }));
 
-  /** Event listeners */
-
+  /**
+   * adjust stage dimensions when window resizes
+   */
   window.addEventListener("resize", () => {
     stage.width(window.innerWidth);
     stage.height(window.innerHeight);
     stage.draw();
   });
 
+  /**
+   * move blobs to mouse position
+   */
   window.addEventListener("mousemove", (e) => {
     stage.setPointersPositions(e);
     const pos = stage.getPointerPosition();
@@ -102,7 +120,8 @@
       tween.node.to({
         x: pos.x,
         y: pos.y,
-        duration: i * 0.01,
+        duration: 0.25 + i * 0.1,
+        easing: Konva.Easings.Linear,
       });
     });
   });

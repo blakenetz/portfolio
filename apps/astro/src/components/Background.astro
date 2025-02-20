@@ -31,7 +31,7 @@
   }
 
   function getGradientStops(color: string) {
-    return Array.from({ length: 4 }).flatMap((_v, i) => [
+    return Array.from({ length: 5 }).flatMap((_v, i) => [
       i ? 1 / i : 0,
       cssStyleDeclaration.getPropertyValue(`--color-${color}-${(i + 2) * 100}`),
     ]);
@@ -47,8 +47,8 @@
   stage.add(layer);
 
   /**
-   * Generate blobs
-   * Rotate each blob
+   * Generate blob SVGs
+   * Rotate each blob to randomize gradient direction
    * Add to layer in reverse order
    * Create tween for each blob in original order
    */
@@ -59,9 +59,9 @@
 
       return new Konva.Line({
         points: generateRandomPoints(i),
+        fillLinearGradientColorStops: getGradientStops(color),
         fillLinearGradientStartPoint: { x: x * -1, y: y * -1 },
         fillLinearGradientEndPoint: { x, y },
-        fillLinearGradientColorStops: getGradientStops(color),
         stroke: "black",
         strokeWidth: 5,
         closed: true,
@@ -81,8 +81,7 @@
       node,
       tween: new Konva.Tween({
         node,
-        duration: 2 + i * 1,
-        easing: Konva.Easings.Linear,
+        easing: Konva.Easings.ElasticEaseIn,
       }),
     }));
 
@@ -99,13 +98,12 @@
     const pos = stage.getPointerPosition();
     if (!pos) return;
 
-    blobs.forEach(({ tween }) => {
-      tween.pause();
+    blobs.forEach(({ tween }, i) => {
       tween.node.to({
         x: pos.x,
         y: pos.y,
+        duration: i * 0.01,
       });
-      tween.play();
     });
   });
 </script>

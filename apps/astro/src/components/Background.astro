@@ -79,14 +79,16 @@
     ];
   }
 
-  /** Create stage and initial layer */
+  /** Create stage and blob + checkerboard layers */
   const stage = new Konva.Stage({
     container: "background",
     width: window.innerWidth,
     height: window.innerHeight,
   });
   const layer = new Konva.Layer();
+  const checkerboardLayer = new Konva.Layer();
   stage.add(layer);
+  stage.add(checkerboardLayer);
 
   /**
    * Generate blob nodes until node radius is greater than maxWidth
@@ -145,6 +147,49 @@
   });
   animation.start();
 
+  function drawCheckerboard() {
+    /** Add checkerboard rectangles */
+    const checkerboardSize = cssStyleDeclaration.getPropertyValue(
+      "--spacing-checkerboard-size"
+    );
+    const checkerboardColor = cssStyleDeclaration.getPropertyValue(
+      "--color-papaya-whip-100"
+    );
+    const spacing = parseInt(checkerboardSize) / 2;
+    const cols = Math.ceil(window.innerWidth / spacing);
+    const rows = Math.ceil(window.innerHeight / spacing);
+
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        if (i <= 1 || i >= rows - 2 || j <= 1 || j >= cols - 2) {
+          // Border check
+          if ((i + j) % 2 === 0) {
+            // Rectangles on even spaces
+            const rect = new Konva.Rect({
+              x: j * spacing,
+              y: i * spacing,
+              width: spacing,
+              height: spacing,
+              fill: checkerboardColor,
+            });
+            checkerboardLayer.add(rect);
+          } else if ((i + j) % 8 === 7) {
+            // Circles on empty spaces, every 8th space
+            const circle = new Konva.Circle({
+              x: j * spacing + spacing / 2,
+              y: i * spacing + spacing / 2,
+              radius: spacing / 2,
+              fill: "green",
+            });
+            checkerboardLayer.add(circle);
+          }
+        }
+      }
+    }
+  }
+
+  drawCheckerboard();
+
   /**
    * adjust stage dimensions when window resizes
    */
@@ -154,6 +199,8 @@
       stage.width(window.innerWidth);
       stage.height(window.innerHeight);
       stage.draw();
+      checkerboardLayer.destroyChildren();
+      drawCheckerboard();
     },
     evOptions
   );

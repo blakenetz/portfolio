@@ -76,6 +76,11 @@
   const cssStyleDeclaration = getComputedStyle(document.documentElement);
   const abortController = new AbortController();
 
+  const checkerboardEl = document.getElementById("checkerboard")!;
+  const animatedTextEls = document.querySelectorAll(
+    `.${ANIMATE_COLORS_CLASSNAME}`
+  );
+
   /**
    * @see {@link file://./../styles/global.css} for color variables
    */
@@ -104,9 +109,9 @@
 
     return [
       0,
-      cssStyleDeclaration.getPropertyValue(`--color-${start}-500`),
+      cssStyleDeclaration.getPropertyValue(`--color-${start}`),
       1,
-      cssStyleDeclaration.getPropertyValue(`--color-${end}-500`),
+      cssStyleDeclaration.getPropertyValue(`--color-${end}`),
     ];
   }
 
@@ -215,10 +220,11 @@
    * trigger colorization animation
    * @see {@link file://./../pages/index.astro}
    */
-  document.querySelectorAll(`.${ANIMATE_COLORS_CLASSNAME}`).forEach((el) => {
+  animatedTextEls.forEach((el) => {
     el.addEventListener(
       "mouseenter",
       () => {
+        checkerboardEl.style.zIndex = "-9";
         blobs.forEach(({ node }, index) => {
           node.setAttrs({
             fillLinearGradientColorStops: getGradientStops(index),
@@ -230,6 +236,7 @@
     el.addEventListener(
       "mouseleave",
       () => {
+        checkerboardEl.style.zIndex = "-10";
         blobs.forEach(({ node }) => {
           node.setAttrs({ fillLinearGradientColorStops: [] });
         });

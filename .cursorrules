@@ -17,6 +17,10 @@ Key Principles
 
   Both apps are in "apps" directory. The remix app is the original app. We migrating it to Astro. It will not be a one-to-one migration. Instead, we are rebuilding it from scratch.
 
+  Remix Project Structure
+
+  The remix project uses Mantine as the UI library with css modules for additional styling.
+
   Astro Project Structure
 
 - Use the recommended Astro project structure:

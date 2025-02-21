@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 @theme {
   /* Pumpkin */
   --color-pumpkin: #ff6700;
@@ -84,4 +83,10 @@
   --color-rich-black-700: #000912;
   --color-rich-black-800: #00060c;
   --color-rich-black-900: #000306;
+
+  /* Josefin Sans */
+  --font-josefin-sans: "Josefin Sans", sans-serif;
+
+  /* UnifrakturCook */
+  --font-unifraktur-cook: "UnifrakturCook", serif;
 }

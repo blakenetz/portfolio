@@ -1,4 +1,36 @@
-<div id="background" class="inset absolute"></div>
+<section id="background" class="fixed inset-0"></section>
+<div id="noise"></div>
+<style>
+  #noise {
+    position: fixed;
+    inset: -150%;
+    width: 400%;
+    height: 400%;
+    animation: noise-anim 4s steps(8) infinite;
+    background: url(/noise.png) repeat;
+    background-size: 200px;
+    opacity: 0.2;
+    pointer-events: none;
+  }
+  @keyframes noise-anim {
+    0% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(-10%, 5%);
+    }
+    50% {
+      transform: translate(5%, -10%);
+    }
+    75% {
+      transform: translate(-5%, 10%);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+</style>
+
 <script>
   import Konva from "konva";
 
@@ -7,14 +39,7 @@
   /**
    * @see {@link file://./../styles/global.css} for color variables
    */
-  const colors = [
-    "rose",
-    "sunglow",
-    "dodger-blue",
-    "papaya-whip",
-    "pumpkin",
-    "aquamarine",
-  ];
+  const colors = ["rose", "dodger-blue", "sunglow", "pumpkin", "aquamarine"];
 
   // Pythagorean theorem to get the diagonal distance of the screen
   const maxWidth = Math.sqrt(
@@ -33,11 +58,15 @@
     }).flat();
   }
 
-  function getGradientStops(color: string) {
-    return Array.from({ length: 5 }).flatMap((_v, i) => [
-      i ? 1 / i : 0,
-      cssStyleDeclaration.getPropertyValue(`--color-${color}-${(i + 2) * 100}`),
-    ]);
+  function getGradientStops(index: number) {
+    const start = colors[index % colors.length]!;
+    const end = colors[(index + 1) % colors.length]!;
+    return [
+      0,
+      cssStyleDeclaration.getPropertyValue(`--color-${start}-500`),
+      1,
+      cssStyleDeclaration.getPropertyValue(`--color-${end}-500`),
+    ];
   }
 
   /** Create stage and initial layer */
@@ -54,19 +83,21 @@
    */
   const blobNodes: Konva.Line[] = [];
   let isFilled = false;
+  const stroke = cssStyleDeclaration.getPropertyValue(
+    `--color-papaya-whip-100`
+  );
   while (!isFilled) {
     const index = blobNodes.length;
-    const color = colors[index % colors.length];
 
     const x = stage.width() * 0.66;
     const y = stage.height() * 0.33;
 
     const node = new Konva.Line({
       points: generateRandomPoints(index),
-      fillLinearGradientColorStops: getGradientStops(color),
+      fillLinearGradientColorStops: [],
       fillLinearGradientStartPoint: { x: x * -1, y: y * -1 },
       fillLinearGradientEndPoint: { x, y },
-      stroke: "black",
+      stroke,
       strokeWidth: 5,
       closed: true,
       tension: 0.3,
@@ -76,13 +107,14 @@
 
     blobNodes.push(node);
 
+    console.log(node.width() / 2, maxWidth);
     if (node.width() / 2 > maxWidth) {
       isFilled = true;
     }
   }
 
   /**
-   * Add blobs to layer in reverse order
+   * Add blobs to layer and group in reverse order
    * Rotate each blob to randomize gradient direction
    * Create tween for each blob in original order
    */
@@ -94,10 +126,15 @@
       return node;
     })
     .reverse()
-    .map((node, i) => ({
-      node,
-      tween: new Konva.Tween({ node }),
-    }));
+    .map((node) => ({ node, tween: new Konva.Tween({ node }) }));
+
+  const animation = new Konva.Animation((frame) => {
+    if (!frame) return;
+    blobs.forEach(({ node }) => {
+      node.skewX(Math.sin(frame.time / 1000) * 0.1);
+    });
+  });
+  animation.start();
 
   /**
    * adjust stage dimensions when window resizes

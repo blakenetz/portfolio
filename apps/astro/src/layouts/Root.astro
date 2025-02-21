@@ -7,11 +7,11 @@ import Background from "~/components/Background.astro";
   <head>
     <BaseHead />
   </head>
-  <body class="min-h-dvh min-w-dvw bg-(--color-papaya-whip)">
+  <body
+    class="bg-papaya-whip text-rich-black font-josefin-sans min-h-dvh min-w-dvw"
+  >
     <Background />
-    <main
-      class="relative flex min-h-dvh min-w-dvw justify-center p-8 sm:p-4 lg:p-6"
-    >
+    <main class="w-dv h-dvh p-12">
       <slot />
     </main>
   </body>

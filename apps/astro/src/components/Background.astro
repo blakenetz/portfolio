@@ -39,6 +39,7 @@
 
   const cssStyleDeclaration = getComputedStyle(document.documentElement);
   const abortController = new AbortController();
+  const evOptions: AddEventListenerOptions = { signal: abortController.signal };
 
   const animatedTextEls = document.querySelectorAll(
     `.${ANIMATE_COLORS_CLASSNAME}`
@@ -154,7 +155,7 @@
       stage.height(window.innerHeight);
       stage.draw();
     },
-    { signal: abortController.signal }
+    evOptions
   );
 
   /**
@@ -176,7 +177,7 @@
         });
       });
     },
-    { signal: abortController.signal }
+    evOptions
   );
 
   /**
@@ -193,7 +194,7 @@
           });
         });
       },
-      { signal: abortController.signal }
+      evOptions
     );
     el.addEventListener(
       "mouseleave",
@@ -202,7 +203,7 @@
           node.setAttrs({ fillLinearGradientColorStops: [] });
         });
       },
-      { signal: abortController.signal }
+      evOptions
     );
   });
 

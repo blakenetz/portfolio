@@ -4,7 +4,7 @@
   class="bg-size-200 pointer-events-none fixed -inset-[150%] h-[400%] w-[400%] bg-repeat opacity-15"
 >
 </div>
-<main class="p-checkerboard-size fixed inset-0">
+<main class="p-checkerboard-size fixed inset-0 cursor-default">
   <slot />
 </main>
 
@@ -42,11 +42,10 @@
   import pizza from "~/assets/pizza.svg";
   import van from "~/assets/van.svg";
 
-  const cssStyleDeclaration = getComputedStyle(document.documentElement);
   const abortController = new AbortController();
   const evOptions: AddEventListenerOptions = { signal: abortController.signal };
 
-  const animatedTextEls = document.querySelectorAll(
+  const animatedTextEls = document.querySelectorAll<HTMLElement>(
     `.${ANIMATE_COLORS_CLASSNAME}`
   );
 
@@ -54,11 +53,17 @@
    * @see {@link file://./../styles/global.css} for color variables
    */
   const colors = ["rose", "dodger-blue", "sunglow", "pumpkin", "aquamarine"];
+  const white = getCssVariable("--color-papaya-whip-100");
+  const black = getCssVariable("--color-rich-black");
 
   // Pythagorean theorem to get the diagonal distance of the screen
   const maxWidth = Math.sqrt(
     Math.pow(window.innerWidth, 2) + Math.pow(window.innerHeight, 2)
   );
+
+  function getCssVariable(name: string) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name);
+  }
 
   function generateRandomPoints(index: number) {
     const length = 8;
@@ -78,9 +83,9 @@
 
     return [
       0,
-      cssStyleDeclaration.getPropertyValue(`--color-${start}`),
+      getCssVariable(`--color-${start}-400`),
       1,
-      cssStyleDeclaration.getPropertyValue(`--color-${end}`),
+      getCssVariable(`--color-${end}-400`),
     ];
   }
 
@@ -100,9 +105,7 @@
    */
   const blobNodes: Konva.Line[] = [];
   let isFilled = false;
-  const stroke = cssStyleDeclaration.getPropertyValue(
-    `--color-papaya-whip-100`
-  );
+
   while (!isFilled) {
     const index = blobNodes.length;
 
@@ -114,7 +117,7 @@
       fillLinearGradientColorStops: [],
       fillLinearGradientStartPoint: { x: x * -1, y: y * -1 },
       fillLinearGradientEndPoint: { x, y },
-      stroke,
+      stroke: white,
       strokeWidth: 5,
       closed: true,
       tension: 0.3,
@@ -161,9 +164,11 @@
   ].map((src) => {
     const img = new Image();
     img.src = src.src;
-
     return img;
   });
+
+  const checkerboardSize = getCssVariable("--spacing-checkerboard-size");
+  const spacing = parseInt(checkerboardSize) / 2;
 
   /**
    * Draw checkerboard border
@@ -172,13 +177,6 @@
    * Then, place assets in random blank spaces
    */
   function drawCheckerboard() {
-    const checkerboardSize = cssStyleDeclaration.getPropertyValue(
-      "--spacing-checkerboard-size"
-    );
-    const checkerboardColor = cssStyleDeclaration.getPropertyValue(
-      "--color-papaya-whip-100"
-    );
-    const spacing = parseInt(checkerboardSize) / 2;
     const cols = Math.ceil(window.innerWidth / spacing);
     const rows = Math.ceil(window.innerHeight / spacing);
     const blankSpaces: { i: number; j: number }[] = [];
@@ -199,7 +197,7 @@
             y: i * spacing,
             width: spacing,
             height: spacing,
-            fill: checkerboardColor,
+            fill: white,
           });
           checkerboardLayer.add(rect);
         }
@@ -270,6 +268,7 @@
     el.addEventListener(
       "mouseenter",
       () => {
+        el.style.color = black;
         blobs.forEach(({ node }, index) => {
           node.setAttrs({
             fillLinearGradientColorStops: getGradientStops(index),
@@ -281,6 +280,7 @@
     el.addEventListener(
       "mouseleave",
       () => {
+        el.style.color = "";
         blobs.forEach(({ node }) => {
           node.setAttrs({ fillLinearGradientColorStops: [] });
         });

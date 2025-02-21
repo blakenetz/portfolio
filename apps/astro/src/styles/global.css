@@ -87,6 +87,12 @@
   /* Josefin Sans */
   --font-josefin-sans: "Josefin Sans", sans-serif;
 
-  /* UnifrakturCook */
-  --font-unifraktur-cook: "UnifrakturCook", serif;
+  /* Barriecito */
+  --font-barriecito: "Barriecito", cursive;
+
+  /* Barrio */
+  --font-barrio: "Barrio", cursive;
+
+  /* Danfo */
+  --font-danfo: "Danfo", cursive;
 }

@@ -76,7 +76,9 @@
     height: window.innerHeight,
   });
   const layer = new Konva.Layer();
+  const borderLayer = new Konva.Layer();
   stage.add(layer);
+  stage.add(borderLayer);
 
   /**
    * Generate blob nodes until node radius is greater than maxWidth
@@ -137,12 +139,86 @@
   animation.start();
 
   /**
+   * Create art-deco checkerboard border
+   */
+  function createArtDecoBorder() {
+    const borderWidth = 100; // Total border width for two squares
+    const stroke = cssStyleDeclaration.getPropertyValue(
+      `--color-papaya-whip-100`
+    );
+
+    // Calculate dimensions that ensure perfect alignment
+    const horizontalSegments =
+      Math.floor(stage.width() / (borderWidth / 2)) + 1;
+    const verticalSegments =
+      Math.floor((stage.height() - borderWidth) / (borderWidth / 2)) + 1;
+
+    // Calculate actual square sizes to fit the screen perfectly
+    const horizontalSquareSize = stage.width() / horizontalSegments;
+    const verticalSquareSize =
+      (stage.height() - borderWidth) / verticalSegments;
+
+    // Use the smaller square size to ensure consistency
+    const squareSize = Math.min(horizontalSquareSize, verticalSquareSize);
+
+    // Create checkerboard patterns for each edge
+    function createCheckerboardStrip(
+      startX: number,
+      startY: number,
+      isHorizontal: boolean
+    ) {
+      const segments = isHorizontal ? horizontalSegments : verticalSegments;
+
+      for (let i = 0; i < segments; i++) {
+        // Create two squares (top/bottom or left/right)
+        for (let j = 0; j < 2; j++) {
+          // Alternate squares in a checkerboard pattern
+          if ((i + j) % 2 === 0) {
+            const square = new Konva.Rect({
+              x: startX + (isHorizontal ? i * squareSize : j * squareSize),
+              y: startY + (isHorizontal ? j * squareSize : i * squareSize),
+              width: squareSize,
+              height: squareSize,
+              fill: stroke,
+              stroke: stroke,
+              strokeWidth: 1,
+            });
+            borderLayer.add(square);
+          }
+        }
+      }
+    }
+
+    // Top border
+    createCheckerboardStrip(0, 0, true);
+
+    // Bottom border
+    createCheckerboardStrip(0, stage.height() - squareSize * 2, true);
+
+    // Left border
+    createCheckerboardStrip(0, squareSize * 2, false);
+
+    // Right border
+    createCheckerboardStrip(
+      stage.width() - squareSize * 2,
+      squareSize * 2,
+      false
+    );
+  }
+
+  // Call the function to create the border
+  createArtDecoBorder();
+
+  /**
    * adjust stage dimensions when window resizes
    */
   window.addEventListener("resize", () => {
     stage.width(window.innerWidth);
     stage.height(window.innerHeight);
     stage.draw();
+    borderLayer.destroyChildren();
+    createArtDecoBorder();
+    borderLayer.draw();
   });
 
   /**

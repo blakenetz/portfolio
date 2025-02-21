@@ -36,6 +36,11 @@
 <script>
   import Konva from "konva";
   import { ANIMATE_COLORS_CLASSNAME } from "~/consts";
+  import bicycle from "~/assets/bicycle.svg";
+  import dogCosmos from "~/assets/dog-cosmos.svg";
+  import pizzaSlice from "~/assets/pizza-slice.svg";
+  import pizza from "~/assets/pizza.svg";
+  import van from "~/assets/van.svg";
 
   const cssStyleDeclaration = getComputedStyle(document.documentElement);
   const abortController = new AbortController();
@@ -147,8 +152,26 @@
   });
   animation.start();
 
+  const icons: HTMLImageElement[] = [
+    bicycle,
+    dogCosmos,
+    pizzaSlice,
+    pizza,
+    van,
+  ].map((src) => {
+    const img = new Image();
+    img.src = src.src;
+
+    return img;
+  });
+
+  /**
+   * Draw checkerboard border
+   * by determining the number of rows and columns that can fit in the screen
+   * and then drawing rectangles in alternating colors
+   * Then, place assets in random blank spaces
+   */
   function drawCheckerboard() {
-    /** Add checkerboard rectangles */
     const checkerboardSize = cssStyleDeclaration.getPropertyValue(
       "--spacing-checkerboard-size"
     );
@@ -158,34 +181,46 @@
     const spacing = parseInt(checkerboardSize) / 2;
     const cols = Math.ceil(window.innerWidth / spacing);
     const rows = Math.ceil(window.innerHeight / spacing);
+    const blankSpaces: { i: number; j: number }[] = [];
 
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        if (i <= 1 || i >= rows - 2 || j <= 1 || j >= cols - 2) {
-          // Border check
-          if ((i + j) % 2 === 0) {
-            // Rectangles on even spaces
-            const rect = new Konva.Rect({
-              x: j * spacing,
-              y: i * spacing,
-              width: spacing,
-              height: spacing,
-              fill: checkerboardColor,
-            });
-            checkerboardLayer.add(rect);
-          } else if ((i + j) % 8 === 7) {
-            // Circles on empty spaces, every 8th space
-            const circle = new Konva.Circle({
-              x: j * spacing + spacing / 2,
-              y: i * spacing + spacing / 2,
-              radius: spacing / 2,
-              fill: "green",
-            });
-            checkerboardLayer.add(circle);
-          }
+        if (
+          (i + j) % 2 === 1 &&
+          (i <= 1 || i >= rows - 2 || j <= 1 || j >= cols - 2)
+        ) {
+          blankSpaces.push({ i, j });
+        } else if (
+          (i + j) % 2 === 0 &&
+          (i <= 1 || i >= rows - 2 || j <= 1 || j >= cols - 2)
+        ) {
+          const rect = new Konva.Rect({
+            x: j * spacing,
+            y: i * spacing,
+            width: spacing,
+            height: spacing,
+            fill: checkerboardColor,
+          });
+          checkerboardLayer.add(rect);
         }
       }
     }
+
+    // Place assets in random blank spaces
+    icons.forEach((img) => {
+      const randomIndex = Math.floor(Math.random() * blankSpaces.length);
+      const { i, j } = blankSpaces.splice(randomIndex, 1)[0]!;
+
+      const image = new Konva.Image({
+        x: j * spacing,
+        y: i * spacing,
+        width: spacing,
+        height: spacing,
+        image: img,
+      });
+
+      checkerboardLayer.add(image);
+    });
   }
 
   drawCheckerboard();

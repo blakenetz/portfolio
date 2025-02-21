@@ -1,21 +1,17 @@
-<div id="checkerboard" class="pointer-events-none fixed inset-0 -z-10"></div>
 <section id="background" class="fixed inset-0 -z-10"></section>
-<div id="noise"></div>
-<main class="fixed inset-0">
+<div
+  id="noise"
+  class="bg-size-200 pointer-events-none fixed -inset-[150%] h-[400%] w-[400%] bg-repeat opacity-15"
+>
+</div>
+<main class="p-checkerboard-size fixed inset-0">
   <slot />
 </main>
 
 <style>
   #noise {
-    position: fixed;
-    inset: -150%;
-    width: 400%;
-    height: 400%;
     animation: noise-anim 4s steps(8) infinite;
-    background: url(/noise.png) repeat;
-    background-size: 200px;
-    opacity: 0.2;
-    pointer-events: none;
+    background: url(/noise.png);
   }
 
   @keyframes noise-anim {
@@ -35,38 +31,6 @@
       transform: translate(0, 0);
     }
   }
-
-  :root {
-    --checkerboard-size: 110px;
-  }
-
-  #checkerboard::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: conic-gradient(
-        from 90deg at 50% 50%,
-        var(--color-papaya-whip-100) 25%,
-        transparent 0 50%,
-        var(--color-papaya-whip-100) 0 75%,
-        transparent 0
-      )
-      0 0 / var(--checkerboard-size) var(--checkerboard-size);
-  }
-
-  #checkerboard::after {
-    content: "";
-    position: absolute;
-    top: var(--checkerboard-size);
-    right: var(--checkerboard-size);
-    bottom: var(--checkerboard-size);
-    left: var(--checkerboard-size);
-    background: var(--color-papaya-whip);
-  }
-
-  main {
-    padding: var(--checkerboard-size);
-  }
 </style>
 
 <script>
@@ -76,7 +40,6 @@
   const cssStyleDeclaration = getComputedStyle(document.documentElement);
   const abortController = new AbortController();
 
-  const checkerboardEl = document.getElementById("checkerboard")!;
   const animatedTextEls = document.querySelectorAll(
     `.${ANIMATE_COLORS_CLASSNAME}`
   );
@@ -140,7 +103,7 @@
 
     const node = new Konva.Line({
       points: generateRandomPoints(index),
-      fillLinearGradientColorStops: getGradientStops(index),
+      fillLinearGradientColorStops: [],
       fillLinearGradientStartPoint: { x: x * -1, y: y * -1 },
       fillLinearGradientEndPoint: { x, y },
       stroke,
@@ -224,7 +187,6 @@
     el.addEventListener(
       "mouseenter",
       () => {
-        checkerboardEl.style.zIndex = "-9";
         blobs.forEach(({ node }, index) => {
           node.setAttrs({
             fillLinearGradientColorStops: getGradientStops(index),
@@ -236,7 +198,6 @@
     el.addEventListener(
       "mouseleave",
       () => {
-        checkerboardEl.style.zIndex = "-10";
         blobs.forEach(({ node }) => {
           node.setAttrs({ fillLinearGradientColorStops: [] });
         });

@@ -95,4 +95,6 @@
 
   /* Danfo */
   --font-danfo: "Danfo", cursive;
+
+  --spacing-checkerboard-size: 110px;
 }

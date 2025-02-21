@@ -1,8 +1,8 @@
-<main class="h-dvh w-dvw">
-  <div id="checkerboard" class="pointer-events-none fixed inset-0 -z-10"></div>
-  <section id="background" class="fixed inset-0 -z-10"></section>
+<div id="checkerboard" class="pointer-events-none fixed inset-0 -z-10"></div>
+<section id="background" class="fixed inset-0 -z-10"></section>
+<div id="noise"></div>
+<main class="fixed inset-0">
   <slot />
-  <div id="noise"></div>
 </main>
 
 <style>
@@ -16,7 +16,6 @@
     background-size: 200px;
     opacity: 0.2;
     pointer-events: none;
-    z-index: 20;
   }
 
   @keyframes noise-anim {
@@ -38,7 +37,7 @@
   }
 
   :root {
-    --checkerboard-size: 100px;
+    --checkerboard-size: 110px;
   }
 
   #checkerboard::before {
@@ -64,12 +63,18 @@
     left: var(--checkerboard-size);
     background: var(--color-papaya-whip);
   }
+
+  main {
+    padding: var(--checkerboard-size);
+  }
 </style>
 
 <script>
   import Konva from "konva";
+  import { ANIMATE_COLORS_CLASSNAME } from "~/consts";
 
   const cssStyleDeclaration = getComputedStyle(document.documentElement);
+  const abortController = new AbortController();
 
   /**
    * @see {@link file://./../styles/global.css} for color variables
@@ -96,6 +101,7 @@
   function getGradientStops(index: number) {
     const start = colors[index % colors.length]!;
     const end = colors[(index + 1) % colors.length]!;
+
     return [
       0,
       cssStyleDeclaration.getPropertyValue(`--color-${start}-500`),
@@ -129,7 +135,7 @@
 
     const node = new Konva.Line({
       points: generateRandomPoints(index),
-      fillLinearGradientColorStops: [],
+      fillLinearGradientColorStops: getGradientStops(index),
       fillLinearGradientStartPoint: { x: x * -1, y: y * -1 },
       fillLinearGradientEndPoint: { x, y },
       stroke,
@@ -142,7 +148,6 @@
 
     blobNodes.push(node);
 
-    console.log(node.width() / 2, maxWidth);
     if (node.width() / 2 > maxWidth) {
       isFilled = true;
     }
@@ -174,27 +179,67 @@
   /**
    * adjust stage dimensions when window resizes
    */
-  window.addEventListener("resize", () => {
-    stage.width(window.innerWidth);
-    stage.height(window.innerHeight);
-    stage.draw();
-  });
+  window.addEventListener(
+    "resize",
+    () => {
+      stage.width(window.innerWidth);
+      stage.height(window.innerHeight);
+      stage.draw();
+    },
+    { signal: abortController.signal }
+  );
 
   /**
    * move blobs to mouse position
    */
-  window.addEventListener("mousemove", (e) => {
-    stage.setPointersPositions(e);
-    const pos = stage.getPointerPosition();
-    if (!pos) return;
+  window.addEventListener(
+    "mousemove",
+    (e) => {
+      stage.setPointersPositions(e);
+      const pos = stage.getPointerPosition();
+      if (!pos) return;
 
-    blobs.forEach(({ tween }, i) => {
-      tween.node.to({
-        x: pos.x,
-        y: pos.y,
-        duration: 0.25 + i * 0.1,
-        easing: Konva.Easings.Linear,
+      blobs.forEach(({ tween }, i) => {
+        tween.node.to({
+          x: pos.x,
+          y: pos.y,
+          duration: 0.1 + i * 0.1,
+          easing: Konva.Easings.Linear,
+        });
       });
-    });
+    },
+    { signal: abortController.signal }
+  );
+
+  /**
+   * trigger colorization animation
+   * @see {@link file://./../pages/index.astro}
+   */
+  document.querySelectorAll(`.${ANIMATE_COLORS_CLASSNAME}`).forEach((el) => {
+    el.addEventListener(
+      "mouseenter",
+      () => {
+        blobs.forEach(({ node }, index) => {
+          node.setAttrs({
+            fillLinearGradientColorStops: getGradientStops(index),
+          });
+        });
+      },
+      { signal: abortController.signal }
+    );
+    el.addEventListener(
+      "mouseleave",
+      () => {
+        blobs.forEach(({ node }) => {
+          node.setAttrs({ fillLinearGradientColorStops: [] });
+        });
+      },
+      { signal: abortController.signal }
+    );
+  });
+
+  window.addEventListener("unload", () => {
+    console.log("unload");
+    abortController.abort();
   });
 </script>

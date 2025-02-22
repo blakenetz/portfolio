@@ -156,12 +156,12 @@ export class CursorCanvas extends BaseCanvas {
     this.stage.add(this.layer);
     this.cursor = this.generateCursor();
     this.initializeEventListeners({
-      mousemove: (e, pos) => {
+      mousemove: (_e, pos) => {
         this.cursor.to({
           x: pos.x,
           y: pos.y,
-          duration: 0.1,
-          easing: Konva.Easings.Linear,
+          duration: 0,
+          easing: Konva.Easings.EaseIn,
         });
       },
       mouseenter: () => this.cursor.setAttrs({ stroke: white }),
@@ -346,44 +346,39 @@ export class BackgroundCanvas extends BaseCanvas {
   private placeIcons(blankSpaces: CheckerboardSpace[]) {
     const defaults = this.getDefaultCheckerboardProperties();
 
-    icons.forEach((img) => {
+    // place icons and random shapes
+    [...icons, Array.from({ length: 8 })].forEach((el, i) => {
       const randomIndex = Math.floor(Math.random() * blankSpaces.length);
       const space = blankSpaces[randomIndex];
       if (!space) return;
 
-      const image = new Konva.Image({
-        ...defaults,
-        x: space.x * spacing,
-        y: space.y * spacing,
-        image: img,
-      });
+      let shape: Konva.Shape;
 
-      this.layer.add(image);
-      // remove space from blankSpaces
-      blankSpaces.splice(randomIndex, 1);
-    });
-
-    Array.from({ length: 8 }).forEach((_, i) => {
-      const randomIndex = Math.floor(Math.random() * blankSpaces.length);
-      const space = blankSpaces[randomIndex];
-      if (!space) return;
-
-      const shape =
-        i % 2 === 0
-          ? new Konva.Circle({
-              ...defaults,
-              x: space.x * spacing + spacing / 2,
-              y: space.y * spacing + spacing / 2,
-            })
-          : new Konva.Arc({
-              ...defaults,
-              x: space.x * spacing + spacing / 2,
-              y: space.y * spacing + spacing / 2,
-              innerRadius: 0,
-              outerRadius: spacing / 2,
-              angle: 180,
-              rotation: Math.floor(Math.random() * 4) * 90,
-            });
+      if (el instanceof HTMLImageElement) {
+        shape = new Konva.Image({
+          ...defaults,
+          x: space.x * spacing,
+          y: space.y * spacing,
+          image: el,
+        });
+      } else {
+        const x = space.x * spacing + spacing / 2;
+        const y = space.y * spacing + spacing / 2;
+        // circle
+        if (i % 2 === 0) shape = new Konva.Circle({ ...defaults, x, y });
+        //
+        else {
+          shape = new Konva.Arc({
+            ...defaults,
+            x,
+            y,
+            innerRadius: 0,
+            outerRadius: spacing / 2,
+            angle: 180,
+            rotation: Math.floor(Math.random() * 4) * 90,
+          });
+        }
+      }
 
       this.layer.add(shape);
       // remove space from blankSpaces

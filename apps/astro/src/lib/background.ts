@@ -36,14 +36,13 @@ function generateRandomPoints(index: number) {
 }
 
 function getGradientStops(index: number) {
-  const start = colors[index % colors.length]!;
-  const end = colors[(index + 1) % colors.length]!;
+  const color = colors[index % colors.length]!;
 
   return [
     0,
-    getCssVariable(`--color-${start}-400`),
+    getCssVariable(`--color-${color}-200`),
     1,
-    getCssVariable(`--color-${end}-400`),
+    getCssVariable(`--color-${color}-500`),
   ];
 }
 
@@ -154,24 +153,27 @@ export class BackgroundCanvas {
       for (let j = 0; j < cols; j++) {
         const isOnBorder =
           i < 2 || // top border
-          i > rows - 3.1 || // bottom border
+          i > rows - 3.1 || // bottom border given an extra 1.1 threshold
           j < 2 || // left border
-          j > cols - 3.1; // right border
+          j > cols - 3.1; // right border given an extra 1.1 threshold
 
-        if (isOnBorder) {
-          if ((i + j) % 2 === 1) {
-            blankSpaces.push({ x: j, y: i });
-          } else {
-            const rect = new Konva.Rect({
-              x: j * spacing,
-              y: i * spacing,
-              width: spacing,
-              height: spacing,
-              fill: white,
-            });
-            this.checkerboardLayer.add(rect);
-          }
+        if (!isOnBorder) continue;
+
+        // track blank spaces
+        if ((i + j) % 2 === 1) {
+          blankSpaces.push({ x: j, y: i });
+          continue;
         }
+
+        // draw checkerboard space
+        const rect = new Konva.Rect({
+          x: j * spacing,
+          y: i * spacing,
+          width: spacing,
+          height: spacing,
+          fill: white,
+        });
+        this.checkerboardLayer.add(rect);
       }
     }
 
@@ -181,7 +183,7 @@ export class BackgroundCanvas {
   private placeIcons(blankSpaces: CheckerboardSpace[]) {
     icons.forEach((img) => {
       const randomIndex = Math.floor(Math.random() * blankSpaces.length);
-      const space = blankSpaces.splice(randomIndex, 1)[0];
+      const space = blankSpaces[randomIndex];
       if (!space) return;
 
       const image = new Konva.Image({
@@ -193,6 +195,8 @@ export class BackgroundCanvas {
       });
 
       this.checkerboardLayer.add(image);
+      // remove space from blankSpaces
+      blankSpaces.splice(randomIndex, 1);
     });
   }
 

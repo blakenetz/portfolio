@@ -36,10 +36,6 @@
 <script>
   import { BackgroundCanvas } from "~/lib/background";
 
-  const background = new BackgroundCanvas(
-    window.innerWidth,
-    window.innerHeight
-  );
-
-  background.initializeEventListeners(window);
+  const background = new BackgroundCanvas();
+  background.initializeEventListeners();
 </script>

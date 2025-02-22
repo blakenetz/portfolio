@@ -8,7 +8,7 @@ import pizza from "~/assets/pizza.svg";
 import van from "~/assets/van.svg";
 import { ANIMATE_COLORS_CLASSNAME } from "~/consts";
 
-type CheckerboardSpace = { i: number; j: number };
+type CheckerboardSpace = Konva.Vector2d;
 type Blob = { node: Konva.Line; tween: Konva.Tween };
 
 const icons: HTMLImageElement[] = [
@@ -49,21 +49,17 @@ function getGradientStops(index: number) {
 
 export class BackgroundCanvas {
   abortController: AbortController;
-  width: number;
-  height: number;
   stage: Konva.Stage;
   blobLayer: Konva.Layer;
   checkerboardLayer: Konva.Layer;
   blobs: Blob[];
 
-  constructor(width: number, height: number) {
-    this.width = width;
-    this.height = height;
+  constructor() {
     this.abortController = new AbortController();
     this.stage = new Konva.Stage({
       container: "background",
-      width,
-      height,
+      width: window.innerWidth,
+      height: window.innerHeight,
     });
     this.blobLayer = new Konva.Layer();
     this.checkerboardLayer = new Konva.Layer();
@@ -76,7 +72,9 @@ export class BackgroundCanvas {
 
   // Pythagorean theorem to get the diagonal distance of the screen
   private getMaxWidth() {
-    return Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2));
+    return Math.sqrt(
+      Math.pow(this.stage.width(), 2) + Math.pow(this.stage.height(), 2),
+    );
   }
 
   /**
@@ -87,6 +85,7 @@ export class BackgroundCanvas {
     const x = this.stage.width() * 0.66;
     const y = this.stage.height() * 0.33;
     const maxWidth = this.getMaxWidth();
+
     // at most, create 20 blobs
     for (let i = 0; i < 20; i++) {
       const node = new Konva.Line({
@@ -95,7 +94,7 @@ export class BackgroundCanvas {
         fillLinearGradientStartPoint: { x: x * -1, y: y * -1 },
         fillLinearGradientEndPoint: { x, y },
         stroke: white,
-        strokeWidth: 5,
+        strokeWidth: maxWidth / 100,
         closed: true,
         tension: 0.3,
         x,
@@ -147,29 +146,31 @@ export class BackgroundCanvas {
    * Then, place assets in random blank spaces
    */
   private drawCheckerboard() {
-    const cols = Math.ceil(this.width / spacing);
-    const rows = Math.ceil(this.height / spacing);
+    const cols = Math.ceil(this.stage.width() / spacing);
+    const rows = Math.ceil(this.stage.height() / spacing);
     const blankSpaces: CheckerboardSpace[] = [];
 
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        if (
-          (i + j) % 2 === 1 &&
-          (i <= 1 || i >= rows - 2 || j <= 1 || j >= cols - 2)
-        ) {
-          blankSpaces.push({ i, j });
-        } else if (
-          (i + j) % 2 === 0 &&
-          (i <= 1 || i >= rows - 2 || j <= 1 || j >= cols - 2)
-        ) {
-          const rect = new Konva.Rect({
-            x: j * spacing,
-            y: i * spacing,
-            width: spacing,
-            height: spacing,
-            fill: white,
-          });
-          this.checkerboardLayer.add(rect);
+        const isOnBorder =
+          i < 2 || // top border
+          i > rows - 3.1 || // bottom border
+          j < 2 || // left border
+          j > cols - 3.1; // right border
+
+        if (isOnBorder) {
+          if ((i + j) % 2 === 1) {
+            blankSpaces.push({ x: j, y: i });
+          } else {
+            const rect = new Konva.Rect({
+              x: j * spacing,
+              y: i * spacing,
+              width: spacing,
+              height: spacing,
+              fill: white,
+            });
+            this.checkerboardLayer.add(rect);
+          }
         }
       }
     }
@@ -180,11 +181,12 @@ export class BackgroundCanvas {
   private placeIcons(blankSpaces: CheckerboardSpace[]) {
     icons.forEach((img) => {
       const randomIndex = Math.floor(Math.random() * blankSpaces.length);
-      const { i, j } = blankSpaces.splice(randomIndex, 1)[0]!;
+      const space = blankSpaces.splice(randomIndex, 1)[0];
+      if (!space) return;
 
       const image = new Konva.Image({
-        x: j * spacing,
-        y: i * spacing,
+        x: space.x * spacing,
+        y: space.y * spacing,
         width: spacing,
         height: spacing,
         image: img,
@@ -194,7 +196,7 @@ export class BackgroundCanvas {
     });
   }
 
-  initializeEventListeners(window: Window) {
+  initializeEventListeners() {
     window.addEventListener("unload", () => this.abortController.abort());
 
     /**
@@ -204,6 +206,7 @@ export class BackgroundCanvas {
     window.addEventListener(
       "resize",
       () => {
+        console.log("resized");
         this.stage.width(window.innerWidth);
         this.stage.height(window.innerHeight);
         this.stage.draw();

@@ -46,64 +46,215 @@ function getGradientStops(index: number) {
   ];
 }
 
-export class BackgroundCanvas {
+class BaseCanvas {
   abortController: AbortController;
   stage: Konva.Stage;
-  blobLayer: Konva.Layer;
-  checkerboardLayer: Konva.Layer;
-  blobs: Blob[];
 
-  constructor() {
+  constructor(target: string) {
     this.abortController = new AbortController();
     this.stage = new Konva.Stage({
-      container: "background",
+      container: target,
       width: window.innerWidth,
       height: window.innerHeight,
     });
-    this.blobLayer = new Konva.Layer();
-    this.checkerboardLayer = new Konva.Layer();
-    this.stage.add(this.blobLayer);
-    this.stage.add(this.checkerboardLayer);
-    this.blobs = this.generateBlobs();
-    this.initializeBlobAnimations();
-    this.drawCheckerboard();
   }
 
   // Pythagorean theorem to get the diagonal distance of the screen
-  private getMaxWidth() {
+  getMaxWidth() {
     return Math.sqrt(
       Math.pow(this.stage.width(), 2) + Math.pow(this.stage.height(), 2),
     );
   }
 
+  getDefaultBlobProperties(): Konva.LineConfig & Konva.Vector2d {
+    const x = this.stage.width() * 0.66;
+    const y = this.stage.height() * 0.33;
+
+    return {
+      x,
+      y,
+      strokeWidth: this.getMaxWidth() / 100,
+      stroke: white,
+      closed: true,
+      tension: 0.3,
+    };
+  }
+
+  initializeEventListeners(
+    listeners: Partial<{
+      resize: (e: Event) => void;
+      mousemove: (e: MouseEvent, pos: Konva.Vector2d) => void;
+      mouseenter: (e: MouseEvent, el: HTMLElement) => void;
+      mouseleave: (e: MouseEvent, el: HTMLElement) => void;
+    }>,
+  ) {
+    window.addEventListener("unload", () => this.abortController.abort());
+
+    /**
+     * adjust stage dimensions
+     */
+    window.addEventListener(
+      "resize",
+      (e) => {
+        this.stage.width(window.innerWidth);
+        this.stage.height(window.innerHeight);
+        this.stage.draw();
+        listeners.resize?.(e);
+      },
+      { signal: this.abortController.signal },
+    );
+
+    /**
+     * move blobs to mouse position
+     */
+    window.addEventListener(
+      "mousemove",
+      (e) => {
+        this.stage.setPointersPositions(e);
+        const pos = this.stage.getPointerPosition();
+        if (!pos) return;
+
+        listeners.mousemove?.(e, pos);
+      },
+      { signal: this.abortController.signal },
+    );
+
+    /**
+     * trigger colorization animation
+     * @see {@link file://./../pages/index.astro}
+     */
+    document
+      .querySelectorAll<HTMLElement>(`.${ANIMATE_COLORS_CLASSNAME}`)
+      .forEach((el) => {
+        el.addEventListener(
+          "mouseenter",
+          (e) => listeners.mouseenter?.(e, el),
+          { signal: this.abortController.signal },
+        );
+        el.addEventListener(
+          "mouseleave",
+          (e) => listeners.mouseleave?.(e, el),
+          { signal: this.abortController.signal },
+        );
+      });
+  }
+}
+
+export class CursorCanvas extends BaseCanvas {
+  layer: Konva.Layer;
+  cursor: Konva.Line;
+
+  constructor(target: string) {
+    super(target);
+    this.layer = new Konva.Layer();
+    this.stage.add(this.layer);
+    this.cursor = this.generateCursor();
+    this.initializeEventListeners({
+      mousemove: (e, pos) => {
+        this.cursor.to({
+          x: pos.x,
+          y: pos.y,
+          duration: 0.1,
+          easing: Konva.Easings.Linear,
+        });
+      },
+      mouseenter: () => this.cursor.setAttrs({ stroke: white }),
+      mouseleave: () => this.cursor.setAttrs({ stroke: black }),
+    });
+  }
+
+  private generateCursor() {
+    const defaults = this.getDefaultBlobProperties();
+    const node = new Konva.Line({
+      ...defaults,
+      points: generateRandomPoints(0),
+      stroke: black,
+      fillRadialGradientEndRadius: 20,
+      fillRadialGradientColorStops: [0, black, 1, "transparent"],
+      scale: { x: 0.1, y: 0.1 },
+    });
+
+    this.layer.add(node);
+
+    return node;
+  }
+}
+
+export class BackgroundCanvas extends BaseCanvas {
+  layer: Konva.Layer;
+  blobs: Blob[];
+
+  constructor(target: string) {
+    super(target);
+    // create layer
+    this.layer = new Konva.Layer();
+    this.stage.add(this.layer);
+    // create content for layers
+    this.blobs = this.generateBlobs();
+    this.initializeBlobAnimations();
+    this.drawCheckerboard();
+    this.initializeEventListeners({
+      mousemove: (_e, pos) => {
+        this.blobs.forEach(({ tween }, i) => {
+          tween.node.to({
+            x: pos.x,
+            y: pos.y,
+            duration: 0.1 + i * 0.1,
+            easing: Konva.Easings.Linear,
+          });
+        });
+      },
+      mouseenter: (_e, el) => {
+        el.style.color = black;
+        this.blobs.forEach(({ node }, index) => {
+          node.setAttrs({
+            fillLinearGradientColorStops: getGradientStops(index),
+          });
+        });
+      },
+      mouseleave: (_e, el) => {
+        el.style.color = "";
+        this.blobs.forEach(({ node }) => {
+          node.setAttrs({ fillLinearGradientColorStops: [] });
+        });
+      },
+    });
+  }
+
+  private getDefaultCheckerboardProperties(): Konva.ShapeConfig {
+    return {
+      name: "checkerboard",
+      width: spacing,
+      height: spacing,
+    };
+  }
   /**
    * Generate blob nodes until node radius is greater than maxWidth
    */
   private generateBlobNodes() {
     const blobNodes: Konva.Line[] = [];
-    const x = this.stage.width() * 0.66;
-    const y = this.stage.height() * 0.33;
-    const maxWidth = this.getMaxWidth();
+    const defaults = this.getDefaultBlobProperties();
 
     // at most, create 20 blobs
     for (let i = 0; i < 20; i++) {
       const node = new Konva.Line({
+        ...defaults,
         points: generateRandomPoints(i),
         fillLinearGradientColorStops: [],
-        fillLinearGradientStartPoint: { x: x * -1, y: y * -1 },
-        fillLinearGradientEndPoint: { x, y },
-        stroke: white,
-        strokeWidth: maxWidth / 100,
-        closed: true,
-        tension: 0.3,
-        x,
-        y,
+        fillLinearGradientStartPoint: {
+          x: defaults.x * -1,
+          y: defaults.y * -1,
+        },
+        fillLinearGradientEndPoint: {
+          x: defaults.x,
+          y: defaults.y,
+        },
       });
 
       blobNodes.push(node);
 
       // break when blob extends past the screen
-      if (node.width() / 2 > maxWidth) {
+      if (node.width() / 2 > this.getMaxWidth()) {
         break;
       }
     }
@@ -121,7 +272,7 @@ export class BackgroundCanvas {
       .toReversed()
       .map((node) => {
         node.rotation(Math.random() * 360);
-        this.blobLayer.add(node);
+        this.layer.add(node);
         return node;
       })
       .reverse()
@@ -148,32 +299,32 @@ export class BackgroundCanvas {
     const cols = Math.ceil(this.stage.width() / spacing);
     const rows = Math.ceil(this.stage.height() / spacing);
     const blankSpaces: CheckerboardSpace[] = [];
+    const defaults = this.getDefaultCheckerboardProperties();
 
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
         const isOnBorder =
-          i < 2 || // top border
-          i > rows - 3.1 || // bottom border given an extra 1.1 threshold
-          j < 2 || // left border
-          j > cols - 3.1; // right border given an extra 1.1 threshold
+          row < 2 || // top border
+          row > rows - 3.1 || // bottom border given an extra 1.1 threshold
+          col < 2 || // left border
+          col > cols - 3.1; // right border given an extra 1.1 threshold
 
         if (!isOnBorder) continue;
 
         // track blank spaces
-        if ((i + j) % 2 === 1) {
-          blankSpaces.push({ x: j, y: i });
+        if ((row + col) % 2 === 1) {
+          blankSpaces.push({ x: col, y: row });
           continue;
         }
 
         // draw checkerboard space
         const rect = new Konva.Rect({
-          x: j * spacing,
-          y: i * spacing,
-          width: spacing,
-          height: spacing,
+          ...defaults,
+          x: col * spacing,
+          y: row * spacing,
           fill: white,
         });
-        this.checkerboardLayer.add(rect);
+        this.layer.add(rect);
       }
     }
 
@@ -186,95 +337,23 @@ export class BackgroundCanvas {
       const space = blankSpaces[randomIndex];
       if (!space) return;
 
+      const defaults = this.getDefaultCheckerboardProperties();
       const image = new Konva.Image({
+        ...defaults,
         x: space.x * spacing,
         y: space.y * spacing,
-        width: spacing,
-        height: spacing,
         image: img,
       });
 
-      this.checkerboardLayer.add(image);
+      this.layer.add(image);
       // remove space from blankSpaces
       blankSpaces.splice(randomIndex, 1);
     });
   }
 
-  initializeEventListeners() {
-    window.addEventListener("unload", () => this.abortController.abort());
-
-    /**
-     * adjust stage dimensions
-     * Redraw checkerboard
-     */
-    window.addEventListener(
-      "resize",
-      () => {
-        console.log("resized");
-        this.stage.width(window.innerWidth);
-        this.stage.height(window.innerHeight);
-        this.stage.draw();
-        this.checkerboardLayer.destroyChildren();
-        this.drawCheckerboard();
-      },
-      { signal: this.abortController.signal },
-    );
-
-    /**
-     * move blobs to mouse position
-     */
-    window.addEventListener(
-      "mousemove",
-      (e) => {
-        this.stage.setPointersPositions(e);
-        const pos = this.stage.getPointerPosition();
-        if (!pos) return;
-
-        this.blobs.forEach(({ tween }, i) => {
-          tween.node.to({
-            x: pos.x,
-            y: pos.y,
-            duration: 0.1 + i * 0.1,
-            easing: Konva.Easings.Linear,
-          });
-        });
-      },
-      { signal: this.abortController.signal },
-    );
-
-    /**
-     * trigger colorization animation
-     * @see {@link file://./../pages/index.astro}
-     */
-    document
-      .querySelectorAll<HTMLElement>(`.${ANIMATE_COLORS_CLASSNAME}`)
-      .forEach((el) => {
-        el.addEventListener(
-          "mouseenter",
-          () => {
-            el.style.color = black;
-            this.blobs.forEach(({ node }, index) => {
-              node.setAttrs({
-                fillLinearGradientColorStops: getGradientStops(index),
-              });
-            });
-          },
-          {
-            signal: this.abortController.signal,
-          },
-        );
-        el.addEventListener(
-          "mouseleave",
-          () => {
-            el.style.color = "";
-            this.blobs.forEach(({ node }) => {
-              node.setAttrs({ fillLinearGradientColorStops: [] });
-            });
-          },
-          {
-            signal: this.abortController.signal,
-          },
-        );
-      });
+  private destroyCheckerboard() {
+    this.layer
+      .getChildren((node) => node.name() === "checkerboard")
+      .forEach((node) => node.destroy());
   }
 }

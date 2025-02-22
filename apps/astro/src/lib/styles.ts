@@ -6,11 +6,11 @@ export function getCssVariable(name: string) {
  * @see {@link file://./../styles/global.css} for color variables
  */
 export const colors = [
-  "rose",
+  "aquamarine",
   "dodger-blue",
   "sunglow",
   "pumpkin",
-  "aquamarine",
+  "rose",
 ];
 export const white = getCssVariable("--color-papaya-whip-100");
 export const black = getCssVariable("--color-rich-black");

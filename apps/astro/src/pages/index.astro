@@ -1,6 +1,7 @@
 ---
 import RootLayout from "~/layouts/Root.astro";
 import Button from "~/components/Button.astro";
+import Link from "~/components/Link.astro";
 import { ANIMATE_COLORS_CLASSNAME } from "~/consts";
 ---
 
@@ -10,33 +11,32 @@ import { ANIMATE_COLORS_CLASSNAME } from "~/consts";
       <h1 class="text-5xl font-bold">
         Hello! I'm
         <span
-          class=`font-danfo text-pumpkin-400 ${ANIMATE_COLORS_CLASSNAME} text-6xl cursor-help`
+          class=`font-danfo text-primary ${ANIMATE_COLORS_CLASSNAME} text-6xl cursor-help`
         >
           Blake Netzeband
         </span>
       </h1>
     </div>
 
-    <p class="mb-6 max-w-2xl text-center text-lg">
+    <p class="mb-6 max-w-2xl text-justify text-lg">
       I'm a full stack developer with experience building apps of all shapes and
       sizes. I've spent a good chunk of my life contributing to products that
       have an environmental or social impact. The other parts include living out
       of a van, biking around the world, or just hangin' with my pup :)
     </p>
 
-    <p class="mb-8 max-w-2xl text-center text-lg">
+    <p class="mb-8 max-w-2xl text-justify text-lg">
       Are you building something interesting?{" "}
-      <a
-        href="mailto:blakenetzeband@gmail.com"
-        class="text-blue-600 underline hover:text-blue-800"
-      >
-        Let's connect
-      </a>
+      <Link href="mailto:blakenetzeband@gmail.com"> Let's connect</Link>
     </p>
 
-    <div class="flex w-full max-w-xs flex-col gap-4">
-      <Button href="/projects">Projects</Button>
-      <Button href="/blog">Blog</Button>
+    <div class="flex w-full max-w-xs gap-4">
+      <a href="/projects">
+        <Button>Projects</Button>
+      </a>
+      <a href="/blog">
+        <Button>Blog</Button>
+      </a>
     </div>
   </section>
 </RootLayout>

@@ -84,6 +84,10 @@
   --color-rich-black-800: #00060c;
   --color-rich-black-900: #000306;
 
+  /* Primary */
+  --color-primary: var(--color-pumpkin-400);
+  --color-primary-hover: var(--color-pumpkin-500);
+
   /* Josefin Sans */
   --font-josefin-sans: "Josefin Sans", sans-serif;
 

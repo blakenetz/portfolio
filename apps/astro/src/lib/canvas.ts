@@ -4,8 +4,11 @@ import { black, colors, getCssVariable, spacing, white } from "./styles";
 import bicycle from "~/assets/bicycle.svg";
 import dogCosmos from "~/assets/dog-cosmos.svg";
 import pizzaSlice from "~/assets/pizza-slice.svg";
-import pizza from "~/assets/pizza.svg";
 import van from "~/assets/van.svg";
+import plant from "~/assets/plant.svg";
+import sunflower from "~/assets/sunflower.svg";
+import cactus from "~/assets/cactus.svg";
+import flower from "~/assets/flower.svg";
 import { ANIMATE_COLORS_CLASSNAME } from "~/consts";
 
 type CheckerboardSpace = Konva.Vector2d;
@@ -15,8 +18,11 @@ const icons: HTMLImageElement[] = [
   bicycle,
   dogCosmos,
   pizzaSlice,
-  pizza,
   van,
+  plant,
+  sunflower,
+  cactus,
+  flower,
 ].map((src) => {
   const img = new Image();
   img.src = src.src;
@@ -194,6 +200,10 @@ export class BackgroundCanvas extends BaseCanvas {
     this.initializeBlobAnimations();
     this.drawCheckerboard();
     this.initializeEventListeners({
+      resize: () => {
+        this.destroyCheckerboard();
+        this.drawCheckerboard();
+      },
       mousemove: (_e, pos) => {
         this.blobs.forEach(({ tween }, i) => {
           tween.node.to({
@@ -221,11 +231,14 @@ export class BackgroundCanvas extends BaseCanvas {
     });
   }
 
-  private getDefaultCheckerboardProperties(): Konva.ShapeConfig {
+  private getDefaultCheckerboardProperties(): Konva.ShapeConfig & {
+    name: string;
+  } {
     return {
       name: "checkerboard",
       width: spacing,
       height: spacing,
+      fill: white,
     };
   }
   /**
@@ -322,7 +335,6 @@ export class BackgroundCanvas extends BaseCanvas {
           ...defaults,
           x: col * spacing,
           y: row * spacing,
-          fill: white,
         });
         this.layer.add(rect);
       }
@@ -332,12 +344,13 @@ export class BackgroundCanvas extends BaseCanvas {
   }
 
   private placeIcons(blankSpaces: CheckerboardSpace[]) {
+    const defaults = this.getDefaultCheckerboardProperties();
+
     icons.forEach((img) => {
       const randomIndex = Math.floor(Math.random() * blankSpaces.length);
       const space = blankSpaces[randomIndex];
       if (!space) return;
 
-      const defaults = this.getDefaultCheckerboardProperties();
       const image = new Konva.Image({
         ...defaults,
         x: space.x * spacing,
@@ -349,11 +362,40 @@ export class BackgroundCanvas extends BaseCanvas {
       // remove space from blankSpaces
       blankSpaces.splice(randomIndex, 1);
     });
+
+    Array.from({ length: 8 }).forEach((_, i) => {
+      const randomIndex = Math.floor(Math.random() * blankSpaces.length);
+      const space = blankSpaces[randomIndex];
+      if (!space) return;
+
+      const shape =
+        i % 2 === 0
+          ? new Konva.Circle({
+              ...defaults,
+              x: space.x * spacing + spacing / 2,
+              y: space.y * spacing + spacing / 2,
+            })
+          : new Konva.Arc({
+              ...defaults,
+              x: space.x * spacing + spacing / 2,
+              y: space.y * spacing + spacing / 2,
+              innerRadius: 0,
+              outerRadius: spacing / 2,
+              angle: 180,
+              rotation: Math.floor(Math.random() * 4) * 90,
+            });
+
+      this.layer.add(shape);
+      // remove space from blankSpaces
+      blankSpaces.splice(randomIndex, 1);
+    });
   }
 
   private destroyCheckerboard() {
+    const { name } = this.getDefaultCheckerboardProperties();
+
     this.layer
-      .getChildren((node) => node.name() === "checkerboard")
+      .getChildren((node) => node.name() === name)
       .forEach((node) => node.destroy());
   }
 }

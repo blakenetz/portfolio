@@ -10,9 +10,7 @@ import sunflower from "~/assets/sunflower.svg";
 import cactus from "~/assets/cactus.svg";
 import flower from "~/assets/flower.svg";
 import { ANIMATE_COLORS_CLASSNAME } from "~/consts";
-
-type CheckerboardSpace = Konva.Vector2d;
-type Blob = { node: Konva.Line; tween: Konva.Tween };
+import type { CheckerboardSpace, Blob } from "~/types/canvas";
 
 const icons: HTMLImageElement[] = [
   bicycle,

@@ -4,7 +4,7 @@
 import "~/styles/global.css";
 import { SITE_TITLE, SITE_DESCRIPTION } from "~/consts";
 
-interface Props {
+export interface BaseHeadProps {
   title?: string;
   description?: string;
   image?: string;
@@ -32,6 +32,7 @@ const {
 />
 <meta name="generator" content={Astro.generator} />
 
+<!-- TODO: Add font preloads -->
 <!-- Font preloads -->
 <!-- <link
   rel="preload"

@@ -1,11 +1,15 @@
 ---
 import BaseHead from "~/components/BaseHead.astro";
 import Background from "~/components/Background.astro";
+import type { BaseHeadProps } from "~/components/BaseHead.astro";
+
+type Props = BaseHeadProps 
+const props = Astro.props
 ---
 
 <html lang="en">
   <head>
-    <BaseHead />
+    <BaseHead {...props} />
   </head>
   <body
     class="bg-papaya-whip text-rich-black font-josefin-sans min-h-dvh min-w-dvw"

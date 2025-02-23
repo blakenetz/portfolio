@@ -1,52 +1,80 @@
 ---
-import type { HTMLAttributes } from "astro/types";
-import type { RepoData } from "~/types/projects";
-import UserCircle from "@tabler/icons/outline/user-circle.svg";
 import GitFork from "@tabler/icons/outline/git-fork.svg";
+import UserCircle from "@tabler/icons/outline/user-circle.svg";
+import type { HTMLAttributes } from "astro/types";
+import Divider from "~/components/Divider.astro";
 import Link from "~/components/Link.astro";
 import Tooltip from "~/components/Tooltip.astro";
 import { titleCase } from "~/lib/utils";
+import type { RepoData } from "~/types/projects";
+import CodeLanguage from "./CodeLanguage.astro";
 
 interface Props extends HTMLAttributes<"div"> {
   data: RepoData;
 }
 
 const { data } = Astro.props;
+
+const gradientDirections = [
+  "bg-gradient-to-br",
+  "bg-gradient-to-tr",
+  "bg-gradient-to-bl",
+  "bg-gradient-to-tl",
+  "bg-gradient-to-r",
+  "bg-gradient-to-l",
+];
+
+function getRandomGradientDirection() {
+  return gradientDirections[
+    Math.floor(Math.random() * gradientDirections.length)
+  ];
+}
 ---
 
-<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
   {
     data.map((repo) => (
-      <div class="relative flex flex-col gap-2 rounded-2xl bg-gray-100 p-6 shadow-lg transition-transform hover:scale-105">
-        <div class="relative">
-          <div class="z-10 flex items-center gap-2">
-            {repo.fork && (
-              <Tooltip label="This repo was forked">
-                <GitFork class="h-6 w-6" />
-              </Tooltip>
+      <div class="relative rounded-2xl transition-transform hover:scale-105">
+        <div
+          class={`from-sunglow via-aquamarine to-dodger-blue-300 absolute -inset-1 -z-10 rounded-2xl ${getRandomGradientDirection()} opacity-70 blur-2xl filter`}
+        />
+        <div class="relative flex flex-col gap-2 rounded-2xl bg-gray-100 p-6">
+          {repo.description && <p>{repo.description}</p>}
+          <div class="flex items-center gap-2 text-sm">
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href={repo.html_url}
+            >
+              View on Github
+            </Link>
+            {repo.user && (
+              <>
+                <Divider />
+                <Link
+                  class="flex flex-row justify-center gap-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`https://github.com/${repo.user}`}
+                >
+                  <UserCircle class="h-4 w-4" />
+                  <span>{repo.user}</span>
+                </Link>
+              </>
             )}
-            <p>{titleCase(repo.name)}</p>
           </div>
-        </div>
-        {repo.description && <p>{repo.description}</p>}
-        <div class="flex items-center gap-2 text-sm">
-          <Link target="_blank" rel="noopener noreferrer" href={repo.html_url}>
-            View on Github
-          </Link>
-          {repo.user && (
-            <>
-              <div class="mx-2 h-4 w-[1px] bg-gray-300" />
-              <Link
-                class="flex flex-row justify-center gap-1"
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`https://github.com/${repo.user}`}
-              >
-                <UserCircle class="h-4 w-4" />
-                <span>{repo.user}</span>
-              </Link>
-            </>
-          )}
+          <div class="flex items-center gap-1 text-xs">
+            {repo.language && (
+              <>
+                <CodeLanguage language={repo.language} />
+                <Divider />
+              </>
+            )}
+
+            <span>{`Created ${repo.created_at}`}</span>
+            <Divider />
+            <span>{`Updated ${repo.updated_at}`}</span>
+          </div>
         </div>
       </div>
     ))

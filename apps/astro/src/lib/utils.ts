@@ -24,6 +24,10 @@ export function kebobCase(val: string) {
   return val.replace(/\s/g, "-").toLowerCase();
 }
 
+export function titleCase(val: string) {
+  return val.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
 export const status = {
   octokit: "octokit-fail",
   unknown: "unknown",

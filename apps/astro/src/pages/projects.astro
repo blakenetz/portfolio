@@ -1,4 +1,5 @@
 ---
+import Grid from "~/components/Grid.astro";
 import Layout from "~/layouts/Root.astro";
 import { getRepos } from "~/lib/projects";
 import { status } from "~/lib/utils";
@@ -20,6 +21,7 @@ const work = repos[1];
 >
 	<section>
 		<h1 class="text-2xl font-bold">Personal Projects</h1>
+		<Grid data={personal.data} />
 	</section>
 	<section>
 		<h1 class="text-2xl font-bold">Work Projects</h1>
@@ -27,5 +29,6 @@ const work = repos[1];
 			The following are typically CI items, POC, etc. and are aren't suited
 			for production
 		</p>
+		<Grid data={work.data} />
 	</section>
 </Layout>

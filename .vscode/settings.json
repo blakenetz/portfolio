@@ -36,8 +36,10 @@
   ],
   "prettier.proseWrap": "always",
   "cSpell.enabled": true,
-  "prettier.configPath": "./apps/astro/.prettierrc.mjs",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnPaste": true,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "[astro]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

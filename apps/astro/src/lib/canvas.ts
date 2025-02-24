@@ -12,7 +12,7 @@ import flower from "~/assets/flower.svg";
 import { ANIMATE_COLORS_CLASSNAME } from "~/consts";
 import type { CheckerboardSpace, Blob } from "~/types/canvas";
 
-const icons: HTMLImageElement[] = [
+const icons = [
   bicycle,
   dogCosmos,
   pizzaSlice,
@@ -21,11 +21,7 @@ const icons: HTMLImageElement[] = [
   sunflower,
   cactus,
   flower,
-].map((src) => {
-  const img = new Image();
-  img.src = src.src;
-  return img;
-});
+].map(({ src }) => src);
 
 function generateRandomPoints(index: number) {
   const length = 8;
@@ -53,6 +49,7 @@ function getGradientStops(index: number) {
 class BaseCanvas {
   abortController: AbortController;
   stage: Konva.Stage;
+  layer: Konva.Layer;
 
   constructor(target: string) {
     this.abortController = new AbortController();
@@ -61,6 +58,8 @@ class BaseCanvas {
       width: window.innerWidth,
       height: window.innerHeight,
     });
+    this.layer = new Konva.Layer();
+    this.stage.add(this.layer);
   }
 
   // Pythagorean theorem to get the diagonal distance of the screen
@@ -145,13 +144,10 @@ class BaseCanvas {
 }
 
 export class CursorCanvas extends BaseCanvas {
-  layer: Konva.Layer;
   cursor: Konva.Line;
 
   constructor(target: string) {
     super(target);
-    this.layer = new Konva.Layer();
-    this.stage.add(this.layer);
     this.cursor = this.generateCursor();
     this.initializeEventListeners({
       mousemove: (_e, pos) => {
@@ -184,24 +180,16 @@ export class CursorCanvas extends BaseCanvas {
   }
 }
 
-export class BackgroundCanvas extends BaseCanvas {
-  layer: Konva.Layer;
+export class BlobBackgroundCanvas extends BaseCanvas {
   blobs: Blob[];
 
   constructor(target: string) {
     super(target);
-    // create layer
-    this.layer = new Konva.Layer();
-    this.stage.add(this.layer);
     // create content for layers
     this.blobs = this.generateBlobs();
     this.initializeBlobAnimations();
-    this.drawCheckerboard();
+
     this.initializeEventListeners({
-      resize: () => {
-        this.destroyCheckerboard();
-        this.drawCheckerboard();
-      },
       mousemove: (_e, pos) => {
         this.blobs.forEach(({ tween }, i) => {
           tween.node.to({
@@ -229,16 +217,6 @@ export class BackgroundCanvas extends BaseCanvas {
     });
   }
 
-  private getDefaultCheckerboardProperties(): Konva.ShapeConfig & {
-    name: string;
-  } {
-    return {
-      name: "checkerboard",
-      width: spacing,
-      height: spacing,
-      fill: white,
-    };
-  }
   /**
    * Generate blob nodes until node radius is greater than maxWidth
    */
@@ -299,6 +277,32 @@ export class BackgroundCanvas extends BaseCanvas {
     });
     animation.start();
   }
+}
+
+export class CheckerboardBackgroundCanvas extends BaseCanvas {
+  constructor(target: string) {
+    super(target);
+
+    // create content for layers
+    this.drawCheckerboard();
+    this.initializeEventListeners({
+      resize: () => {
+        this.destroyCheckerboard();
+        this.drawCheckerboard();
+      },
+    });
+  }
+
+  private getDefaultCheckerboardProperties(): Konva.ShapeConfig & {
+    name: string;
+  } {
+    return {
+      name: "checkerboard",
+      width: spacing,
+      height: spacing,
+      fill: white,
+    };
+  }
 
   /**
    * Draw checkerboard border
@@ -348,37 +352,38 @@ export class BackgroundCanvas extends BaseCanvas {
     [...icons, Array.from({ length: 8 })].forEach((el, i) => {
       const randomIndex = Math.floor(Math.random() * blankSpaces.length);
       const space = blankSpaces[randomIndex];
-      if (!space) return;
+      if (!space) return; // if space doesn't exist, skip adding svg
 
-      let shape: Konva.Shape;
-
-      if (el instanceof HTMLImageElement) {
-        shape = new Konva.Image({
-          ...defaults,
-          x: space.x * spacing,
-          y: space.y * spacing,
-          image: el,
+      if (typeof el === "string") {
+        Konva.Image.fromURL(el, (node) => {
+          this.layer.add(node);
+          node.setAttrs({
+            ...defaults,
+            x: space.x * spacing,
+            y: space.y * spacing,
+            fill: "transparent",
+          });
         });
       } else {
         const x = space.x * spacing + spacing / 2;
         const y = space.y * spacing + spacing / 2;
-        // circle
-        if (i % 2 === 0) shape = new Konva.Circle({ ...defaults, x, y });
-        //
-        else {
-          shape = new Konva.Arc({
-            ...defaults,
-            x,
-            y,
-            innerRadius: 0,
-            outerRadius: spacing / 2,
-            angle: 180,
-            rotation: Math.floor(Math.random() * 4) * 90,
-          });
-        }
+
+        const shape =
+          i % 2 === 0
+            ? new Konva.Circle({ ...defaults, x, y })
+            : new Konva.Arc({
+                ...defaults,
+                x,
+                y,
+                innerRadius: 0,
+                outerRadius: spacing / 2,
+                angle: 180,
+                rotation: Math.floor(Math.random() * 4) * 90,
+              });
+
+        this.layer.add(shape);
       }
 
-      this.layer.add(shape);
       // remove space from blankSpaces
       blankSpaces.splice(randomIndex, 1);
     });

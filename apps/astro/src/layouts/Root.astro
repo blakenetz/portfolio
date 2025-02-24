@@ -1,20 +1,26 @@
 ---
 import BaseHead from "~/components/BaseHead.astro";
-import Background from "~/components/Background.astro";
+import Background, {
+  type BackgroundProps,
+} from "~/components/Background.astro";
 import type { BaseHeadProps } from "~/components/BaseHead.astro";
+import Plant from "~/assets/plant.svg";
 
-type Props = BaseHeadProps 
-const props = Astro.props
+export type RootLayoutProps = {
+  headProps: BaseHeadProps;
+  layoutProps: BackgroundProps;
+};
+const { headProps, layoutProps } = Astro.props as RootLayoutProps;
 ---
 
 <html lang="en">
   <head>
-    <BaseHead {...props} />
+    <BaseHead {...headProps} />
   </head>
   <body
-    class="bg-papaya-whip text-rich-black font-josefin-sans min-h-dvh min-w-dvw"
+    class="bg-papaya-whip text-rich-black font-josefin-sans min-w-dvw min-h-dvh"
   >
-    <Background>
+    <Background {...layoutProps}>
       <slot />
     </Background>
   </body>

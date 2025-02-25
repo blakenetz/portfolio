@@ -1,9 +1,10 @@
 ---
-interface Props {
+import type { HTMLAttributes } from "astro/types";
+interface Props extends HTMLAttributes<"div"> {
   index: number;
 }
 
-const { index } = Astro.props;
+const { index, ...props } = Astro.props;
 
 const gradientDirections = [
   "bg-gradient-to-br",
@@ -56,6 +57,10 @@ function getGridPattern(index: number, columns: number) {
     ]}
   >
   </div>
-
-  <slot />
+  <div
+    class:list={["relative flex h-full flex-col gap-4 p-4", props?.class]}
+    {...props}
+  >
+    <slot />
+  </div>
 </div>

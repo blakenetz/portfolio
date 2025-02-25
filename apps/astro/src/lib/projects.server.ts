@@ -7,7 +7,7 @@ import type {
   UserScope,
 } from "~/types/projects";
 import { getParam, scopes, sorts } from "~/types/projects";
-import Api from "./projectsApi";
+import Api from "./projects.api";
 import { formatDate } from "./utils";
 
 const reg = /(:[\w\-+]+:)/g;

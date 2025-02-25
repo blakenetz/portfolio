@@ -18,30 +18,22 @@ const { data } = Astro.props;
 <Grid>
   {
     data.map((repo, index) => (
-      <GridItem index={index}>
-        <div class="relative flex h-full flex-col justify-between gap-2 p-4">
-          <div class="flex items-center gap-2">
-            <div class="flex items-center gap-2 font-bold">
-              {repo.fork && <GitFork class="h-4 w-4" />}
-              <span>{repo.name}</span>
-            </div>
+      <GridItem index={index} class="justify-between">
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 font-bold">
+            {repo.fork && <GitFork class="h-4 w-4" />}
+            <span>{repo.name}</span>
           </div>
-          {repo.description && <p>{repo.description}</p>}
+        </div>
+        {repo.description && <p class="text-sm">{repo.description}</p>}
+        <div class="flex flex-col gap-2">
           <div class="flex items-center gap-2 text-sm">
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href={repo.html_url}
-            >
-              View on Github
-            </Link>
+            <Link href={repo.html_url}>View on Github</Link>
             {repo.user && (
               <>
                 <Divider />
                 <Link
-                  class="flex flex-row justify-center gap-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  class="flex flex-row items-center gap-1"
                   href={`https://github.com/${repo.user}`}
                 >
                   <UserCircle class="h-4 w-4" />

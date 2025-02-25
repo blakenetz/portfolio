@@ -11,7 +11,7 @@ const { containerProps, ...props } = Astro.props;
   {...containerProps}
   class:list={["text-primary group/link relative", containerProps?.class]}
 >
-  <a {...props}><slot /></a>
+  <a target="_blank" rel="noopener noreferrer" {...props}><slot /></a>
   <span
     class="bg-primary absolute -bottom-1 left-0 h-1 w-0 transition-all group-hover/link:w-full"
   ></span>

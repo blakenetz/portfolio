@@ -1,7 +1,7 @@
 export type Project = {
   title: string;
   timeFrame: [number, number] | number;
-  role: string;
+  role?: string;
   description: string;
   employer?: string;
   techStack?: string[];
@@ -9,6 +9,14 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    title: "Portfolio",
+    timeFrame: 2025,
+    description:
+      "You're looking at it! This project has lived many lives, including as a Vue, Remix, and now Astro project.",
+    techStack: ["Astro", "Tailwind", "TypeScript"],
+    link: "https://github.com/blakenetz/portfolio",
+  },
   {
     title: "Discover Financial Services",
     timeFrame: [2022, 2024],

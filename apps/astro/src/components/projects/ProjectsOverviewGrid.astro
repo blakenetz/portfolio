@@ -6,7 +6,7 @@ import Divider from "~/components/Divider.astro";
 import Link from "~/components/Link.astro";
 import Grid from "~/components/projects/Grid.astro";
 import GridItem from "~/components/projects/GridItem.astro";
-import { projects } from "~/lib/projects.resume";
+import { projects } from "~/lib/projects.data";
 
 const missingItems = 4 - (projects.length % 4);
 const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
@@ -19,8 +19,13 @@ const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
         <div class="flex flex-col">
           <p class="flex items-center gap-2 font-bold">{project.title}</p>
           <div class="flex items-center gap-2 text-sm">
-            <p>{project.role}</p>
-            <Divider />
+            {project.role && (
+              <Fragment>
+                <p>{project.role}</p>
+                <Divider />
+              </Fragment>
+            )}
+
             <p class="text-xs italic">
               {Array.isArray(project.timeFrame)
                 ? project.timeFrame.join(" - ")
@@ -28,11 +33,11 @@ const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
             </p>
           </div>
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="flex flex-col gap-1 text-xs">
           {project.employer && (
             <div class="flex items-center">
               <BriefcaseIcon class="mr-2 h-4 w-4 flex-shrink-0" />
-              <p class="text-xs">{project.employer}</p>
+              <p>{project.employer}</p>
             </div>
           )}
           {project.link && (
@@ -45,7 +50,7 @@ const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
           )}
           <div class="flex items-center">
             <CodeIcon class="mr-2 h-4 w-4 flex-shrink-0" />
-            <p class="text-xs">{project.techStack?.join(", ")}</p>
+            <p>{project.techStack?.join(", ")}</p>
           </div>
         </div>
         <p class="text-sm">{project.description}</p>

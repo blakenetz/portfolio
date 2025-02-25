@@ -1,22 +1,4 @@
 ---
-import type { Color } from "~/types";
-
-const colors: Record<string, Color> = {
-  TypeScript: "dodger-blue",
-  JavaScript: "dodger-blue",
-  Just: "rich-black",
-  CSS: "sunglow",
-  HTML: "sunglow",
-  Ruby: "rose",
-  Python: "aquamarine",
-};
-
-function getColor(language: string): Color {
-  const color = colors[language];
-  if (!color) return "pumpkin";
-  return color;
-}
-
 interface Props {
   language: string;
 }
@@ -25,6 +7,16 @@ const { language } = Astro.props as Props;
 ---
 
 <div class="flex items-center gap-2">
-  <div class={`h-2 w-2 rounded-full bg-${getColor(language)} p-1`}></div>
+  <div
+    class:list={[
+      "h-2 w-2 rounded-full p-1",
+      { "bg-dodger-blue": ["TypeScript", "JavaScript"].includes(language) },
+      { "bg-rich-black": language === "Just" },
+      { "bg-sunglow": ["CSS", "HTML"].includes(language) },
+      { "bg-rose": language === "Ruby" },
+      { "bg-aquamarine": language === "Python" },
+    ]}
+  >
+  </div>
   <span>{language}</span>
 </div>

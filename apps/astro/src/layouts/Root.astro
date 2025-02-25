@@ -17,9 +17,7 @@ const { headProps, layoutProps } = Astro.props as RootLayoutProps;
   <head>
     <BaseHead {...headProps} />
   </head>
-  <body
-    class="bg-papaya-whip text-rich-black font-josefin-sans min-w-dvw min-h-dvh"
-  >
+  <body class="bg-papaya-whip font-josefin-sans min-w-dvw min-h-dvh text-black">
     <Background {...layoutProps}>
       <slot />
     </Background>

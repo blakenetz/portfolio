@@ -1,0 +1,85 @@
+---
+import GitFork from "@tabler/icons/outline/git-fork.svg";
+import UserCircle from "@tabler/icons/outline/user-circle.svg";
+import Divider from "~/components/Divider.astro";
+import Link from "~/components/Link.astro";
+import type { RepoData } from "~/types/projects";
+import CodeLanguage from "./CodeLanguage.astro";
+
+interface Props {
+  repo: RepoData[number];
+}
+
+const { repo } = Astro.props;
+
+const gradientDirections = [
+  "bg-gradient-to-br",
+  "bg-gradient-to-tr",
+  "bg-gradient-to-bl",
+  "bg-gradient-to-tl",
+  "bg-gradient-to-r",
+  "bg-gradient-to-l",
+];
+
+function getRandomGradientDirection() {
+  return gradientDirections[
+    Math.floor(Math.random() * gradientDirections.length)
+  ];
+}
+---
+
+<div class="group relative">
+  <div
+    class:list={[
+      "invisible group-hover:visible",
+      "from-sunglow via-aquamarine to-dodger-blue-300 absolute -inset-1 rounded-2xl opacity-70 blur-2xl filter",
+      getRandomGradientDirection(),
+    ]}
+  >
+  </div>
+
+  <div class="relative flex flex-col gap-2 p-4">
+    <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 font-bold">
+        {repo.fork && <GitFork class="h-4 w-4" />}
+        <span>{repo.name}</span>
+      </div>
+    </div>
+    {repo.description && <p>{repo.description}</p>}
+    <div class="flex items-center gap-2 text-sm">
+      <Link target="_blank" rel="noopener noreferrer" href={repo.html_url}>
+        View on Github
+      </Link>
+      {
+        repo.user && (
+          <>
+            <Divider />
+            <Link
+              class="flex flex-row justify-center gap-1"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`https://github.com/${repo.user}`}
+            >
+              <UserCircle class="h-4 w-4" />
+              <span>{repo.user}</span>
+            </Link>
+          </>
+        )
+      }
+    </div>
+    <div class="flex items-center gap-1 text-xs">
+      {
+        repo.language && (
+          <>
+            <CodeLanguage language={repo.language} />
+            <Divider />
+          </>
+        )
+      }
+
+      <span>{`Created ${repo.created_at}`}</span>
+      <Divider />
+      <span>{`Updated ${repo.updated_at}`}</span>
+    </div>
+  </div>
+</div>

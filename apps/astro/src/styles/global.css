@@ -87,6 +87,8 @@
   /* Primary */
   --color-primary: var(--color-pumpkin-400);
   --color-primary-hover: var(--color-pumpkin-500);
+  --color-white: var(--color-papaya-whip-100);
+  --color-black: var(--color-rich-black);
 
   /* Josefin Sans */
   --font-josefin-sans: "Josefin Sans", sans-serif;

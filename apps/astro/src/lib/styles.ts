@@ -12,7 +12,7 @@ export const colors = [
   "pumpkin",
   "rose",
 ];
-export const white = getCssVariable("--color-papaya-whip-100");
-export const black = getCssVariable("--color-rich-black");
+export const white = getCssVariable("--color-white");
+export const black = getCssVariable("--color-black");
 const checkerboardSize = getCssVariable("--spacing-checkerboard-size");
 export const spacing = parseInt(checkerboardSize) / 2;

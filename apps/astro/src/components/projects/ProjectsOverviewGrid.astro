@@ -1,12 +1,15 @@
 ---
-import Briefcase from "@tabler/icons/outline/briefcase-2.svg";
-import Code from "@tabler/icons/outline/code.svg";
+import BriefcaseIcon from "@tabler/icons/outline/briefcase-2.svg";
+import CodeIcon from "@tabler/icons/outline/code.svg";
 import LinkIcon from "@tabler/icons/outline/link.svg";
 import Divider from "~/components/Divider.astro";
 import Link from "~/components/Link.astro";
 import Grid from "~/components/projects/Grid.astro";
 import GridItem from "~/components/projects/GridItem.astro";
 import { projects } from "~/lib/projects.resume";
+
+const missingItems = 4 - (projects.length % 4);
+const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
 ---
 
 <Grid>
@@ -27,25 +30,33 @@ import { projects } from "~/lib/projects.resume";
         </div>
         <div class="flex flex-col gap-1">
           {project.employer && (
-            <div class="flex items-center gap-2">
-              <Briefcase class="h-4 w-4" />
+            <div class="flex items-center">
+              <BriefcaseIcon class="mr-2 h-4 w-4 flex-shrink-0" />
               <p class="text-xs">{project.employer}</p>
             </div>
           )}
           {project.link && (
-            <div class="flex items-center gap-2">
-              <LinkIcon class="h-4 w-4" />
-              <Link href={project.link} class="text-xs">
+            <div class="flex items-center">
+              <LinkIcon class="mr-2 h-4 w-4 flex-shrink-0" />
+              <Link href={project.link} class="flex-1">
                 View Project
               </Link>
             </div>
           )}
-          <div class="flex items-center gap-2">
-            <Code class="h-4 w-6" />
+          <div class="flex items-center">
+            <CodeIcon class="mr-2 h-4 w-4 flex-shrink-0" />
             <p class="text-xs">{project.techStack?.join(", ")}</p>
           </div>
         </div>
         <p class="text-sm">{project.description}</p>
+      </GridItem>
+    ))
+  }
+  {
+    // Add empty grid items to complete the last row
+    blanks.map((_, index) => (
+      <GridItem index={projects.length + index} class="hidden lg:block">
+        <div class="flex flex-col gap-2 p-4" />
       </GridItem>
     ))
   }

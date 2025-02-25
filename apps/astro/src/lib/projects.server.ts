@@ -95,11 +95,11 @@ async function getRepoByScope(
     Api.getUsername("work").map((username) => getRepoForUser(username, sort)),
   );
 
-  // expecting 6 results
+  // expecting 12 results
   const data = sortData(
     repos.flatMap(({ data }) => data),
     sort,
-  ).slice(0, 6);
+  ).slice(0, 12);
 
   const status = repos.every((r) => r.status % 200 < 100)
     ? 200

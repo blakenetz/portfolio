@@ -1,0 +1,69 @@
+---
+import GitFork from "@tabler/icons/outline/git-fork.svg";
+import UserCircle from "@tabler/icons/outline/user-circle.svg";
+import Divider from "~/components/Divider.astro";
+import Link from "~/components/Link.astro";
+import Grid from "~/components/projects/Grid.astro";
+import GridItem from "~/components/projects/GridItem.astro";
+import type { RepoData } from "~/types/projects";
+import CodeLanguage from "./CodeLanguage.astro";
+
+interface Props {
+  data: RepoData;
+}
+
+const { data } = Astro.props;
+---
+
+<Grid>
+  {
+    data.map((repo, index) => (
+      <GridItem index={index}>
+        <div class="relative flex h-full flex-col justify-between gap-2 p-4">
+          <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 font-bold">
+              {repo.fork && <GitFork class="h-4 w-4" />}
+              <span>{repo.name}</span>
+            </div>
+          </div>
+          {repo.description && <p>{repo.description}</p>}
+          <div class="flex items-center gap-2 text-sm">
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href={repo.html_url}
+            >
+              View on Github
+            </Link>
+            {repo.user && (
+              <>
+                <Divider />
+                <Link
+                  class="flex flex-row justify-center gap-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`https://github.com/${repo.user}`}
+                >
+                  <UserCircle class="h-4 w-4" />
+                  <span>{repo.user}</span>
+                </Link>
+              </>
+            )}
+          </div>
+          <div class="flex w-full flex-col items-center justify-between gap-1 text-xs md:flex-row">
+            {repo.language && (
+              <>
+                <CodeLanguage language={repo.language} />
+                <Divider />
+              </>
+            )}
+
+            <p>{`Created ${repo.created_at}`}</p>
+            <Divider />
+            <p>{`Updated ${repo.updated_at}`}</p>
+          </div>
+        </div>
+      </GridItem>
+    ))
+  }</Grid
+>

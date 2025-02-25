@@ -1,5 +1,5 @@
 ---
-import Grid from "~/components/Grid.astro";
+import GitHubProjects from "~/components/projects/GitHubProjects.astro";
 import Layout from "~/layouts/Root.astro";
 import { getRepos } from "~/lib/projects";
 import { status } from "~/lib/utils";
@@ -16,18 +16,26 @@ const work = repos[1];
 ---
 
 <Layout title="BN | Projects" description="A selection of my GitHub projects">
-  <div class="flex flex-col gap-8 py-4">
+  <div class="flex flex-col gap-8 py-8">
     <section class="flex flex-col gap-2">
-      <h1 class="px-8 text-2xl font-bold">GitHub Personal Projects</h1>
-      <Grid data={personal.data} />
+      <h1 class="px-8 text-3xl font-bold">Projects</h1>
+      <!-- <Grid>
+        {personal.data.map((repo, index) => <GitHubProjectCart repo={repo} />)}
+      </Grid> -->
     </section>
     <section class="flex flex-col gap-2">
-      <h1 class="text-2xl font-bold">GitHub Work Projects</h1>
-      <p>
-        The following are typically CI items, POC, etc. and are aren't suited
-        for production
-      </p>
-      <Grid data={work.data} />
+      <h2 class="px-8 text-2xl font-bold">GitHub Personal Projects</h2>
+      <GitHubProjects data={personal.data} />
+    </section>
+    <section class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 px-8 text-justify">
+        <h2 class="text-2xl font-bold">GitHub Work Projects</h2>
+        <p>
+          The following are typically CI items, POC, etc. and are aren't suited
+          for production
+        </p>
+      </div>
+      <GitHubProjects data={work.data} />
     </section>
   </div>
 </Layout>

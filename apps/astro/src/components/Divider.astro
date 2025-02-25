@@ -1,1 +1,15 @@
-<div class="mx-2 h-4 w-[1px] bg-gray-400"></div>
+---
+interface DividerProps {
+  direction?: "horizontal" | "vertical";
+}
+
+const { direction = "vertical" }: DividerProps = Astro.props;
+---
+
+<div
+  class:list={[
+    "border-s-1 border-t-1 self-stretch border-zinc-500",
+    { "h-auto": direction === "vertical" },
+  ]}
+>
+</div>

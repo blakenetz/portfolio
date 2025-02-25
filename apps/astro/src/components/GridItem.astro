@@ -8,9 +8,10 @@ import CodeLanguage from "./CodeLanguage.astro";
 
 interface Props {
   repo: RepoData[number];
+  index: number;
 }
 
-const { repo } = Astro.props;
+const { repo, index } = Astro.props;
 
 const gradientDirections = [
   "bg-gradient-to-br",
@@ -26,9 +27,35 @@ function getRandomGradientDirection() {
     Math.floor(Math.random() * gradientDirections.length)
   ];
 }
+
+function getGridPattern(index: number, columns: number) {
+  const row = Math.floor(index / columns);
+  const isEventRow = row % 2 === 0;
+  const position = index % columns;
+
+  if (columns === 2) return isEventRow ? position === 0 : position === 1;
+  if (columns === 3)
+    return isEventRow ? [0, 2].includes(position) : position === 1;
+  if (columns === 4)
+    return isEventRow ? [0, 2].includes(position) : [1, 3].includes(position);
+}
 ---
 
-<div class="group relative">
+<div
+  class:list={[
+    "group relative rounded-sm",
+    {
+      // Base 2-column pattern (mobile)
+      "bg-white": getGridPattern(index, 2),
+      // 3-column pattern (md)
+      "md:bg-transparent": true,
+      "md:bg-white": getGridPattern(index, 3),
+      // 4-column pattern (lg)
+      "lg:bg-transparent": true,
+      "lg:bg-white": getGridPattern(index, 4),
+    },
+  ]}
+>
   <div
     class:list={[
       "invisible group-hover:visible",
@@ -38,7 +65,7 @@ function getRandomGradientDirection() {
   >
   </div>
 
-  <div class="relative flex flex-col gap-2 p-4">
+  <div class="relative flex h-full flex-col justify-between gap-2 p-4">
     <div class="flex items-center gap-2">
       <div class="flex items-center gap-2 font-bold">
         {repo.fork && <GitFork class="h-4 w-4" />}
@@ -67,7 +94,9 @@ function getRandomGradientDirection() {
         )
       }
     </div>
-    <div class="flex items-center gap-1 text-xs">
+    <div
+      class="flex w-full flex-col items-center justify-between gap-1 text-xs md:flex-row"
+    >
       {
         repo.language && (
           <>
@@ -77,9 +106,9 @@ function getRandomGradientDirection() {
         )
       }
 
-      <span>{`Created ${repo.created_at}`}</span>
+      <p>{`Created ${repo.created_at}`}</p>
       <Divider />
-      <span>{`Updated ${repo.updated_at}`}</span>
+      <p>{`Updated ${repo.updated_at}`}</p>
     </div>
   </div>
 </div>

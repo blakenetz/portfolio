@@ -25,6 +25,6 @@ const { language } = Astro.props as Props;
 ---
 
 <div class="flex items-center gap-2">
-  <div class={`h-2 w-2 rounded-full bg-${getColor(language)}`}></div>
+  <div class={`h-2 w-2 rounded-full bg-${getColor(language)} p-1`}></div>
   <span>{language}</span>
 </div>

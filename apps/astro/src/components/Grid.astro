@@ -1,7 +1,6 @@
 ---
 import type { RepoData } from "~/types/projects";
 import GridItem from "./GridItem.astro";
-import GridLines, { size as gridItemSize } from "./GridLines.astro";
 interface Props {
   data: RepoData;
 }
@@ -10,10 +9,7 @@ const { data } = Astro.props;
 ---
 
 <section class="relative">
-  <GridLines />
-  <div
-    class={`grid grid-cols-1 gap-${gridItemSize} md:grid-cols-2 xl:grid-cols-3`}
-  >
-    {data.map((repo) => <GridItem repo={repo} />)}
+  <div class={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}>
+    {data.map((repo, index) => <GridItem repo={repo} index={index} />)}
   </div>
 </section>

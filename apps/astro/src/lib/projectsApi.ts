@@ -88,7 +88,7 @@ class ProjectsApi {
     const opts: OctoOptions = {
       username,
       sort,
-      per_page: 6,
+      per_page: 12,
     };
 
     const key = [username, sort].join(":") as Key;

@@ -1,42 +1,27 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import Card from "~/components/Card.astro";
 interface Props extends HTMLAttributes<"div"> {
   index: number;
 }
 
-const { index, ...props } = Astro.props;
-
-const gradientDirections = [
-  "bg-gradient-to-br",
-  "bg-gradient-to-tr",
-  "bg-gradient-to-bl",
-  "bg-gradient-to-tl",
-  "bg-gradient-to-r",
-  "bg-gradient-to-l",
-];
-
-function getRandomGradientDirection() {
-  return gradientDirections[
-    Math.floor(Math.random() * gradientDirections.length)
-  ];
-}
+const { index, class: className, ...props } = Astro.props;
 
 function getGridPattern(index: number, columns: number) {
   const row = Math.floor(index / columns);
-  const isEventRow = row % 2 === 0;
+  const isEvenRow = row % 2 === 0;
   const position = index % columns;
 
-  if (columns === 2) return isEventRow ? position === 0 : position === 1;
+  if (columns === 2) return isEvenRow ? position === 0 : position === 1;
   if (columns === 3)
-    return isEventRow ? [0, 2].includes(position) : position === 1;
+    return isEvenRow ? [0, 2].includes(position) : position === 1;
   if (columns === 4)
-    return isEventRow ? [0, 2].includes(position) : [1, 3].includes(position);
+    return isEvenRow ? [0, 2].includes(position) : [1, 3].includes(position);
 }
 ---
 
-<div
+<Card
   class:list={[
-    "group relative rounded-sm",
     {
       // Base 2-column pattern (mobile)
       "bg-white": getGridPattern(index, 2),
@@ -50,17 +35,9 @@ function getGridPattern(index: number, columns: number) {
   ]}
 >
   <div
-    class:list={[
-      "invisible group-hover:visible",
-      "from-sunglow via-aquamarine to-dodger-blue-300 absolute -inset-1 rounded-2xl opacity-70 blur-2xl filter",
-      getRandomGradientDirection(),
-    ]}
-  >
-  </div>
-  <div
-    class:list={["relative flex h-full flex-col gap-4 p-4", props?.class]}
+    class:list={["relative flex h-full flex-col gap-4 p-4", className]}
     {...props}
   >
     <slot />
   </div>
-</div>
+</Card>

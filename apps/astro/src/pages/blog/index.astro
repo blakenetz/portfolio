@@ -1,7 +1,8 @@
 ---
+import { formatDate } from "~/lib/utils";
 import Layout from "~/layouts/Root.astro";
 import { getCollection } from "astro:content";
-
+import Card from "~/components/Card.astro";
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
@@ -10,6 +11,16 @@ const posts = (await getCollection("blog")).sort(
 <Layout
   title="BN | Blog"
   description="My thoughts. some complete... others not... 😜"
+  layoutProps={{ showCheckerboard: true }}
 >
-  <div class="flex flex-col gap-8 py-8"></div>
+  <section class="mx-auto flex max-w-xl flex-col gap-8 py-8">
+    {
+      posts.map((post) => (
+        <Card class="bg-white p-4">
+          <h2 class="text-2xl font-bold">{post.data.title}</h2>
+          <p class="text-sm">Published {formatDate(post.data.pubDate)}</p>
+        </Card>
+      ))
+    }
+  </section>
 </Layout>

@@ -21,7 +21,11 @@ const posts = (await getCollection("blog")).sort(
     </h1>
     {
       posts.map((post) => (
-        <Card class="flex flex-col gap-2 bg-white p-4">
+        <Card
+          class="flex flex-col gap-2 bg-white p-4"
+          as="a"
+          href={`/blog/${post.id}`}
+        >
           <h2 class="font-barrio text-2xl font-bold">{post.data.title}</h2>
           <p>{post.data.description}</p>
           <p class="text-sm">Published {formatDate(post.data.pubDate)}</p>

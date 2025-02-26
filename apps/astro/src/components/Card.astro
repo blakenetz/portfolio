@@ -1,8 +1,8 @@
 ---
-import type { HTMLAttributes } from "astro/types";
-interface Props extends HTMLAttributes<"div"> {}
+import type { HTMLTag, Polymorphic } from "astro/types";
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }>;
 
-const { class: className, ...props } = Astro.props;
+const { as: Tag, class: className, ...props } = Astro.props;
 
 const gradientDirections = [
   "bg-gradient-to-br",
@@ -20,7 +20,7 @@ function getRandomGradientDirection() {
 }
 ---
 
-<div {...props} class:list={["group/card relative rounded-sm", className]}>
+<Tag {...props} class:list={["group/card relative rounded-sm", className]}>
   <div
     class:list={[
       "invisible group-hover/card:visible",
@@ -30,4 +30,4 @@ function getRandomGradientDirection() {
   >
   </div>
   <slot />
-</div>
+</Tag>

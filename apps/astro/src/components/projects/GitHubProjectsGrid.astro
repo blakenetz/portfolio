@@ -22,7 +22,7 @@ const { data } = Astro.props;
         <div class="flex items-center gap-2">
           <div class="flex items-center gap-2 font-bold">
             {repo.fork && <GitForkIcon class="h-4 w-4" />}
-            <span>{repo.name}</span>
+            <span class="font-barrio">{repo.name}</span>
           </div>
         </div>
         {repo.description && <p class="text-sm">{repo.description}</p>}

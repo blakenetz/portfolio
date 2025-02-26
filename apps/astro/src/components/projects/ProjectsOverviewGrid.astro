@@ -17,7 +17,9 @@ const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
     projects.map((project, index) => (
       <GridItem index={index}>
         <div class="flex flex-col">
-          <p class="flex items-center gap-2 font-bold">{project.title}</p>
+          <p class="font-barriecito flex items-center gap-2 font-bold">
+            {project.title}
+          </p>
           <div class="flex items-center gap-2 text-sm">
             {project.role && (
               <Fragment>

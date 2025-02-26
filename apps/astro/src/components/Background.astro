@@ -1,9 +1,15 @@
 ---
-export interface BackgroundProps {
+import type { HTMLAttributes } from "astro/types";
+
+export interface BackgroundProps extends HTMLAttributes<"main"> {
   showCheckerboard?: boolean;
 }
 
-const { showCheckerboard } = Astro.props as BackgroundProps;
+const {
+  showCheckerboard,
+  class: className,
+  ...props
+} = Astro.props as BackgroundProps;
 ---
 
 <section id="background" class="fixed inset-0 -z-10"></section>
@@ -14,12 +20,17 @@ const { showCheckerboard } = Astro.props as BackgroundProps;
 >
 </div>
 <main
+  {...props}
   class:list={[
-    "fixed inset-0 cursor-default overflow-scroll",
+    "fixed inset-0 cursor-default overflow-hidden",
     { "p-checkerboard-size": showCheckerboard },
+    { "h-100dvh w-100dvw": showCheckerboard },
+    className,
   ]}
 >
-  <slot />
+  <div class="h-full overflow-auto">
+    <slot />
+  </div>
 </main>
 <section id="cursor" class="pointer-events-none fixed inset-0"></section>
 

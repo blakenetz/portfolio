@@ -5,6 +5,7 @@ import Layout from "~/layouts/Root.astro";
 import { getRepos } from "~/lib/projects.server";
 import { status } from "~/lib/utils";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
+import SectionHeader from "~/components/projects/SectionHeader.astro";
 const repos = await getRepos(Astro.request);
 
 // nothing to show :( redirect
@@ -19,33 +20,30 @@ const work = repos[1];
 <Layout title="BN | Projects" description="A selection of my GitHub projects">
   <div class="flex flex-col gap-8 py-8">
     <section>
-      <h1
-        class=`${ANIMATE_COLORS_CLASSES} bg-radial from-white to-transparent px-8 text-center text-4xl font-bold border-b-8 border-white`
-      >
-        Projects
-      </h1>
+      <SectionHeader>
+        <h1 class={`${ANIMATE_COLORS_CLASSES} `}>Projects</h1>
+      </SectionHeader>
+
       <ProjectsOverviewGrid />
     </section>
     <section>
-      <h2
-        class="bg-radial mt-4 border-b-8 border-white from-white to-transparent px-8 text-center text-4xl font-bold"
-      >
-        GitHub <span class=`${ANIMATE_COLORS_CLASSES}`>Personal</span> Projects
-      </h2>
+      <SectionHeader>
+        <h2>
+          GitHub <span class=`${ANIMATE_COLORS_CLASSES}`>Personal</span> Projects
+        </h2>
+      </SectionHeader>
       <GitHubProjectsGrid data={personal.data} />
     </section>
     <section>
-      <div
-        class="bg-radial mt-4 flex flex-col gap-2 border-b-8 border-white from-white to-transparent px-8 text-center"
-      >
-        <h2 class="text-4xl font-bold">
+      <SectionHeader>
+        <h2>
           GitHub <span class=`${ANIMATE_COLORS_CLASSES}`>Work</span> Projects
         </h2>
-        <p>
+        <p class="text-sm">
           The following are typically CI items, POC, etc. and are aren't suited
           for production
         </p>
-      </div>
+      </SectionHeader>
       <GitHubProjectsGrid data={work.data} />
     </section>
   </div>

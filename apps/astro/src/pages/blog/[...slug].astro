@@ -1,6 +1,8 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import { render } from "astro:content";
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import { ANIMATE_COLORS_CLASSES } from "~/consts";
+import Layout from "~/layouts/Root.astro";
+import SourceLink from "~/components/blog/SourceLink.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -12,7 +14,28 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
+
 const { Content } = await render(post);
 ---
 
-<Content />
+<Layout
+  headProps={{
+    title: `BN | Blog | ${post.data.title}`,
+    description: post.data.description,
+  }}
+>
+  <section class="mx-auto flex max-w-4xl flex-col items-center gap-8 py-8">
+    <div class="flex flex-col items-center gap-2">
+      <h1 class={`${ANIMATE_COLORS_CLASSES} text-4xl font-bold inline-block`}>
+        {post.data.title}
+      </h1>
+      {post.data.link && <SourceLink link={post.data.link} />}
+    </div>
+
+    <div
+      class="prose prose-h1:font-bold prose-h1:text-xl prose-a:text-primary prose-p:text-justify prose-img:rounded-xl prose-headings:underline"
+    >
+      <Content />
+    </div>
+  </section>
+</Layout>

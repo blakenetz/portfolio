@@ -11,8 +11,10 @@ const posts = (await getCollection("blog")).sort(
 ---
 
 <Layout
-  title="BN | Blog"
-  description="My thoughts. some complete... others not... 😜"
+  headProps={{
+    title: "BN | Blog",
+    description: "My thoughts. some complete... others not... 😜",
+  }}
   layoutProps={{ showCheckerboard: true }}
 >
   <section class="mx-auto flex max-w-xl flex-col gap-8 py-8">

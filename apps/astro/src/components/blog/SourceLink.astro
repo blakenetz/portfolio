@@ -1,0 +1,36 @@
+---
+import { type CollectionEntry } from "astro:content";
+import Link from "~/components/Link.astro";
+import { capitalize } from "~/lib/utils";
+type Link = NonNullable<CollectionEntry<"blog">["data"]["link"]>;
+import GitHubIcon from "@tabler/icons/outline/brand-github.svg";
+import MediumIcon from "@tabler/icons/outline/brand-medium.svg";
+
+export interface Props {
+  link: Link;
+}
+
+const { link } = Astro.props;
+
+const texts: Record<Link["type"], string> = {
+  medium: "This post was originally published on",
+  github: "View accompanying code on",
+};
+const icons: Record<Link["type"], typeof GitHubIcon> = {
+  medium: MediumIcon,
+  github: GitHubIcon,
+};
+
+const Icon = icons[link.type];
+const text = texts[link.type];
+---
+
+<span class="flex items-center gap-2 text-sm text-black/70">
+  <span>[</span>
+  {text}
+  <Link href={link.url} class="flex items-center gap-1">
+    <Icon />
+    {capitalize(link.type)}
+  </Link>
+  <span>]</span>
+</span>

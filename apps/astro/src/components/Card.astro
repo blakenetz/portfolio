@@ -2,7 +2,7 @@
 import type { HTMLTag, Polymorphic } from "astro/types";
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }>;
 
-const { as: Tag, class: className, ...props } = Astro.props;
+const { as: Tag = "div", class: className, ...props } = Astro.props;
 
 const gradientDirections = [
   "bg-gradient-to-br",

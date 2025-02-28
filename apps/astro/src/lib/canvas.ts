@@ -1,7 +1,7 @@
 import Konva from "konva";
 
 import { black, colors, getCssVariable, spacing, white } from "./styles";
-import bicycle from "~/assets/bicycle.svg";
+import bike from "~/assets/bike.svg";
 import dogCosmos from "~/assets/dog-cosmos.svg";
 import pizzaSlice from "~/assets/pizza-slice.svg";
 import van from "~/assets/van.svg";
@@ -9,11 +9,18 @@ import plant from "~/assets/plant.svg";
 import sunflower from "~/assets/sunflower.svg";
 import cactus from "~/assets/cactus.svg";
 import flower from "~/assets/flower.svg";
+import coffee from "~/assets/coffee.svg";
+import hotDog from "~/assets/hot-dog.svg";
+import smileyFace from "~/assets/smiley-face.svg";
+
+import stereo from "~/assets/stereo.svg";
+import thunderBolt from "~/assets/thunder-bolt.svg";
+
 import { ANIMATE_COLORS_CLASSNAME } from "~/consts";
 import type { CheckerboardSpace, Blob } from "~/types/canvas";
 
 const icons = [
-  bicycle,
+  bike,
   dogCosmos,
   pizzaSlice,
   van,
@@ -21,6 +28,11 @@ const icons = [
   sunflower,
   cactus,
   flower,
+  coffee,
+  hotDog,
+  smileyFace,
+  stereo,
+  thunderBolt,
 ].map(({ src }) => src);
 
 function generateRandomPoints(index: number) {

@@ -4,6 +4,7 @@ import { ANIMATE_COLORS_CLASSES } from "~/consts";
 import Layout from "~/layouts/Root.astro";
 import SourceLink from "~/components/blog/SourceLink.astro";
 import Link from "~/components/Link.astro";
+import CodeBlock from "~/components/blog/CodeBlock.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -34,9 +35,9 @@ const { Content } = await render(post);
     </div>
 
     <div
-      class="prose prose-h1:font-bold prose-h1:text-xl prose-a:text-primary prose-a:no-underline prose-p:text-justify prose-img:rounded-xl prose-headings:underline max-w-none"
+      class="prose prose-h1:font-bold prose-h1:text-xl prose-a:text-primary prose-a:no-underline prose-p:text-justify prose-img:rounded-xl prose-headings:underline max-w-full px-2"
     >
-      <Content components={{ a: Link }} />
+      <Content components={{ a: Link, pre: CodeBlock }} />
     </div>
   </section>
 </Layout>

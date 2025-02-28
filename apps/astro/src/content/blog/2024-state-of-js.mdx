@@ -75,7 +75,7 @@ are useful when an HTTP's content-type value is set incorrectly. For example, if
 fetching a json file, a browser is going to parsed it as JS, which would result
 in the following error:
 
-```http no-copy
+```http
 Failed to load module script: Expected a JavaScript module script but the server
 responded with a MIME type of "application/json". Strict MIME type checking is
 enforced for module scripts per HTML spec.
@@ -103,7 +103,7 @@ from me, but here's what I've learned when trying to roll me own.
 A WebSocket is initiated on the client by sending an `UPGRADE` HTTP request
 where the browser will set some distinct headers:
 
-```http no-copy
+```http
 Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
@@ -113,7 +113,7 @@ Sec-WebSocket-Version: 13
 The server responds, by generating a `Sec-WebSocket-Accept` value from the
 `Sec-WebSocket-Key` header and returns a `101`:
 
-```http no-copy
+```http
 HTTP/1.1 101 Switching Protocols
 Upgrade: websocket
 Connection: Upgrade

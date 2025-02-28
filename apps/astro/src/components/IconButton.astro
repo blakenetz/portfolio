@@ -1,0 +1,17 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface IconButtonProps extends HTMLAttributes<"button"> {}
+
+const { class: className, ...props } = Astro.props as IconButtonProps;
+---
+
+<button
+  class:list={[
+    "rounded-full bg-white/0 p-2 transition-colors hover:cursor-pointer hover:bg-white/30",
+    className,
+  ]}
+  {...props}
+>
+  <slot />
+</button>

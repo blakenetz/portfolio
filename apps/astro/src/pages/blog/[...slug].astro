@@ -76,15 +76,30 @@ const emailHref =
     <div>
       Share on...
       <div class="flex gap-2">
-        <Button as="a" href={linkedinHref}>
+        <Button
+          as="a"
+          href={linkedinHref}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <LinkedInIcon />
           LinkedIn
         </Button>
-        <Button as="a" href={redditHref}>
+        <Button
+          as="a"
+          href={redditHref}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <RedditIcon />
           Reddit
         </Button>
-        <Button as="a" href={emailHref}>
+        <Button
+          as="a"
+          href={emailHref}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <MailIcon />
           Email
         </Button>

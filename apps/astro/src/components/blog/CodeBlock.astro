@@ -51,8 +51,6 @@ const showCopy = !["http", "https", "plaintext"].includes(
   });
 
   closeButtons.forEach((closeBtn) => {
-    closeBtn.addEventListener("click", () => {
-      snackbar?.classList.add("hidden");
-    });
+    closeBtn.addEventListener("click", () => hide(snackbar));
   });
 </script>

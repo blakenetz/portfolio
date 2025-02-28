@@ -1,24 +1,23 @@
 ---
-import type { HTMLAttributes } from "astro/types";
+import type { HTMLTag, Polymorphic } from "astro/types";
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }>;
 
-interface Props extends HTMLAttributes<"button"> {}
-
-const { class: className, ...props } = Astro.props;;
+const { as: Tag = "button", class: className, ...props } = Astro.props;
 ---
 
-<button
+<Tag
   {...props}
   class:list={[
-    "group border-primary text-primary before:bg-primary after:bg-primary relative min-h-[50px] w-40 overflow-hidden border bg-white shadow-2xl transition-all before:absolute before:top-0 before:left-0 before:h-0 before:w-1/4 before:duration-500 after:absolute after:right-0 after:bottom-0 after:h-0 after:w-1/4 after:duration-500 hover:cursor-pointer hover:text-white hover:before:h-full hover:after:h-full",
+    "border-primary text-primary before:bg-primary after:bg-primary group relative min-h-[50px] w-40 overflow-hidden border bg-white shadow-2xl transition-all before:absolute before:left-0 before:top-0 before:h-0 before:w-1/4 before:duration-500 after:absolute after:bottom-0 after:right-0 after:h-0 after:w-1/4 after:duration-500 hover:cursor-pointer hover:text-white hover:before:h-full hover:after:h-full",
     className,
   ]}
 >
   <span
-    class="before:bg-primary after:bg-primary top-0 flex h-full w-full items-center justify-center before:absolute before:bottom-0 before:left-1/4 before:z-0 before:h-0 before:w-1/4 before:duration-500 group-hover:before:h-full after:absolute after:top-0 after:right-1/4 after:z-0 after:h-0 after:w-1/4 after:duration-500 group-hover:after:h-full hover:text-white"
+    class="before:bg-primary after:bg-primary top-0 flex h-full w-full items-center justify-center before:absolute before:bottom-0 before:left-1/4 before:z-0 before:h-0 before:w-1/4 before:duration-500 after:absolute after:right-1/4 after:top-0 after:z-0 after:h-0 after:w-1/4 after:duration-500 hover:text-white group-hover:before:h-full group-hover:after:h-full"
   ></span>
   <span
-    class="absolute top-0 right-0 bottom-0 left-0 z-10 flex h-full w-full items-center justify-center group-hover:text-white"
+    class="absolute bottom-0 left-0 right-0 top-0 z-10 flex h-full w-full items-center justify-center group-hover:text-white"
   >
     <slot />
   </span>
-</button>
+</Tag>

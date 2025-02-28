@@ -1,10 +1,18 @@
 ---
+import LinkedInIcon from "@tabler/icons/outline/brand-linkedin.svg";
+import RedditIcon from "@tabler/icons/outline/brand-reddit.svg";
+import ClipboardIcon from "@tabler/icons/outline/clipboard.svg";
+import MailIcon from "@tabler/icons/outline/mail.svg";
+import CloseIcon from "@tabler/icons/outline/x.svg";
 import { type CollectionEntry, getCollection, render } from "astro:content";
+import CodeBlock from "~/components/blog/CodeBlock.astro";
+import SourceLink from "~/components/blog/SourceLink.astro";
+import Button from "~/components/Button.astro";
+import IconButton from "~/components/IconButton.astro";
+import Link from "~/components/Link.astro";
+import Snackbar from "~/components/Snackbar.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
 import Layout from "~/layouts/Root.astro";
-import SourceLink from "~/components/blog/SourceLink.astro";
-import Link from "~/components/Link.astro";
-import CodeBlock from "~/components/blog/CodeBlock.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -18,6 +26,30 @@ type Props = CollectionEntry<"blog">;
 const post = Astro.props;
 
 const { Content } = await render(post);
+
+const linkedinHref =
+  "http://www.linkedin.com/shareArticle?" +
+  new URLSearchParams({
+    mini: "true",
+    url: Astro.url.toString(),
+  }).toString();
+
+const redditHref =
+  "https://www.reddit.com/submit?" +
+  new URLSearchParams({
+    url: Astro.url.toString(),
+    title: post.data.title,
+    type: "LINK",
+  }).toString();
+
+const emailHref =
+  "mailto:yourfriend@gmail.com?" +
+  new URLSearchParams({
+    subject: "Check out this amazing article I read",
+    body: 'Make sure to update the "To" field before sending!',
+  })
+    .toString()
+    .replace(/\+/g, "%20");
 ---
 
 <Layout
@@ -26,7 +58,9 @@ const { Content } = await render(post);
     description: post.data.description,
   }}
 >
-  <section class="mx-auto flex max-w-4xl flex-col items-center gap-8 py-8">
+  <section
+    class="mx-auto flex max-w-4xl flex-col items-center gap-8 py-8 pb-16"
+  >
     <div class="flex flex-col items-center gap-2">
       <h1 class={`${ANIMATE_COLORS_CLASSES} text-4xl font-bold inline-block`}>
         {post.data.title}
@@ -39,5 +73,44 @@ const { Content } = await render(post);
     >
       <Content components={{ a: Link, pre: CodeBlock }} />
     </div>
+    <div>
+      Share on...
+      <div class="flex gap-2">
+        <Button as="a" href={linkedinHref}>
+          <LinkedInIcon />
+          LinkedIn
+        </Button>
+        <Button as="a" href={redditHref}>
+          <RedditIcon />
+          Reddit
+        </Button>
+        <Button as="a" href={emailHref}>
+          <MailIcon />
+          Email
+        </Button>
+        <Button data-share>
+          <ClipboardIcon />
+          Copy
+        </Button>
+        <Snackbar>
+          <span>Copied!</span>
+          <IconButton data-close>
+            <CloseIcon class="h-6 w-6" />
+          </IconButton>
+        </Snackbar>
+      </div>
+    </div>
   </section>
 </Layout>
+
+<script>
+  import { hide, show } from "~/components/Snackbar.astro";
+  const shareButton = document.querySelector("[data-share]");
+  const snackbar = document.querySelector("[data-snackbar]"); // only show first snackbar
+
+  shareButton?.addEventListener("click", () => {
+    navigator.clipboard.writeText(window.location.href);
+    show(snackbar);
+    hide(snackbar);
+  });
+</script>

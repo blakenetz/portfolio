@@ -1,6 +1,7 @@
 import Konva from "konva";
 
-import { black, colors, getCssVariable, spacing, white } from "./styles";
+import { black, getCssVariable, spacing, white } from "./styles.client";
+import { colors } from "./styles.server";
 import bike from "~/assets/home/bike.svg";
 import dogCosmos from "~/assets/home/dog-cosmos.svg";
 import pizzaSlice from "~/assets/home/pizza-slice.svg";

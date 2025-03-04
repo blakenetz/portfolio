@@ -6,7 +6,9 @@ import Divider from "~/components/Divider.astro";
 import Link from "~/components/Link.astro";
 import Grid from "~/components/projects/Grid.astro";
 import GridItem from "~/components/projects/GridItem.astro";
+import { Image } from "astro:assets";
 import { projects } from "~/lib/projects.data";
+import { colors } from "~/lib/styles.server";
 
 const missingItems = 4 - (projects.length % 4);
 const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
@@ -16,6 +18,23 @@ const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
   {
     projects.map((project, index) => (
       <GridItem index={index}>
+        <div
+          class:list={[
+            "w-100% h-30 -mx-4 -mt-4 flex items-center justify-center overflow-hidden",
+            { "bg-aquamarine/40": index % 5 === 0 },
+            { "bg-dodger-blue/40": index % 5 === 1 },
+            { "bg-sunglow/40": index % 5 === 2 },
+            { "bg-rose/40": index % 5 === 3 },
+            { "bg-pumpkin/40": index % 5 === 4 },
+          ]}
+        >
+          <Image
+            src={project.image}
+            alt={project.title}
+            fit="cover"
+            class="px-2"
+          />
+        </div>
         <div class="flex flex-col">
           <p class="font-barriecito flex items-center gap-2 font-bold">
             {project.title}

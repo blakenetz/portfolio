@@ -1,4 +1,4 @@
-export type Project = {
+export type ProjectItem = {
   title: string;
   timeFrame: [number, number] | number;
   role?: string;
@@ -6,9 +6,10 @@ export type Project = {
   employer?: string;
   techStack?: string[];
   link?: string;
+  image: Promise<typeof import("*.png")>;
 };
 
-export const projects: Project[] = [
+export const projects: ProjectItem[] = [
   {
     title: "Portfolio",
     timeFrame: 2025,
@@ -16,6 +17,7 @@ export const projects: Project[] = [
       "You're looking at it! This project has lived many lives, including as a Vue, Remix, and now Astro project.",
     techStack: ["Astro", "Tailwind", "TypeScript"],
     link: "https://github.com/blakenetz/portfolio",
+    image: import("~/assets/flower.svg"),
   },
   {
     title: "Discover Financial Services",
@@ -32,6 +34,7 @@ export const projects: Project[] = [
       "Jest",
       "Jenkins",
     ],
+    image: import("~/assets/projects/discover.png"),
   },
   {
     title: "The Signatry",
@@ -41,6 +44,7 @@ export const projects: Project[] = [
       "Onboarded to fight fires, I restored this project by unifying the dev team and promoting high quality code. I also generated numerous scripts to automate recurring SQL queries and facilitate knowledge-sharing.",
     employer: "Kin + Carta",
     techStack: ["React", "Typescript", "TypeORM", "GraphQL", "PostgreSQL"],
+    image: import("~/assets/projects/the-signatry.png"),
   },
   {
     title: "OnWater",
@@ -57,6 +61,7 @@ export const projects: Project[] = [
       "PostgreSQL",
       "PostGIS",
     ],
+    image: import("~/assets/projects/onwater.png"),
   },
   {
     title: "CMS Environmental Services",
@@ -66,6 +71,7 @@ export const projects: Project[] = [
       "Alongside 2 other developers, we built an app that digitalized the processes around Colorado’s water regulations.",
     employer: "Kin + Carta",
     techStack: ["React", "Express", "Node.js", "PostgreSQL"],
+    image: import("~/assets/projects/cms.svg"),
   },
   {
     title: "Banana Phone",
@@ -85,5 +91,6 @@ export const projects: Project[] = [
       "AWS Cloudfront",
     ],
     link: "https://github.com/blakenetz/banana-phone",
+    image: import("~/assets/projects/banana-phone.png"),
   },
 ];

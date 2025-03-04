@@ -4,10 +4,29 @@ import Layout from "~/layouts/Root.astro";
 import { getCollection } from "astro:content";
 import Card from "~/components/Card.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
+import UpArrowIcon from "@tabler/icons/outline/arrow-up.svg";
+import DownArrowIcon from "@tabler/icons/outline/arrow-down.svg";
 
-const posts = (await getCollection("blog")).sort(
+let posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const direction = data.get("sort");
+    console.log(data, direction);
+    posts = (await getCollection("blog")).sort((a, b) =>
+      direction === "asc"
+        ? a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+        : b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+    );
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
 ---
 
 <Layout
@@ -17,10 +36,40 @@ const posts = (await getCollection("blog")).sort(
   }}
   layoutProps={{ showCheckerboard: true }}
 >
-  <section class="mx-auto flex max-w-xl flex-col gap-8 py-8">
+  <form method="POST" class="mx-auto flex max-w-xl flex-col gap-8 py-8">
     <h1 class={`text-6xl text-center font-bold ${ANIMATE_COLORS_CLASSES}`}>
       Blog
     </h1>
+    <div class="flex items-center justify-end gap-2">
+      <span class="font-barrio mr-2 text-sm">Sort</span>
+      <button
+        class="hover:text-primary group/iconBtn relative rounded-sm p-1"
+        data-sort="asc"
+      >
+        <div
+          class:list={[
+            "invisible group-hover/iconBtn:visible",
+            "from-sunglow via-sunglow to-rose absolute -inset-1 rounded-2xl bg-gradient-to-tr opacity-70 blur-lg filter",
+          ]}
+        >
+        </div>
+        <UpArrowIcon />
+      </button>
+      <button
+        class="hover:text-primary group/iconBtn relative rounded-sm p-1"
+        data-sort="desc"
+      >
+        <div
+          class:list={[
+            "invisible group-hover/iconBtn:visible",
+            "from-sunglow via-sunglow to-rose absolute -inset-1 rounded-2xl bg-gradient-to-tr opacity-70 blur-lg filter",
+          ]}
+        >
+        </div>
+        <DownArrowIcon />
+      </button>
+    </div>
+    <input type="hidden" name="sort" value="desc" />
     {
       posts.map((post) => (
         <Card
@@ -34,5 +83,21 @@ const posts = (await getCollection("blog")).sort(
         </Card>
       ))
     }
-  </section>
+  </form>
 </Layout>
+
+<script>
+  const sortButtons = document.querySelectorAll("[data-sort]");
+  const input = document.querySelector<HTMLInputElement>(`input[name="sort"]`);
+
+  sortButtons.forEach((button) => {
+    button.addEventListener("click", function (this: HTMLButtonElement) {
+      const form = this.closest("form");
+      const value = this.dataset.sort;
+      if (input && form) {
+        input.value = value ?? "desc";
+        form.submit();
+      }
+    });
+  });
+</script>

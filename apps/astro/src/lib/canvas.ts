@@ -1,20 +1,19 @@
 import Konva from "konva";
 
 import { black, colors, getCssVariable, spacing, white } from "./styles";
-import bike from "~/assets/bike.svg";
-import dogCosmos from "~/assets/dog-cosmos.svg";
-import pizzaSlice from "~/assets/pizza-slice.svg";
-import van from "~/assets/van.svg";
-import plant from "~/assets/plant.svg";
-import sunflower from "~/assets/sunflower.svg";
-import cactus from "~/assets/cactus.svg";
+import bike from "~/assets/home/bike.svg";
+import dogCosmos from "~/assets/home/dog-cosmos.svg";
+import pizzaSlice from "~/assets/home/pizza-slice.svg";
+import van from "~/assets/home/van.svg";
+import plant from "~/assets/home/plant.svg";
+import sunflower from "~/assets/home/sunflower.svg";
+import cactus from "~/assets/home/cactus.svg";
 import flower from "~/assets/flower.svg";
-import coffee from "~/assets/coffee.svg";
-import hotDog from "~/assets/hot-dog.svg";
-import smileyFace from "~/assets/smiley-face.svg";
-
-import stereo from "~/assets/stereo.svg";
-import thunderBolt from "~/assets/thunder-bolt.svg";
+import coffee from "~/assets/home/coffee.svg";
+import hotDog from "~/assets/home/hot-dog.svg";
+import smileyFace from "~/assets/home/smiley-face.svg";
+import stereo from "~/assets/home/stereo.svg";
+import thunderBolt from "~/assets/home/thunder-bolt.svg";
 
 import { ANIMATE_COLORS_CLASSNAME } from "~/consts";
 import type { CheckerboardSpace, Blob } from "~/types/canvas";

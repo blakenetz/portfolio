@@ -1,15 +1,5 @@
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
+import { getCollection } from "astro:content";
 
-export const server = {
-  newsletter: defineAction({
-    accept: "form",
-    input: z.object({
-      email: z.string().email(),
-      terms: z.boolean(),
-    }),
-    handler: async ({ email, terms }) => {
-      /* ... */
-    },
-  }),
-};
+export const server = {};

@@ -3,11 +3,9 @@ import DownArrowIcon from "@tabler/icons/outline/arrow-down.svg";
 import UpArrowIcon from "@tabler/icons/outline/arrow-up.svg";
 import type { HTMLAttributes } from "astro/types";
 
-interface Props extends HTMLAttributes<"div"> {
-  buttonProps?: HTMLAttributes<"button">;
-}
+interface Props extends HTMLAttributes<"div"> {}
 
-const { class: className, buttonProps, ...props } = Astro.props as Props;
+const { class: className, ...props } = Astro.props as Props;
 
 export function getSortButtons() {
   return document.querySelectorAll<HTMLButtonElement>("[data-sort]");
@@ -20,7 +18,6 @@ export function getSortButtons() {
     type="button"
     class="hover:text-primary group/iconBtn relative rounded-sm p-1 hover:cursor-pointer"
     data-sort="asc"
-    {...buttonProps}
   >
     <div
       class:list={[
@@ -35,7 +32,6 @@ export function getSortButtons() {
     type="button"
     class="hover:text-primary group/iconBtn relative rounded-sm p-1 hover:cursor-pointer"
     data-sort="desc"
-    {...buttonProps}
   >
     <div
       class:list={[

@@ -67,12 +67,15 @@ const { data, name } = Astro.props;
       ))
     }
   </Grid>
-  <SortControls class="mr-4" buttonProps={{ type: "submit" }} />
+  <SortControls class="mr-4" />
+  <input type="hidden" name={`${name}-sort`} value="asc" />
 </form>
 
 <script>
   import { getSortButtons } from "~/components/SortControls.astro";
-  import { actions } from "astro:actions";
+
+  let form: HTMLFormElement | null = null;
+  let input: HTMLInputElement | null = null;
 
   // in place sort
   function initializeSortHandler() {
@@ -83,10 +86,18 @@ const { data, name } = Astro.props;
         "click",
         async function (this: HTMLButtonElement) {
           const direction = this.dataset.sort!;
-          // const { data, error } = await actions.sortGithubProjects({
-          //   direction,
-          // });
-          // console.log(data, error);
+          if (!form) form = this.closest<HTMLFormElement>("form");
+          if (!input)
+            input =
+              form?.querySelector<HTMLInputElement>(`input[type="hidden"]`)!;
+
+          if (!form || !input) {
+            console.error("form or input not found");
+            return;
+          }
+
+          input.value = direction;
+          form.submit();
         },
       );
     });

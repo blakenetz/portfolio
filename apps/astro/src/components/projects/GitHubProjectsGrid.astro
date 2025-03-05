@@ -9,8 +9,9 @@ import Link from "~/components/Link.astro";
 import CodeLanguage from "~/components/projects/CodeLanguage.astro";
 import Grid from "~/components/projects/Grid.astro";
 import GridItem from "~/components/projects/GridItem.astro";
-import SortControls from "~/components/SortControls.astro";
+
 import type { RepoData } from "~/types/projects";
+import Button from "~/components/Button.astro";
 interface Props {
   data: RepoData;
   name: "personal" | "work";
@@ -67,7 +68,11 @@ const { data, name } = Astro.props;
       ))
     }
   </Grid>
-  <SortControls class="mr-4" />
+  <div class="flex items-center justify-end gap-1 py-2">
+    <span class="font-barrio mr-2 text-sm">Sort</span>
+    <Button size="sm" type="button" data-sort="created">Created</Button>
+    <Button size="sm" type="button" data-sort="updated">Updated</Button>
+  </div>
   <input type="hidden" name={`${name}-sort`} value="asc" />
 </form>
 

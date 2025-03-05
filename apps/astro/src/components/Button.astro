@@ -1,14 +1,26 @@
 ---
 import type { HTMLTag, Polymorphic } from "astro/types";
-type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }>;
+type Props<Tag extends HTMLTag = "button"> = Polymorphic<{
+  as: Tag;
+  size?: "sm" | "md";
+}>;
 
-const { as: Tag = "button", class: className, ...props } = Astro.props;
+const {
+  as: Tag = "button",
+  class: className,
+  size = "md",
+  ...props
+} = Astro.props;
 ---
 
 <Tag
   {...props}
   class:list={[
-    "border-primary text-primary before:bg-primary after:bg-primary group relative min-h-[50px] w-40 overflow-hidden border bg-white shadow-2xl transition-all before:absolute before:left-0 before:top-0 before:h-0 before:w-1/4 before:duration-500 after:absolute after:bottom-0 after:right-0 after:h-0 after:w-1/4 after:duration-500 hover:cursor-pointer hover:text-white hover:before:h-full hover:after:h-full",
+    "border-primary text-primary before:bg-primary after:bg-primary group relative overflow-hidden border bg-white shadow-2xl transition-all before:absolute before:left-0 before:top-0 before:h-0 before:w-1/4 before:duration-500 after:absolute after:bottom-0 after:right-0 after:h-0 after:w-1/4 after:duration-500 hover:cursor-pointer hover:text-white hover:before:h-full hover:after:h-full",
+    {
+      "w-25 min-h-[30px]": size === "sm",
+      "min-h-[50px] w-40": size === "md",
+    },
     className,
   ]}
 >

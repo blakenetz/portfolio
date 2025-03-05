@@ -1,7 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 import CopyIcon from "@tabler/icons/outline/clipboard.svg";
-import CloseIcon from "@tabler/icons/outline/x.svg";
 import IconButton from "~/components/IconButton.astro";
 import Snackbar from "~/components/Snackbar.astro";
 interface Props extends HTMLAttributes<"pre"> {
@@ -25,17 +24,11 @@ const showCopy = !["http", "https", "plaintext"].includes(
   }
   <pre {...props}><slot /></pre>
 </section>
-<Snackbar>
-  <span>Copied!</span>
-  <IconButton data-close>
-    <CloseIcon class="h-6 w-6" />
-  </IconButton>
-</Snackbar>
+<Snackbar />
 
 <script>
-  import { hide, show, getSnackbarElement } from "~/components/Snackbar.astro";
+  import { getSnackbarElement } from "~/components/Snackbar.astro";
   const copyButtons = document.querySelectorAll("[data-copy]");
-  const closeButtons = document.querySelectorAll("[data-close]");
   const snackbar = getSnackbarElement();
 
   copyButtons.forEach((copyBtn) => {
@@ -44,14 +37,8 @@ const showCopy = !["http", "https", "plaintext"].includes(
       if (code) {
         // copy text
         navigator.clipboard.writeText(code.innerText);
-        // show snackbar for 10 seconds
-        show(snackbar);
-        hide(snackbar);
+        snackbar.show();
       }
     });
-  });
-
-  closeButtons.forEach((closeBtn) => {
-    closeBtn.addEventListener("click", () => hide(snackbar));
   });
 </script>

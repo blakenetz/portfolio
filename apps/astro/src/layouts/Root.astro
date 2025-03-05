@@ -4,8 +4,8 @@ import BaseHead from "~/components/BaseHead.astro";
 import type { ComponentProps } from "astro/types";
 
 type Props = {
-  headProps: ComponentProps<typeof BaseHead>;
-  layoutProps: ComponentProps<typeof Background>;
+  headProps?: ComponentProps<typeof BaseHead>;
+  layoutProps?: ComponentProps<typeof Background>;
 };
 const { headProps, layoutProps } = Astro.props;
 ---

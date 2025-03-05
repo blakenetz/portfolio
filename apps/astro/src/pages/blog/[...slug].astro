@@ -108,25 +108,20 @@ const emailHref =
           <ClipboardIcon />
           Copy
         </Button>
-        <Snackbar>
-          <span>Copied!</span>
-          <IconButton data-close>
-            <CloseIcon class="h-6 w-6" />
-          </IconButton>
-        </Snackbar>
+        <Snackbar />
       </div>
     </div>
   </section>
 </Layout>
 
 <script>
-  import { hide, show, getSnackbarElement } from "~/components/Snackbar.astro";
+  import { getSnackbarElement } from "~/components/Snackbar.astro";
+
   const shareButton = document.querySelector("[data-share]");
   const snackbar = getSnackbarElement();
 
   shareButton?.addEventListener("click", () => {
     navigator.clipboard.writeText(window.location.href);
-    show(snackbar);
-    hide(snackbar);
+    snackbar.show();
   });
 </script>

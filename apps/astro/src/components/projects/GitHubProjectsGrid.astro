@@ -18,8 +18,8 @@ interface Props {
 
 const { data, name } = Astro.props;
 
-const result = Astro.getActionResult(actions.sortGithubProjects);
-console.log("action results", result, result?.data, result?.error);
+// const result = Astro.getActionResult(actions.sortGithubProjects);
+// console.log("action results", result, result?.data, result?.error);
 ---
 
 <form method="GET" action={actions.sortGithubProjects}>

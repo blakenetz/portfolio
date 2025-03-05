@@ -1,18 +1,17 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import CloseIcon from "@tabler/icons/outline/x.svg";
+import IconButton from "~/components/IconButton.astro";
+import type { SnackbarElement } from "~/types/webComponents";
 
-interface Props extends HTMLAttributes<"div"> {}
-
-const { class: className, ...props } = Astro.props;
-
-export function show(el: Element | null) {
-  el?.classList.remove("hidden");
+interface Props extends HTMLAttributes<"div"> {
+  content?: string;
 }
-export function hide(el: Element | null, timeout = 10000) {
-  setTimeout(() => el?.classList.add("hidden"), timeout);
-}
-export function getSnackbarElement() {
-  return document.querySelector("[data-snackbar]"); // only show first snackbar
+
+const { class: className, content = "Copied!", ...props } = Astro.props;
+
+export function getSnackbarElement(): SnackbarElement {
+  return document.querySelector("[data-snackbar-root]")!;
 }
 ---
 
@@ -40,13 +39,65 @@ export function getSnackbarElement() {
   }
 </style>
 
-<div
-  data-snackbar
-  {...props}
-  class:list={[
-    "bg-aquamarine-700 fixed bottom-4 left-4 z-10 hidden rounded-full px-8 py-2 pr-6 text-sm font-bold",
-    className,
-  ]}
->
-  <span class="flex items-center gap-2"><slot /></span>
-</div>
+<snackbar-wc data-snackbar-root>
+  <div
+    data-snackbar
+    {...props}
+    class:list={[
+      "bg-aquamarine-700 fixed bottom-4 left-4 z-10 hidden rounded-full px-8 py-2 pr-6 text-sm font-bold",
+      className,
+    ]}
+  >
+    <span class="flex items-center gap-2">
+      <span>{content}</span>
+      <IconButton data-close>
+        <CloseIcon class="h-6 w-6" />
+      </IconButton>
+    </span>
+  </div>
+</snackbar-wc>
+
+<script>
+  export class SnackbarElement extends HTMLElement {
+    timeoutId: NodeJS.Timeout | null;
+    el: HTMLElement | null;
+    closeButton: HTMLButtonElement | null;
+
+    constructor() {
+      super();
+      this.timeoutId = null;
+      this.el = null;
+      this.closeButton = null;
+    }
+
+    connectedCallback() {
+      this.el = this.querySelector("[data-snackbar]")!;
+      this.closeButton = this.querySelector("[data-close]")!;
+      this.closeButton.addEventListener("click", () => this.hide());
+    }
+
+    show(timeout = 5000) {
+      // reset timeout
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+      }
+      this.timeoutId = setTimeout(() => this.hide(), timeout);
+      this.el?.classList.remove("hidden");
+    }
+
+    hide() {
+      // Clear timeout if it exists
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+        this.timeoutId = null;
+      }
+
+      // Hide snackbar
+      this.el?.classList.add("hidden");
+    }
+  }
+
+  if (!customElements.get("snackbar-wc")) {
+    customElements.define("snackbar-wc", SnackbarElement);
+  }
+</script>

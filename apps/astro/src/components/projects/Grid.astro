@@ -1,14 +1,16 @@
 ---
-import type { HTMLAttributes } from "astro/types";
+import type { Polymorphic, HTMLTag } from "astro/types";
 
-interface Props extends HTMLAttributes<"div"> {}
+type Props<Tag extends HTMLTag> = Polymorphic<{
+  as: Tag;
+}>;
 
-const { class: className, ...props } = Astro.props;
+const { as: Tag = "div", class: className, ...props } = Astro.props;
 ---
 
-<div
+<Tag
   {...props}
   class:list={["grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4", className]}
 >
   <slot />
-</div>
+</Tag>

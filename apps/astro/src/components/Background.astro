@@ -1,8 +1,9 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import IconButton from "~/components/IconButton.astro";
 import Flower from "~/assets/flower.svg";
+import IconButton from "~/components/IconButton.astro";
 import Link from "~/components/Link.astro";
+import { titleCase } from "~/lib/utils";
 export interface BackgroundProps extends HTMLAttributes<"main"> {
   showCheckerboard?: boolean;
   showNav?: boolean;
@@ -15,7 +16,13 @@ const {
   ...props
 } = Astro.props as BackgroundProps;
 
-const paths = Astro.url.pathname.split("/").filter(Boolean);
+const paths = Astro.url.pathname
+  .split("/")
+  .filter(Boolean)
+  .map((path) => ({
+    href: path,
+    title: titleCase(path),
+  }));
 ---
 
 <section id="background" class="fixed inset-0 -z-10" transition:persist>
@@ -46,11 +53,11 @@ const paths = Astro.url.pathname.split("/").filter(Boolean);
           <span>/</span>
           {paths.map((path, i) =>
             i === paths.length - 1 ? (
-              <span>{path}</span>
+              <span>{path.title}</span>
             ) : (
               <Fragment>
-                <Link href={`/${path}`} class="text-dodger-blue">
-                  {path}
+                <Link href={`/${path.href}`} class="text-dodger-blue">
+                  {path.title}
                 </Link>
                 <span>/</span>
               </Fragment>

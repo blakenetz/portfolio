@@ -1,13 +1,4 @@
-export type ProjectItem = {
-  title: string;
-  timeFrame: [number, number] | number;
-  role?: string;
-  description: string;
-  employer?: string;
-  techStack?: string[];
-  link?: string;
-  image: Promise<typeof import("*.png")>;
-};
+import type { ProjectItem } from "~/types/projects";
 
 export const projects: ProjectItem[] = [
   {

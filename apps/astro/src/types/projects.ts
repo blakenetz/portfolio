@@ -31,3 +31,14 @@ export type RepoResponse = { data: RepoData; status: number };
 export function getParam(scope: UserScope) {
   return [scope, "sort"].join("-");
 }
+
+export type ProjectItem = {
+  title: string;
+  timeFrame: [number, number] | number;
+  role?: string;
+  description: string;
+  employer?: string;
+  techStack?: string[];
+  link?: string;
+  image: Promise<typeof import("*.png")>;
+};

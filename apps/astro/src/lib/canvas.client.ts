@@ -340,7 +340,8 @@ export class CheckerboardBackgroundCanvas extends BaseCanvas {
 
         // track blank spaces
         if ((row + col) % 2 === 1) {
-          blankSpaces.push({ x: col, y: row });
+          // don't place icons in the top left corner
+          if (row > 0 && col > 3) blankSpaces.push({ x: col, y: row });
           continue;
         }
 

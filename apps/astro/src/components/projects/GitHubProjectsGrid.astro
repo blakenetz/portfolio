@@ -15,7 +15,7 @@ interface Props {
 const { data } = Astro.props;
 ---
 
-<Grid>
+<Grid as="form">
   {
     data.map((repo, index) => (
       <GridItem index={index} class="justify-between">

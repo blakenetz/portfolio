@@ -9,7 +9,6 @@ import type {
 import { getParam, scopes, sorts } from "~/types/projects";
 import Api from "./projects.api";
 import { formatDate } from "./utils";
-import { projects, type Project } from "./projects.data";
 const reg = /(:[\w\-+]+:)/g;
 function parseEmojis(text: string | null) {
   if (!text) return null;

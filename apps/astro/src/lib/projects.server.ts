@@ -6,7 +6,7 @@ import type {
   Sort,
   UserScope,
 } from "~/types/projects";
-import { getParam, scopes, sorts } from "~/types/projects";
+
 import Api from "./projects.api";
 import { formatDate } from "./utils";
 const reg = /(:[\w\-+]+:)/g;
@@ -21,20 +21,6 @@ function parseEmojis(text: string | null) {
 
     return `<img src="${emoji}" class="emoji" alt="${name}" aria-hidden="true" />`;
   });
-}
-
-function extractUrlParams(url: string): Record<UserScope, Sort> {
-  const { searchParams } = new URL(url);
-  return scopes.reduce(
-    (acc, scope) => {
-      const param = getParam(scope);
-      const sort = searchParams.get(param) as Sort | null;
-
-      acc[scope] = sort && sorts.includes(sort) ? sort : "updated";
-      return acc;
-    },
-    {} as Record<UserScope, Sort>,
-  );
 }
 
 function sortData(responseData: OctoData, sort: Sort) {
@@ -75,9 +61,9 @@ async function getRepoForUser(
   };
 }
 
-async function getRepoByScope(
+export async function getRepoByScope(
   scope: UserScope,
-  sort: Sort,
+  sort: Sort = "updated",
 ): Promise<RepoResponse> {
   if (scope === "personal") {
     const username = Api.getUsername("personal");
@@ -112,11 +98,6 @@ async function getRepoByScope(
   };
 }
 
-export async function getRepos(request: Request) {
-  const { work, personal } = extractUrlParams(request.url);
-
-  return Promise.all([
-    getRepoByScope("personal", personal),
-    getRepoByScope("work", work),
-  ]);
+export async function getRepos() {
+  return Promise.all([getRepoByScope("personal"), getRepoByScope("work")]);
 }

@@ -64,38 +64,38 @@ const { data, name } = Astro.props;
   </Grid>
   <div class="flex items-center justify-end gap-1 py-2">
     <span class="font-barrio mr-2 text-sm">Sort</span>
-    <Button size="sm" type="button" data-sort="created">Created</Button>
-    <Button size="sm" type="button" data-sort="updated">Updated</Button>
+    <Button size="sm" type="button" data-sort="created" data-name={name}
+      >Created</Button
+    >
+    <Button size="sm" type="button" data-sort="updated" data-name={name}
+      >Updated</Button
+    >
   </div>
 </section>
 
 <script>
-  import { getSortButtons } from "~/components/SortControls.astro";
-
-  let form: HTMLFormElement | null = null;
-  let input: HTMLInputElement | null = null;
+  import { actions } from "astro:actions";
 
   // in place sort
   function initializeSortHandler() {
-    const sortButtons = getSortButtons();
+    const sortButtons =
+      document.querySelectorAll<HTMLButtonElement>("[data-sort]");
+
+    console.log(sortButtons);
 
     sortButtons.forEach((button) => {
       button.addEventListener(
         "click",
         async function (this: HTMLButtonElement) {
-          if (!form) form = this.closest<HTMLFormElement>("form");
-          if (!input) {
-            input =
-              form?.querySelector<HTMLInputElement>(`input[type="hidden"]`)!;
-          }
+          console.log("click", this);
+          const { data, error } = await actions.sortGithubProjects({
+            sort: this.dataset.sort,
+            name: this.dataset.name!,
+          });
 
-          if (!form || !input) {
-            console.error("form or input not found");
-            return;
-          }
-
-          input.value = this.dataset.sort!;
-          form.submit();
+          if (!error) {
+            console.log(data);
+          } else console.error(error);
         },
       );
     });

@@ -18,11 +18,13 @@ const {
 const paths = Astro.url.pathname.split("/").filter(Boolean);
 ---
 
-<section id="background" class="fixed inset-0 -z-10"></section>
+<section id="background" class="fixed inset-0 -z-10" transition:persist>
+</section>
 {showCheckerboard && <section id="checkerboard" class="fixed inset-0 -z-10" />}
 <div
   id="noise"
   class="bg-size-200 pointer-events-none fixed -inset-[150%] h-[400%] w-[400%] bg-repeat opacity-15"
+  transition:persist
 >
 </div>
 <main
@@ -60,7 +62,12 @@ const paths = Astro.url.pathname.split("/").filter(Boolean);
     <slot />
   </div>
 </main>
-<section id="cursor" class="pointer-events-none fixed inset-0"></section>
+<section
+  id="cursor"
+  class="pointer-events-none fixed inset-0"
+  transition:persist
+>
+</section>
 
 <style>
   #noise {
@@ -94,10 +101,12 @@ const paths = Astro.url.pathname.split("/").filter(Boolean);
     CursorCanvas,
   } from "~/lib/canvas.client";
 
-  if (document.getElementById("checkerboard")) {
-    new CheckerboardBackgroundCanvas("checkerboard");
-  }
+  document.addEventListener("astro:page-load", () => {
+    if (document.getElementById("checkerboard")) {
+      new CheckerboardBackgroundCanvas("checkerboard");
+    }
 
-  new BlobBackgroundCanvas("background");
-  new CursorCanvas("cursor");
+    new BlobBackgroundCanvas("background");
+    new CursorCanvas("cursor");
+  });
 </script>

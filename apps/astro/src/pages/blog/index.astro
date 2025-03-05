@@ -1,7 +1,9 @@
 ---
-import Form from "~/components/blog/Form.astro";
-import Layout from "~/layouts/Root.astro";
+import DownArrowIcon from "@tabler/icons/outline/arrow-down.svg";
+import UpArrowIcon from "@tabler/icons/outline/arrow-up.svg";
+import List from "~/components/blog/List.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
+import Layout from "~/layouts/Root.astro";
 ---
 
 <Layout
@@ -15,15 +17,82 @@ import { ANIMATE_COLORS_CLASSES } from "~/consts";
     <h1 class={`text-6xl text-center font-bold ${ANIMATE_COLORS_CLASSES}`}>
       Blog
     </h1>
-    <Form server:defer>
-      <div class="flex animate-pulse flex-col gap-2" slot="fallback">
-        <div class="bg-dodger-blue/20 rounded-xs h-32 w-full"></div>
-        <div class="bg-aquamarine/20 rounded-xs h-32 w-full"></div>
-        <div class="bg-sunglow/20 rounded-xs h-32 w-full"></div>
-        <div class="bg-rose/20 rounded-xs h-32 w-full"></div>
-        <div class="bg-dodger-blue/20 rounded-xs h-32 w-full"></div>
-        <div class="bg-aquamarine/20 rounded-xs h-32 w-full"></div>
+    <section class="flex flex-col gap-2">
+      <div class="flex items-center justify-end">
+        <span class="font-barrio mr-2 text-sm">Sort</span>
+        <button
+          type="button"
+          class="hover:text-primary group/iconBtn relative rounded-sm p-1 hover:cursor-pointer"
+          data-sort="asc"
+        >
+          <div
+            class:list={[
+              "invisible group-hover/iconBtn:visible",
+              "from-sunglow via-sunglow to-rose absolute -inset-1 rounded-2xl bg-gradient-to-tr opacity-70 blur-lg filter",
+            ]}
+          >
+          </div>
+          <UpArrowIcon />
+        </button>
+        <button
+          type="button"
+          class="hover:text-primary group/iconBtn relative rounded-sm p-1 hover:cursor-pointer"
+          data-sort="desc"
+        >
+          <div
+            class:list={[
+              "invisible group-hover/iconBtn:visible",
+              "from-sunglow via-sunglow to-rose absolute -inset-1 rounded-2xl bg-gradient-to-tr opacity-70 blur-lg filter",
+            ]}
+          >
+          </div>
+          <DownArrowIcon />
+        </button>
       </div>
-    </Form>
+
+      <List server:defer>
+        <div class="flex animate-pulse flex-col gap-2" slot="fallback">
+          <div class="bg-dodger-blue/20 rounded-xs h-32 w-full"></div>
+          <div class="bg-aquamarine/20 rounded-xs h-32 w-full"></div>
+          <div class="bg-sunglow/20 rounded-xs h-32 w-full"></div>
+          <div class="bg-rose/20 rounded-xs h-32 w-full"></div>
+          <div class="bg-dodger-blue/20 rounded-xs h-32 w-full"></div>
+          <div class="bg-aquamarine/20 rounded-xs h-32 w-full"></div>
+        </div>
+      </List>
+    </section>
   </section>
 </Layout>
+
+<script>
+  function initializeSortHandler() {
+    const sortButtons =
+      document.querySelectorAll<HTMLButtonElement>("[data-sort]");
+
+    sortButtons.forEach((button) => {
+      button.addEventListener("click", function (this: HTMLButtonElement) {
+        const container = document.getElementById("posts");
+        const postEls =
+          document.querySelectorAll<HTMLAnchorElement>("[data-date]");
+
+        console.log(postEls);
+
+        if (this.dataset.sort && container) {
+          container.innerHTML = "";
+          Array.from(postEls)
+            .toSorted((a, b) => {
+              const dateA = parseInt(a.dataset.date ?? "0");
+              const dateB = parseInt(b.dataset.date ?? "0");
+              return this.dataset.sort === "asc"
+                ? dateA - dateB
+                : dateB - dateA;
+            })
+            .forEach((node) => container.appendChild(node));
+        }
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", initializeSortHandler);
+  initializeSortHandler();
+</script>

@@ -4,11 +4,9 @@ import CloseIcon from "@tabler/icons/outline/x.svg";
 import IconButton from "~/components/IconButton.astro";
 import type { SnackbarElement } from "~/types/webComponents";
 
-interface Props extends HTMLAttributes<"div"> {
-  content?: string;
-}
+interface Props extends HTMLAttributes<"div"> {}
 
-const { class: className, content = "Copied!", ...props } = Astro.props;
+const { class: className, ...props } = Astro.props;
 
 export function getSnackbarElement(): SnackbarElement {
   return document.querySelector("[data-snackbar-root]")!;
@@ -49,7 +47,7 @@ export function getSnackbarElement(): SnackbarElement {
     ]}
   >
     <span class="flex items-center gap-2">
-      <span>{content}</span>
+      <span><slot>Copied!</slot></span>
       <IconButton data-close>
         <CloseIcon class="h-6 w-6" />
       </IconButton>

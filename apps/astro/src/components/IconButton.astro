@@ -1,17 +1,27 @@
 ---
-import type { HTMLAttributes } from "astro/types";
+import type { Polymorphic, HTMLTag } from "astro/types";
 
-interface IconButtonProps extends HTMLAttributes<"button"> {}
+type Props<Tag extends HTMLTag> = Polymorphic<{
+  as: Tag;
+  bg?: "dodger-blue" | "white";
+}>;
 
-const { class: className, ...props } = Astro.props as IconButtonProps;
+const {
+  class: className,
+  as: Tag = "button",
+  bg = "white",
+  ...props
+} = Astro.props as Props<"button">;
 ---
 
-<button
+<Tag
   class:list={[
-    "rounded-full bg-white/0 p-2 transition-colors hover:cursor-pointer hover:bg-white/30",
     className,
+    "rounded-full p-2 transition-colors hover:cursor-pointer",
+    { "bg-dodger-blue/70 hover:bg-dodger-blue/40": bg === "dodger-blue" },
+    { "bg-white/0 hover:bg-white/30": bg === "white" },
   ]}
   {...props}
 >
   <slot />
-</button>
+</Tag>

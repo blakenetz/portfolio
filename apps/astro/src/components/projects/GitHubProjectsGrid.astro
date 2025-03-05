@@ -1,9 +1,6 @@
 ---
-export const prerender = false;
-
 import GitForkIcon from "@tabler/icons/outline/git-fork.svg";
 import UserCircleIcon from "@tabler/icons/outline/user-circle.svg";
-import { actions } from "astro:actions";
 import Divider from "~/components/Divider.astro";
 import Link from "~/components/Link.astro";
 import CodeLanguage from "~/components/projects/CodeLanguage.astro";
@@ -18,12 +15,9 @@ interface Props {
 }
 
 const { data, name } = Astro.props;
-
-// const result = Astro.getActionResult(actions.sortGithubProjects);
-// console.log("action results", result, result?.data, result?.error);
 ---
 
-<form method="GET" action={actions.sortGithubProjects}>
+<section>
   <Grid>
     {
       data.map((repo, index) => (
@@ -73,8 +67,7 @@ const { data, name } = Astro.props;
     <Button size="sm" type="button" data-sort="created">Created</Button>
     <Button size="sm" type="button" data-sort="updated">Updated</Button>
   </div>
-  <input type="hidden" name={`${name}-sort`} value="created" />
-</form>
+</section>
 
 <script>
   import { getSortButtons } from "~/components/SortControls.astro";
@@ -90,18 +83,18 @@ const { data, name } = Astro.props;
       button.addEventListener(
         "click",
         async function (this: HTMLButtonElement) {
-          const direction = this.dataset.sort!;
           if (!form) form = this.closest<HTMLFormElement>("form");
-          if (!input)
+          if (!input) {
             input =
               form?.querySelector<HTMLInputElement>(`input[type="hidden"]`)!;
+          }
 
           if (!form || !input) {
             console.error("form or input not found");
             return;
           }
 
-          input.value = direction;
+          input.value = this.dataset.sort!;
           form.submit();
         },
       );

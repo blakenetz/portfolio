@@ -73,7 +73,7 @@ const { data, name } = Astro.props;
     <Button size="sm" type="button" data-sort="created">Created</Button>
     <Button size="sm" type="button" data-sort="updated">Updated</Button>
   </div>
-  <input type="hidden" name={`${name}-sort`} value="asc" />
+  <input type="hidden" name={`${name}-sort`} value="created" />
 </form>
 
 <script>

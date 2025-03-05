@@ -7,6 +7,7 @@ import Grid from "~/components/projects/Grid.astro";
 import GridItem from "~/components/projects/GridItem.astro";
 import type { RepoData } from "~/types/projects";
 import CodeLanguage from "./CodeLanguage.astro";
+import { actions } from "astro:actions";
 
 interface Props {
   data: RepoData;
@@ -15,47 +16,52 @@ interface Props {
 const { data } = Astro.props;
 ---
 
-<Grid as="form">
-  {
-    data.map((repo, index) => (
-      <GridItem index={index} class="justify-between">
-        <div class="flex items-center gap-2">
-          <div class="flex items-center gap-2 font-bold">
-            {repo.fork && <GitForkIcon class="h-4 w-4" />}
-            <span class="font-barrio">{repo.name}</span>
+<form action={actions.sortGithubProjects} method="GET">
+  <Grid>
+    {
+      data.map((repo, index) => (
+        <GridItem index={index} class="justify-between">
+          <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 font-bold">
+              {repo.fork && <GitForkIcon class="h-4 w-4" />}
+              <span class="font-barrio">{repo.name}</span>
+            </div>
           </div>
-        </div>
-        {repo.description && <p class="text-sm">{repo.description}</p>}
-        <div class="flex flex-col gap-2">
-          <div class="flex items-center gap-2 text-sm">
-            <Link href={repo.html_url}>View on Github</Link>
-            {repo.user && (
-              <>
-                <Divider />
-                <Link
-                  class="flex flex-row items-center gap-1"
-                  href={`https://github.com/${repo.user}`}
-                >
-                  <UserCircleIcon class="h-4 w-4" />
-                  <span>{repo.user}</span>
-                </Link>
-              </>
-            )}
-          </div>
-          <div class="flex w-full flex-col items-center justify-between gap-1 text-xs md:flex-row">
-            {repo.language && (
-              <>
-                <CodeLanguage language={repo.language} />
-                <Divider />
-              </>
-            )}
+          {repo.description && <p class="text-sm">{repo.description}</p>}
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-2 text-sm">
+              <Link href={repo.html_url}>View on Github</Link>
+              {repo.user && (
+                <>
+                  <Divider />
+                  <Link
+                    class="flex flex-row items-center gap-1"
+                    href={`https://github.com/${repo.user}`}
+                  >
+                    <UserCircleIcon class="h-4 w-4" />
+                    <span>{repo.user}</span>
+                  </Link>
+                </>
+              )}
+            </div>
+            <div class="flex w-full flex-col items-center justify-between gap-1 text-xs md:flex-row">
+              {repo.language && (
+                <>
+                  <CodeLanguage language={repo.language} />
+                  <Divider />
+                </>
+              )}
 
-            <p>{`Created ${repo.created_at}`}</p>
-            <Divider />
-            <p>{`Updated ${repo.updated_at}`}</p>
+              <p>{`Created ${repo.created_at}`}</p>
+              <Divider />
+              <p>{`Updated ${repo.updated_at}`}</p>
+            </div>
           </div>
-        </div>
-      </GridItem>
-    ))
-  }</Grid
->
+        </GridItem>
+      ))
+    }
+  </Grid>
+  <div>
+    <span>Sort</span>
+  </div>
+</form>

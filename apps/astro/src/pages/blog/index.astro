@@ -1,6 +1,5 @@
 ---
-import DownArrowIcon from "@tabler/icons/outline/arrow-down.svg";
-import UpArrowIcon from "@tabler/icons/outline/arrow-up.svg";
+import SortControls from "~/components/SortControls.astro";
 import List from "~/components/blog/List.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
 import Layout from "~/layouts/Root.astro";
@@ -18,37 +17,7 @@ import Layout from "~/layouts/Root.astro";
       Blog
     </h1>
     <section class="flex flex-col gap-2">
-      <div class="flex items-center justify-end">
-        <span class="font-barrio mr-2 text-sm">Sort</span>
-        <button
-          type="button"
-          class="hover:text-primary group/iconBtn relative rounded-sm p-1 hover:cursor-pointer"
-          data-sort="asc"
-        >
-          <div
-            class:list={[
-              "invisible group-hover/iconBtn:visible",
-              "from-sunglow via-sunglow to-rose absolute -inset-1 rounded-2xl bg-gradient-to-tr opacity-70 blur-lg filter",
-            ]}
-          >
-          </div>
-          <UpArrowIcon />
-        </button>
-        <button
-          type="button"
-          class="hover:text-primary group/iconBtn relative rounded-sm p-1 hover:cursor-pointer"
-          data-sort="desc"
-        >
-          <div
-            class:list={[
-              "invisible group-hover/iconBtn:visible",
-              "from-sunglow via-sunglow to-rose absolute -inset-1 rounded-2xl bg-gradient-to-tr opacity-70 blur-lg filter",
-            ]}
-          >
-          </div>
-          <DownArrowIcon />
-        </button>
-      </div>
+      <SortControls />
 
       <List server:defer>
         <div class="flex animate-pulse flex-col gap-2" slot="fallback">
@@ -65,12 +34,13 @@ import Layout from "~/layouts/Root.astro";
 </Layout>
 
 <script>
-  const getSortButtons = () =>
-    document.querySelectorAll<HTMLButtonElement>("[data-sort]");
-  const getContainer = () => document.getElementById("posts");
-  const getPostEls = () =>
-    document.querySelectorAll<HTMLAnchorElement>("[data-date]");
+  import {
+    getContainer,
+    getPostEls,
+    getSortButtons,
+  } from "~/components/SortControls.astro";
 
+  // in place sort
   function initializeSortHandler() {
     const sortButtons = getSortButtons();
     let container = getContainer();

@@ -3,12 +3,13 @@ import type { HTMLAttributes } from "astro/types";
 import CopyIcon from "@tabler/icons/outline/clipboard.svg";
 import CloseIcon from "@tabler/icons/outline/x.svg";
 import IconButton from "~/components/IconButton.astro";
-import Snackbar, { hide, show } from "~/components/Snackbar.astro";
-export interface CodeBlockProps extends HTMLAttributes<"pre"> {
+import Snackbar from "~/components/Snackbar.astro";
+interface Props extends HTMLAttributes<"pre"> {
   "data-language": string;
 }
 
-const props = Astro.props as CodeBlockProps;
+const props = Astro.props;
+
 const showCopy = !["http", "https", "plaintext"].includes(
   props["data-language"],
 );
@@ -32,10 +33,10 @@ const showCopy = !["http", "https", "plaintext"].includes(
 </Snackbar>
 
 <script>
-  import { hide, show } from "~/components/Snackbar.astro";
+  import { hide, show, getSnackbarElement } from "~/components/Snackbar.astro";
   const copyButtons = document.querySelectorAll("[data-copy]");
   const closeButtons = document.querySelectorAll("[data-close]");
-  const snackbar = document.querySelector("[data-snackbar]"); // only show first snackbar
+  const snackbar = getSnackbarElement();
 
   copyButtons.forEach((copyBtn) => {
     copyBtn.addEventListener("click", function (this: HTMLButtonElement) {

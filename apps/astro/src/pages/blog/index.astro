@@ -34,11 +34,14 @@ import Layout from "~/layouts/Root.astro";
 </Layout>
 
 <script>
-  import {
-    getContainer,
-    getPostEls,
-    getSortButtons,
-  } from "~/components/SortControls.astro";
+  import { getSortButtons } from "~/components/SortControls.astro";
+
+  function getContainer() {
+    return document.getElementById("posts");
+  }
+  function getPostEls() {
+    return document.querySelectorAll<HTMLAnchorElement>("[data-date]");
+  }
 
   // in place sort
   function initializeSortHandler() {

@@ -4,17 +4,12 @@ import Flower from "~/assets/flower.svg";
 import IconButton from "~/components/IconButton.astro";
 import Link from "~/components/Link.astro";
 import { titleCase } from "~/lib/utils";
-export interface BackgroundProps extends HTMLAttributes<"main"> {
+interface Props extends HTMLAttributes<"main"> {
   showCheckerboard?: boolean;
   showNav?: boolean;
 }
 
-const {
-  showCheckerboard,
-  showNav,
-  class: className,
-  ...props
-} = Astro.props as BackgroundProps;
+const { showCheckerboard, showNav, class: className, ...props } = Astro.props;
 
 const paths = Astro.url.pathname
   .split("/")

@@ -1,22 +1,28 @@
 ---
+export const prerender = false;
+
 import GitForkIcon from "@tabler/icons/outline/git-fork.svg";
 import UserCircleIcon from "@tabler/icons/outline/user-circle.svg";
+import { actions } from "astro:actions";
 import Divider from "~/components/Divider.astro";
 import Link from "~/components/Link.astro";
+import CodeLanguage from "~/components/projects/CodeLanguage.astro";
 import Grid from "~/components/projects/Grid.astro";
 import GridItem from "~/components/projects/GridItem.astro";
+import SortControls from "~/components/SortControls.astro";
 import type { RepoData } from "~/types/projects";
-import CodeLanguage from "./CodeLanguage.astro";
-import { actions } from "astro:actions";
-
 interface Props {
   data: RepoData;
+  name: "personal" | "work";
 }
 
-const { data } = Astro.props;
+const { data, name } = Astro.props;
+
+const result = Astro.getActionResult(actions.sortGithubProjects);
+console.log("action results", result, result?.data, result?.error);
 ---
 
-<form action={actions.sortGithubProjects} method="GET">
+<form method="GET" action={actions.sortGithubProjects}>
   <Grid>
     {
       data.map((repo, index) => (
@@ -61,7 +67,31 @@ const { data } = Astro.props;
       ))
     }
   </Grid>
-  <div>
-    <span>Sort</span>
-  </div>
+  <SortControls class="mr-4" buttonProps={{ type: "submit" }} />
 </form>
+
+<script>
+  import { getSortButtons } from "~/components/SortControls.astro";
+  import { actions } from "astro:actions";
+
+  // in place sort
+  function initializeSortHandler() {
+    const sortButtons = getSortButtons();
+
+    sortButtons.forEach((button) => {
+      button.addEventListener(
+        "click",
+        async function (this: HTMLButtonElement) {
+          const direction = this.dataset.sort!;
+          // const { data, error } = await actions.sortGithubProjects({
+          //   direction,
+          // });
+          // console.log(data, error);
+        },
+      );
+    });
+  }
+
+  document.addEventListener("astro:page-load", initializeSortHandler);
+  initializeSortHandler();
+</script>

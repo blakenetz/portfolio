@@ -120,9 +120,9 @@ const emailHref =
 </Layout>
 
 <script>
-  import { hide, show } from "~/components/Snackbar.astro";
+  import { hide, show, getSnackbarElement } from "~/components/Snackbar.astro";
   const shareButton = document.querySelector("[data-share]");
-  const snackbar = document.querySelector("[data-snackbar]"); // only show first snackbar
+  const snackbar = getSnackbarElement();
 
   shareButton?.addEventListener("click", () => {
     navigator.clipboard.writeText(window.location.href);

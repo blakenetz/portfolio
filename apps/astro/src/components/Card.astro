@@ -6,8 +6,6 @@ type Props<Tag extends HTMLTag> = Polymorphic<{
   showHoverEffect?: boolean;
 }>;
 
-export interface CardProps extends Props<"div"> {}
-
 const {
   as: Tag = "div",
   class: className,

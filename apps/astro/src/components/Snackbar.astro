@@ -3,10 +3,17 @@ import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"div"> {}
 
-const { class: className, ...props } = Astro.props as Props;
-export const show = (el: Element | null) => el?.classList.remove("hidden");
-export const hide = (el: Element | null, timeout = 10000) =>
+const { class: className, ...props } = Astro.props;
+
+export function show(el: Element | null) {
+  el?.classList.remove("hidden");
+}
+export function hide(el: Element | null, timeout = 10000) {
   setTimeout(() => el?.classList.add("hidden"), timeout);
+}
+export function getSnackbarElement() {
+  return document.querySelector("[data-snackbar]"); // only show first snackbar
+}
 ---
 
 <style>

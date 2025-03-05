@@ -1,15 +1,13 @@
 ---
-import Background, {
-  type BackgroundProps,
-} from "~/components/Background.astro";
-import type { BaseHeadProps } from "~/components/BaseHead.astro";
+import Background from "~/components/Background.astro";
 import BaseHead from "~/components/BaseHead.astro";
+import type { ComponentProps } from "astro/types";
 
-export type RootLayoutProps = {
-  headProps: BaseHeadProps;
-  layoutProps: BackgroundProps;
+type Props = {
+  headProps: ComponentProps<typeof BaseHead>;
+  layoutProps: ComponentProps<typeof Background>;
 };
-const { headProps, layoutProps } = Astro.props as RootLayoutProps;
+const { headProps, layoutProps } = Astro.props;
 ---
 
 <html lang="en">

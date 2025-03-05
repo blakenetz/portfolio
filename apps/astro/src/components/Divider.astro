@@ -1,9 +1,9 @@
 ---
-interface DividerProps {
+interface Props {
   direction?: "horizontal" | "vertical";
 }
 
-const { direction = "vertical" }: DividerProps = Astro.props;
+const { direction = "vertical" } = Astro.props;
 ---
 
 <div

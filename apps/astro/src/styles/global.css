@@ -1,6 +1,42 @@
 @import "tailwindcss";
 @plugin '@tailwindcss/typography';
 
+@font-face {
+  font-family: "Barriecito";
+  src: url("/fonts/barriecito-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Barrio";
+  src: url("/fonts/barrio-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Danfo";
+  src: url("/fonts/danfo-regular-variable.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("/fonts/josefin-sans-regular-variable.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("/fonts/josefin-sans-italic-variable.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 @theme {
   /* Pumpkin */
   --color-pumpkin: #ff6700;

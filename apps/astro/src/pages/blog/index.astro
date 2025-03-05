@@ -65,17 +65,21 @@ import Layout from "~/layouts/Root.astro";
 </Layout>
 
 <script>
+  const getSortButtons = () =>
+    document.querySelectorAll<HTMLButtonElement>("[data-sort]");
+  const getContainer = () => document.getElementById("posts");
+  const getPostEls = () =>
+    document.querySelectorAll<HTMLAnchorElement>("[data-date]");
+
   function initializeSortHandler() {
-    const sortButtons =
-      document.querySelectorAll<HTMLButtonElement>("[data-sort]");
+    const sortButtons = getSortButtons();
+    let container = getContainer();
+    let postEls = getPostEls();
 
     sortButtons.forEach((button) => {
       button.addEventListener("click", function (this: HTMLButtonElement) {
-        const container = document.getElementById("posts");
-        const postEls =
-          document.querySelectorAll<HTMLAnchorElement>("[data-date]");
-
-        console.log(postEls);
+        if (!container) container = getContainer();
+        if (!postEls.length) postEls = getPostEls();
 
         if (this.dataset.sort && container) {
           container.innerHTML = "";
@@ -87,7 +91,7 @@ import Layout from "~/layouts/Root.astro";
                 ? dateA - dateB
                 : dateB - dateA;
             })
-            .forEach((node) => container.appendChild(node));
+            .forEach((node) => container?.appendChild(node));
         }
       });
     });

@@ -2,13 +2,12 @@
 import BriefcaseIcon from "@tabler/icons/outline/briefcase-2.svg";
 import CodeIcon from "@tabler/icons/outline/code.svg";
 import LinkIcon from "@tabler/icons/outline/link.svg";
+import { Image } from "astro:assets";
 import Divider from "~/components/Divider.astro";
 import Link from "~/components/Link.astro";
 import Grid from "~/components/projects/Grid.astro";
 import GridItem from "~/components/projects/GridItem.astro";
-import { Image } from "astro:assets";
 import { projects } from "~/lib/projects.data";
-import { colors } from "~/lib/styles.server";
 
 const missingItems = 4 - (projects.length % 4);
 const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
@@ -81,7 +80,11 @@ const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
   {
     // Add empty grid items to complete the last row
     blanks.map((_, index) => (
-      <GridItem index={projects.length + index} class="hidden lg:block">
+      <GridItem
+        index={projects.length + index}
+        class="hidden lg:block"
+        cardProps={{ showHoverEffect: false }}
+      >
         <div class="flex flex-col gap-2 p-4" />
       </GridItem>
     ))

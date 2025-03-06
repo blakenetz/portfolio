@@ -3,12 +3,10 @@ import LinkedInIcon from "@tabler/icons/outline/brand-linkedin.svg";
 import RedditIcon from "@tabler/icons/outline/brand-reddit.svg";
 import ClipboardIcon from "@tabler/icons/outline/clipboard.svg";
 import MailIcon from "@tabler/icons/outline/mail.svg";
-import CloseIcon from "@tabler/icons/outline/x.svg";
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import CodeBlock from "~/components/blog/CodeBlock.astro";
 import SourceLink from "~/components/blog/SourceLink.astro";
 import Button from "~/components/Button.astro";
-import IconButton from "~/components/IconButton.astro";
 import Link from "~/components/Link.astro";
 import Snackbar from "~/components/Snackbar.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
@@ -113,13 +111,13 @@ const emailHref =
 </Layout>
 
 <script>
-  import { getSnackbarElement } from "~/components/Snackbar.astro";
+  import type { SnackbarElement } from "~/types/webComponents";
 
   const shareButton = document.querySelector("[data-share]");
-  const snackbar = getSnackbarElement();
+  const snackbar = document.querySelector<SnackbarElement>("snackbar-wc");
 
   shareButton?.addEventListener("click", () => {
     navigator.clipboard.writeText(window.location.href);
-    snackbar.show();
+    snackbar?.show();
   });
 </script>

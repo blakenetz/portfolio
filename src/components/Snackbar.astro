@@ -1,14 +1,11 @@
 ---
-import type { HTMLAttributes } from "astro/types";
 import CloseIcon from "@tabler/icons/outline/x.svg";
+import type { HTMLAttributes } from "astro/types";
 import IconButton from "~/components/IconButton.astro";
-import type { SnackbarElement } from "~/types/webComponents";
 
 interface Props extends HTMLAttributes<"div"> {}
 
 const { class: className, ...props } = Astro.props;
-
-
 ---
 
 <style>

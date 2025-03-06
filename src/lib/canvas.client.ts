@@ -1,6 +1,12 @@
 import Konva from "konva";
 
-import { black, getCssVariable, spacing, white } from "./styles.client";
+import {
+  black,
+  getCssVariable,
+  spacing,
+  white,
+  mobileBreakpoint,
+} from "./styles.client";
 import { colors } from "./styles.server";
 import bike from "~/assets/home/bike.svg";
 import dogCosmos from "~/assets/home/dog-cosmos.svg";
@@ -305,6 +311,10 @@ export class CheckerboardBackgroundCanvas extends BaseCanvas {
     });
   }
 
+  private isMobile() {
+    return window.innerWidth < mobileBreakpoint;
+  }
+
   private getDefaultCheckerboardProperties(): Konva.ShapeConfig & {
     name: string;
   } {
@@ -323,6 +333,8 @@ export class CheckerboardBackgroundCanvas extends BaseCanvas {
    * Then, place assets in random blank spaces
    */
   private drawCheckerboard() {
+    if (this.isMobile()) return;
+
     const cols = Math.ceil(this.stage.width() / spacing);
     const rows = Math.ceil(this.stage.height() / spacing);
     const blankSpaces: CheckerboardSpace[] = [];

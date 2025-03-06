@@ -33,21 +33,21 @@ const work = repos[1];
   }}
   layoutProps={{ showNav: true }}
 >
-  <div class="flex flex-col gap-8 py-8">
+  <div class="flex flex-col gap-24 py-8">
     <section>
       <SectionHeader>
         <h1 class={`${ANIMATE_COLORS_CLASSES} text-clamp`}>Projects</h1>
       </SectionHeader>
       <ProjectsOverviewGrid server:defer>
         <Grid slot="fallback" class="animate-pulse">
-          <div class="bg-dodger-blue-900/50 rounded-xs h-[500px] w-full"></div>
-          <div class="bg-dodger-blue-800/50 rounded-xs h-[500px] w-full"></div>
-          <div class="bg-dodger-blue-700/50 rounded-xs h-[500px] w-full"></div>
-          <div class="bg-dodger-blue-600/50 rounded-xs h-[500px] w-full"></div>
-          <div class="bg-dodger-blue-500/50 rounded-xs h-[500px] w-full"></div>
-          <div class="bg-dodger-blue-400/50 rounded-xs h-[500px] w-full"></div>
-          <div class="bg-dodger-blue-300/50 rounded-xs h-[500px] w-full"></div>
-          <div class="bg-dodger-blue-200/50 rounded-xs h-[500px] w-full"></div>
+          <div class="bg-dodger-blue-900/50 h-[500px] w-full rounded-xs"></div>
+          <div class="bg-dodger-blue-800/50 h-[500px] w-full rounded-xs"></div>
+          <div class="bg-dodger-blue-700/50 h-[500px] w-full rounded-xs"></div>
+          <div class="bg-dodger-blue-600/50 h-[500px] w-full rounded-xs"></div>
+          <div class="bg-dodger-blue-500/50 h-[500px] w-full rounded-xs"></div>
+          <div class="bg-dodger-blue-400/50 h-[500px] w-full rounded-xs"></div>
+          <div class="bg-dodger-blue-300/50 h-[500px] w-full rounded-xs"></div>
+          <div class="bg-dodger-blue-200/50 h-[500px] w-full rounded-xs"></div>
         </Grid>
       </ProjectsOverviewGrid>
     </section>
@@ -60,39 +60,40 @@ const work = repos[1];
       </SectionHeader>
       <GitHubProjectsGrid data={personal.data} server:defer name="personal">
         <Grid slot="fallback" class="animate-pulse">
-          <div class="rounded-xs h-[200px] w-full bg-rose-900/50"></div>
-          <div class="rounded-xs h-[200px] w-full bg-rose-800/50"></div>
-          <div class="rounded-xs h-[200px] w-full bg-rose-700/50"></div>
-          <div class="rounded-xs h-[200px] w-full bg-rose-600/50"></div>
-          <div class="rounded-xs h-[200px] w-full bg-rose-500/50"></div>
-          <div class="rounded-xs h-[200px] w-full bg-rose-400/50"></div>
-          <div class="rounded-xs h-[200px] w-full bg-rose-300/50"></div>
-          <div class="rounded-xs h-[200px] w-full bg-rose-200/50"></div>
+          <div class="h-[200px] w-full rounded-xs bg-rose-900/50"></div>
+          <div class="h-[200px] w-full rounded-xs bg-rose-800/50"></div>
+          <div class="h-[200px] w-full rounded-xs bg-rose-700/50"></div>
+          <div class="h-[200px] w-full rounded-xs bg-rose-600/50"></div>
+          <div class="h-[200px] w-full rounded-xs bg-rose-500/50"></div>
+          <div class="h-[200px] w-full rounded-xs bg-rose-400/50"></div>
+          <div class="h-[200px] w-full rounded-xs bg-rose-300/50"></div>
+          <div class="h-[200px] w-full rounded-xs bg-rose-200/50"></div>
+        </Grid>
+      </GitHubProjectsGrid>
+    </section>
+    <section>
+      <SectionHeader>
+        <h2>
+          <span class={`${ANIMATE_COLORS_CLASSES} text-clamp`}>Work</span> GitHub
+          Projects
+        </h2>
+        <p class="text-sm">
+          The following are typically CI items, POC, etc. and are aren't suited
+          for production
+        </p>
+      </SectionHeader>
+      <GitHubProjectsGrid data={work.data} server:defer name="work">
+        <Grid slot="fallback" class="animate-pulse">
+          <div class="bg-aquamarine-900/50 h-[200px] w-full rounded-xs"></div>
+          <div class="bg-aquamarine-800/50 h-[200px] w-full rounded-xs"></div>
+          <div class="bg-aquamarine-700/50 h-[200px] w-full rounded-xs"></div>
+          <div class="bg-aquamarine-600/50 h-[200px] w-full rounded-xs"></div>
+          <div class="bg-aquamarine-500/50 h-[200px] w-full rounded-xs"></div>
+          <div class="bg-aquamarine-400/50 h-[200px] w-full rounded-xs"></div>
+          <div class="bg-aquamarine-300/50 h-[200px] w-full rounded-xs"></div>
+          <div class="bg-aquamarine-200/50 h-[200px] w-full rounded-xs"></div>
         </Grid>
       </GitHubProjectsGrid>
     </section>
   </div>
-  <section>
-    <SectionHeader>
-      <h2>
-        <span class={`${ANIMATE_COLORS_CLASSES} text-clamp`}>Work</span> GitHub Projects
-      </h2>
-      <p class="text-sm">
-        The following are typically CI items, POC, etc. and are aren't suited
-        for production
-      </p>
-    </SectionHeader>
-    <GitHubProjectsGrid data={work.data} server:defer name="work">
-      <Grid slot="fallback" class="animate-pulse">
-        <div class="rounded-xs bg-aquamarine-900/50 h-[200px] w-full"></div>
-        <div class="rounded-xs bg-aquamarine-800/50 h-[200px] w-full"></div>
-        <div class="rounded-xs bg-aquamarine-700/50 h-[200px] w-full"></div>
-        <div class="rounded-xs bg-aquamarine-600/50 h-[200px] w-full"></div>
-        <div class="rounded-xs bg-aquamarine-500/50 h-[200px] w-full"></div>
-        <div class="rounded-xs bg-aquamarine-400/50 h-[200px] w-full"></div>
-        <div class="rounded-xs bg-aquamarine-300/50 h-[200px] w-full"></div>
-        <div class="rounded-xs bg-aquamarine-200/50 h-[200px] w-full"></div>
-      </Grid>
-    </GitHubProjectsGrid>
-  </section>
 </Layout>

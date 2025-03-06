@@ -21,12 +21,12 @@ import Layout from "~/layouts/Root.astro";
 
       <List server:defer>
         <div class="flex animate-pulse flex-col gap-2" slot="fallback">
-          <div class="bg-dodger-blue/20 rounded-xs h-32 w-full"></div>
-          <div class="bg-aquamarine/20 rounded-xs h-32 w-full"></div>
-          <div class="bg-sunglow/20 rounded-xs h-32 w-full"></div>
-          <div class="bg-rose/20 rounded-xs h-32 w-full"></div>
-          <div class="bg-dodger-blue/20 rounded-xs h-32 w-full"></div>
-          <div class="bg-aquamarine/20 rounded-xs h-32 w-full"></div>
+          <div class="bg-dodger-blue/20 h-32 w-full rounded-xs"></div>
+          <div class="bg-aquamarine/20 h-32 w-full rounded-xs"></div>
+          <div class="bg-sunglow/20 h-32 w-full rounded-xs"></div>
+          <div class="bg-rose/20 h-32 w-full rounded-xs"></div>
+          <div class="bg-dodger-blue/20 h-32 w-full rounded-xs"></div>
+          <div class="bg-aquamarine/20 h-32 w-full rounded-xs"></div>
         </div>
       </List>
     </section>
@@ -34,8 +34,6 @@ import Layout from "~/layouts/Root.astro";
 </Layout>
 
 <script>
-  import { getSortButtons } from "~/components/SortControls.astro";
-
   function getContainer() {
     return document.getElementById("posts");
   }
@@ -45,7 +43,8 @@ import Layout from "~/layouts/Root.astro";
 
   // in place sort
   function initializeSortHandler() {
-    const sortButtons = getSortButtons();
+    const sortButtons =
+      document.querySelectorAll<HTMLButtonElement>("[data-sort]");
     let container = getContainer();
     let postEls = getPostEls();
 

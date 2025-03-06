@@ -6,6 +6,7 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "target": "ES2022",
+    "lib": ["ES2023.Array"],
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,

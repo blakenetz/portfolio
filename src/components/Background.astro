@@ -33,8 +33,7 @@ const paths = Astro.url.pathname
   {...props}
   class:list={[
     "fixed inset-0 cursor-default overflow-hidden",
-    { "p-checkerboard-size": showCheckerboard },
-    { "h-100dvh w-100dvw": showCheckerboard },
+    { "h-100dvh w-100dvw lg:p-checkerboard-size": showCheckerboard },
     className,
   ]}
 >

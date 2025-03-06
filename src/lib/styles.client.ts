@@ -9,6 +9,19 @@ export const black = getCssVariable("--color-black");
 const checkerboardSize = getCssVariable("--spacing-checkerboard-size");
 export const spacing = parseInt(checkerboardSize) / 2;
 
+/**
+ * lg breakpoint adds padding and checkerboard graphics
+ * @see {@link file://./../components/Background.astro}
+ * @see {@link file://./canvas.client.ts}
+ * */
+const containerMax = parseInt(
+  getCssVariable("--breakpoint-lg").replace(/[^0-9]/g, ""),
+);
+const base = parseInt(
+  getComputedStyle(document.documentElement).fontSize.replace(/[^0-9]/g, ""),
+);
+export const mobileBreakpoint = containerMax * base;
+
 export function getLanguageColor(language: string) {
   let color: Color = "aquamarine";
   switch (language) {

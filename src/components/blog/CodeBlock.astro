@@ -27,9 +27,10 @@ const showCopy = !["http", "https", "plaintext"].includes(
 <Snackbar />
 
 <script>
-  import { getSnackbarElement } from "~/components/Snackbar.astro";
+  import type { SnackbarElement } from "~/types/webComponents";
+
   const copyButtons = document.querySelectorAll("[data-copy]");
-  const snackbar = getSnackbarElement();
+  const snackbar = document.querySelector<SnackbarElement>("snackbar-wc");
 
   copyButtons.forEach((copyBtn) => {
     copyBtn.addEventListener("click", function (this: HTMLButtonElement) {
@@ -37,7 +38,7 @@ const showCopy = !["http", "https", "plaintext"].includes(
       if (code) {
         // copy text
         navigator.clipboard.writeText(code.innerText);
-        snackbar.show();
+        snackbar?.show();
       }
     });
   });

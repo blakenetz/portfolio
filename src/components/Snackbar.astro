@@ -8,9 +8,7 @@ interface Props extends HTMLAttributes<"div"> {}
 
 const { class: className, ...props } = Astro.props;
 
-export function getSnackbarElement(): SnackbarElement {
-  return document.querySelector("[data-snackbar-root]")!;
-}
+
 ---
 
 <style>
@@ -37,7 +35,7 @@ export function getSnackbarElement(): SnackbarElement {
   }
 </style>
 
-<snackbar-wc data-snackbar-root>
+<snackbar-wc>
   <div
     data-snackbar
     {...props}

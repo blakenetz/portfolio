@@ -41,10 +41,9 @@ const { data, name } = Astro.props;
 
 <script>
   import { actions } from "astro:actions";
-  import { getItemByIndex } from "~/components/projects/GitHubProjectsGridItem.astro";
   import type { RepoData } from "~/types/projects";
-  import { getElements } from "~/components/Button.astro";
-
+  import type { GitHubProjectsGridItem } from "~/types/webComponents";
+  import type { ButtonElement } from "~/types/webComponents";
   export class GitHubProjects extends HTMLElement {
     constructor() {
       super();
@@ -63,7 +62,7 @@ const { data, name } = Astro.props;
               return;
             }
 
-            const btns = getElements(name);
+            const btns = this.querySelectorAll<ButtonElement>(`button-wc`);
             btns.forEach((btn) => (btn.loading = true));
 
             const { data, error } = await actions.sortGithubProjects({
@@ -82,8 +81,10 @@ const { data, name } = Astro.props;
 
     updateItems(data: RepoData) {
       data.forEach((repo, index) => {
-        const item = getItemByIndex(index);
-        item.update(repo);
+        const item = this.querySelector<GitHubProjectsGridItem>(
+          `gh-grid-item-wc[data-index="${index}"]`,
+        );
+        item?.update(repo);
       });
     }
   }

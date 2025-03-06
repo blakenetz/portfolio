@@ -18,17 +18,6 @@ const {
   selector,
   ...props
 } = Astro.props;
-
-export function getElement(selector?: string): ButtonElement {
-  const querySelector =
-    "button-wc" + (selector ? `[data-selector="${selector}"]` : "");
-  return document.querySelector(querySelector)! as ButtonElement;
-}
-export function getElements(selector?: string): NodeListOf<ButtonElement> {
-  const querySelector =
-    "button-wc" + (selector ? `[data-selector="${selector}"]` : "");
-  return document.querySelectorAll(querySelector);
-}
 ---
 
 <button-wc data-selector={selector}>
@@ -39,9 +28,9 @@ export function getElements(selector?: string): NodeListOf<ButtonElement> {
     aria-disabled={initialLoading}
     data-loading={initialLoading}
     class:list={[
-      "border-primary text-primary before:bg-primary after:bg-primary group relative block overflow-hidden border bg-white shadow-2xl transition-all before:absolute before:left-0 before:top-0 before:h-0 before:w-1/4 before:duration-500 after:absolute after:bottom-0 after:right-0 after:h-0 after:w-1/4 after:duration-500 hover:cursor-pointer hover:text-white hover:before:h-full hover:after:h-full disabled:pointer-events-none disabled:opacity-50",
+      "border-primary text-primary before:bg-primary after:bg-primary group relative block overflow-hidden border bg-white shadow-2xl transition-all before:absolute before:top-0 before:left-0 before:h-0 before:w-1/4 before:duration-500 after:absolute after:right-0 after:bottom-0 after:h-0 after:w-1/4 after:duration-500 hover:cursor-pointer hover:text-white hover:before:h-full hover:after:h-full disabled:pointer-events-none disabled:opacity-50",
       {
-        "w-25 min-h-[30px]": size === "sm",
+        "min-h-[30px] w-25": size === "sm",
         "min-h-[50px] w-40": size === "md",
       },
       className,
@@ -49,10 +38,10 @@ export function getElements(selector?: string): NodeListOf<ButtonElement> {
   >
     <span
       data-animation
-      class="before:bg-primary after:bg-primary top-0 flex h-full w-full items-center justify-center before:absolute before:bottom-0 before:left-1/4 before:z-0 before:h-0 before:w-1/4 before:duration-500 after:absolute after:right-1/4 after:top-0 after:z-0 after:h-0 after:w-1/4 after:duration-500 hover:text-white group-hover:before:h-full group-hover:after:h-full"
+      class="before:bg-primary after:bg-primary top-0 flex h-full w-full items-center justify-center before:absolute before:bottom-0 before:left-1/4 before:z-0 before:h-0 before:w-1/4 before:duration-500 group-hover:before:h-full after:absolute after:top-0 after:right-1/4 after:z-0 after:h-0 after:w-1/4 after:duration-500 group-hover:after:h-full hover:text-white"
     ></span>
     <span
-      class="absolute bottom-0 left-0 right-0 top-0 z-10 flex h-full w-full items-center justify-center group-hover:text-white"
+      class="absolute top-0 right-0 bottom-0 left-0 z-10 flex h-full w-full items-center justify-center group-hover:text-white"
     >
       <span data-content>
         <slot />

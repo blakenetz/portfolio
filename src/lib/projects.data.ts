@@ -7,8 +7,6 @@ import OnWater from "~/assets/projects/onwater.png";
 import Cms from "~/assets/projects/cms.svg";
 import BananaPhone from "~/assets/projects/banana-phone.png";
 
-console.log(await getImage({ src: Flower, type: "image/svg+xml" }));
-
 export const projects: ProjectItem[] = [
   {
     title: "Portfolio",

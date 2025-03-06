@@ -1,0 +1,117 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import Flower from "~/assets/flower.svg";
+import IconButton from "~/components/IconButton.astro";
+import Link from "~/components/Link.astro";
+import { titleCase } from "~/lib/utils";
+interface Props extends HTMLAttributes<"main"> {
+  showCheckerboard?: boolean;
+  showNav?: boolean;
+}
+
+const { showCheckerboard, showNav, class: className, ...props } = Astro.props;
+
+const paths = Astro.url.pathname
+  .split("/")
+  .filter(Boolean)
+  .map((path) => ({
+    href: path,
+    title: titleCase(path),
+  }));
+---
+
+<section id="background" class="fixed inset-0 -z-10" transition:persist>
+</section>
+{showCheckerboard && <section id="checkerboard" class="fixed inset-0 -z-10" />}
+<div
+  id="noise"
+  class="bg-size-200 pointer-events-none fixed -inset-[150%] h-[400%] w-[400%] bg-repeat opacity-15"
+  transition:persist
+>
+</div>
+<main
+  {...props}
+  class:list={[
+    "fixed inset-0 cursor-default overflow-hidden",
+    { "h-100dvh w-100dvw lg:p-checkerboard-size": showCheckerboard },
+    className,
+  ]}
+>
+  <div class="h-full overflow-auto">
+    {
+      showNav && (
+        <header class="font-barriecito text-dodger-blue fixed inset-2 z-10 flex h-fit w-fit items-center gap-2 text-2xl font-extrabold">
+          <IconButton as="a" href="/" bg="dodger-blue">
+            <Flower class="h-6 w-6 stroke-white" />
+          </IconButton>
+          <span>/</span>
+          {paths.map((path, i) =>
+            i === paths.length - 1 ? (
+              <span>{path.title}</span>
+            ) : (
+              <Fragment>
+                <Link
+                  href={`/${path.href}`}
+                  color="dodger-blue"
+                  external={false}
+                >
+                  {path.title}
+                </Link>
+                <span>/</span>
+              </Fragment>
+            ),
+          )}
+        </header>
+      )
+    }
+    <slot />
+  </div>
+</main>
+<section
+  id="cursor"
+  class="pointer-events-none fixed inset-0"
+  transition:persist
+>
+</section>
+
+<style>
+  #noise {
+    animation: noise-anim 4s steps(8) infinite;
+    background: url(/noise.png);
+  }
+
+  @keyframes noise-anim {
+    0% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(-10%, 5%);
+    }
+    50% {
+      transform: translate(5%, -10%);
+    }
+    75% {
+      transform: translate(-5%, 10%);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+</style>
+
+<script>
+  import {
+    BlobBackgroundCanvas,
+    CheckerboardBackgroundCanvas,
+    CursorCanvas,
+  } from "~/lib/canvas.client";
+
+  document.addEventListener("astro:page-load", () => {
+    if (document.getElementById("checkerboard")) {
+      new CheckerboardBackgroundCanvas("checkerboard");
+    }
+
+    new BlobBackgroundCanvas("background");
+    new CursorCanvas("cursor");
+  });
+</script>

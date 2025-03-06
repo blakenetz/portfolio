@@ -1,0 +1,74 @@
+---
+import SortControls from "~/components/SortControls.astro";
+import List from "~/components/blog/List.astro";
+import { ANIMATE_COLORS_CLASSES } from "~/consts";
+import Layout from "~/layouts/Root.astro";
+---
+
+<Layout
+  headProps={{
+    title: "BN | Blog",
+    description: "My thoughts. some complete... others not... 😜",
+  }}
+  layoutProps={{ showCheckerboard: true, showNav: true }}
+>
+  <section class="mx-auto flex max-w-xl flex-col gap-8 py-8">
+    <h1 class={`text-6xl text-center font-bold ${ANIMATE_COLORS_CLASSES}`}>
+      Blog
+    </h1>
+    <section class="flex flex-col gap-2">
+      <SortControls />
+
+      <List server:defer>
+        <div class="flex animate-pulse flex-col gap-2" slot="fallback">
+          <div class="bg-dodger-blue/20 h-32 w-full rounded-xs"></div>
+          <div class="bg-aquamarine/20 h-32 w-full rounded-xs"></div>
+          <div class="bg-sunglow/20 h-32 w-full rounded-xs"></div>
+          <div class="bg-rose/20 h-32 w-full rounded-xs"></div>
+          <div class="bg-dodger-blue/20 h-32 w-full rounded-xs"></div>
+          <div class="bg-aquamarine/20 h-32 w-full rounded-xs"></div>
+        </div>
+      </List>
+    </section>
+  </section>
+</Layout>
+
+<script>
+  function getContainer() {
+    return document.getElementById("posts");
+  }
+  function getPostEls() {
+    return document.querySelectorAll<HTMLAnchorElement>("[data-date]");
+  }
+
+  // in place sort
+  function initializeSortHandler() {
+    const sortButtons =
+      document.querySelectorAll<HTMLButtonElement>("[data-sort]");
+    let container = getContainer();
+    let postEls = getPostEls();
+
+    sortButtons.forEach((button) => {
+      button.addEventListener("click", function (this: HTMLButtonElement) {
+        if (!container) container = getContainer();
+        if (!postEls.length) postEls = getPostEls();
+
+        if (this.dataset.sort && container) {
+          container.innerHTML = "";
+          Array.from(postEls)
+            .toSorted((a, b) => {
+              const dateA = parseInt(a.dataset.date ?? "0");
+              const dateB = parseInt(b.dataset.date ?? "0");
+              return this.dataset.sort === "asc"
+                ? dateA - dateB
+                : dateB - dateA;
+            })
+            .forEach((node) => container?.appendChild(node));
+        }
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", initializeSortHandler);
+  initializeSortHandler();
+</script>

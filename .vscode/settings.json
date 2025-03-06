@@ -1,18 +1,25 @@
 {
   "cSpell.words": [
     "autosize",
+    "barriecito",
     "Callouts",
+    "Carta",
     "codeacademy",
     "Confuzed",
+    "danfo",
     "desaturated",
     "dweb",
     "frontmatter",
     "gsap",
+    "hangin",
     "Herrington",
+    "josefin",
+    "konva",
     "lastmod",
     "mantine",
     "matterify",
     "Octo",
+    "Signatry",
     "tabler",
     "typecheck",
     "unstorage",
@@ -31,5 +38,11 @@
     "node_modules/@mantine/core/styles.css"
   ],
   "prettier.proseWrap": "always",
-  "cSpell.enabled": true
+  "cSpell.enabled": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "[astro]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

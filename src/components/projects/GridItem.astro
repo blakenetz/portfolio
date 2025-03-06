@@ -1,0 +1,48 @@
+---
+import type { ComponentProps, HTMLAttributes } from "astro/types";
+
+import Card from "~/components/Card.astro";
+
+interface Props extends HTMLAttributes<"div"> {
+  index: number;
+  cardProps?: ComponentProps<typeof Card>;
+}
+
+const { index, class: className, cardProps, ...props } = Astro.props;
+
+function getGridPattern(index: number, columns: number) {
+  const row = Math.floor(index / columns);
+  const isEvenRow = row % 2 === 0;
+  const position = index % columns;
+
+  if (columns === 2) return isEvenRow ? position === 0 : position === 1;
+  if (columns === 3)
+    return isEvenRow ? [0, 2].includes(position) : position === 1;
+  if (columns === 4)
+    return isEvenRow ? [0, 2].includes(position) : [1, 3].includes(position);
+}
+---
+
+<Card
+  {...cardProps}
+  class:list={[
+    "h-full",
+    {
+      // Base 2-column pattern (mobile)
+      "bg-white": getGridPattern(index, 2),
+      // 3-column pattern (md)
+      "md:bg-transparent": true,
+      "md:bg-white": getGridPattern(index, 3),
+      // 4-column pattern (lg)
+      "lg:bg-transparent": true,
+      "lg:bg-white": getGridPattern(index, 4),
+    },
+  ]}
+>
+  <div
+    class:list={["relative flex h-full flex-col gap-4 p-4", className]}
+    {...props}
+  >
+    <slot />
+  </div>
+</Card>

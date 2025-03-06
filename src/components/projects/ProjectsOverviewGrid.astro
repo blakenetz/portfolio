@@ -1,0 +1,92 @@
+---
+import BriefcaseIcon from "@tabler/icons/outline/briefcase-2.svg";
+import CodeIcon from "@tabler/icons/outline/code.svg";
+import LinkIcon from "@tabler/icons/outline/link.svg";
+import { Image } from "astro:assets";
+import Divider from "~/components/Divider.astro";
+import Link from "~/components/Link.astro";
+import Grid from "~/components/projects/Grid.astro";
+import GridItem from "~/components/projects/GridItem.astro";
+import { projects } from "~/lib/projects.data";
+
+const missingItems = 4 - (projects.length % 4);
+const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
+---
+
+<Grid>
+  {
+    projects.map((project, index) => (
+      <GridItem index={index}>
+        <div
+          class:list={[
+            "w-100% h-30 -mx-4 -mt-4 flex items-center justify-center overflow-hidden",
+            { "bg-aquamarine/40": index % 5 === 0 },
+            { "bg-dodger-blue/40": index % 5 === 1 },
+            { "bg-sunglow/40": index % 5 === 2 },
+            { "bg-rose/40": index % 5 === 3 },
+            { "bg-pumpkin/40": index % 5 === 4 },
+          ]}
+        >
+          <Image
+            src={project.image}
+            alt={project.title}
+            fit="cover"
+            class="px-2"
+          />
+        </div>
+        <div class="flex flex-col">
+          <p class="font-barriecito flex items-center gap-2 font-bold">
+            {project.title}
+          </p>
+          <div class="flex items-center gap-2 text-sm">
+            {project.role && (
+              <Fragment>
+                <p>{project.role}</p>
+                <Divider />
+              </Fragment>
+            )}
+
+            <p class="text-xs italic">
+              {Array.isArray(project.timeFrame)
+                ? project.timeFrame.join(" - ")
+                : project.timeFrame}
+            </p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1 text-xs">
+          {project.employer && (
+            <div class="flex items-center">
+              <BriefcaseIcon class="mr-2 h-4 w-4 flex-shrink-0" />
+              <p>{project.employer}</p>
+            </div>
+          )}
+          {project.link && (
+            <div class="flex items-center">
+              <LinkIcon class="mr-2 h-4 w-4 flex-shrink-0" />
+              <Link href={project.link} class="flex-1">
+                View Project
+              </Link>
+            </div>
+          )}
+          <div class="flex items-center">
+            <CodeIcon class="mr-2 h-4 w-4 flex-shrink-0" />
+            <p>{project.techStack?.join(", ")}</p>
+          </div>
+        </div>
+        <p class="text-sm">{project.description}</p>
+      </GridItem>
+    ))
+  }
+  {
+    // Add empty grid items to complete the last row
+    blanks.map((_, index) => (
+      <GridItem
+        index={projects.length + index}
+        class="hidden lg:block"
+        cardProps={{ showHoverEffect: false }}
+      >
+        <div class="flex flex-col gap-2 p-4" />
+      </GridItem>
+    ))
+  }
+</Grid>

@@ -1,0 +1,196 @@
+---
+title: "Isolated AI with Nextjs"
+description: "Thoughts on how best to utilize AI in a Nextjs app"
+pubDate: "Nov 11, 2024"
+link:
+  type: "github"
+  url: "https://github.com/blakenetz/Forage"
+---
+
+# Isolating AI with Next.js
+
+As much as I enjoyed building
+[this website](https://github.com/blakenetz/portfolio) with Remix, I wanted to
+give arguably the largest/most popular SSR React framework a shot:
+[Next.js](https://nextjs.org/). So, I built a 2-page recipe aggregate that will
+scrape and standardize my favorite recipe sources, and then display them in a
+pretty grid. Oh, and because it's the year 2024, I had to include an LLM
+component. Tutorials are a dime a dozen, so I'm writing this less as a
+comprehensive deep dive, and more as contemplation.
+
+## "Should" or "Could" with AI Tooling
+
+### Applied AI
+
+[Jack Herrington](https://www.youtube.com/watch?v=egUNQ1pvkYs&t=626s) has some
+interesting thoughts on the progression of AI development, or rather, app
+development using AI. His focus is on "applied AI" or how AI is being utilized
+by the developer. To sum it up, the progression ladder goes as following:
+
+1. **Prompt Engineering**: This is the most rudimentary level of AI interaction.
+   As the name suggests, a user simply provides an LLM with a prompt and
+   captures the output.
+2. **RAG**:
+   [Retrieval-Augmented Generation](https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/)
+   is a technique that involves defining a context for the AI. In practice, it
+   means providing a dataset that will be parameterized into the LLM. When the
+   AI generates content, the output will be constrained to the data provided,
+   thus reducing the amount of hallucinations.
+3. **Chaining AI**: This is essentially just the natural next step. By chaining
+   model outputs, we're essentially creating a robust parameterized
+   knowledge-set.
+4. **Fine Tuning and Creating Models**: The last two steps transform the
+   developer's role from a consumer to a contributor. In essence, it's
+   internalizing all the steps above into a single custom-built model that is
+   domain-specific.
+
+### Pure AI
+
+In software engineering, consistency and predictability is king, which is how we
+came about [pure functions](https://en.wikipedia.org/wiki/Pure_function) and
+[idempotency](https://en.wikipedia.org/wiki/Idempotence). AI is exactly the
+opposite. It's a black box where variability can be constrained, but never fully
+encapsulated. Even if graduating through all the steps above, if you provide a
+model with the same prompt a million times, you'd most likely receive a million
+different responses.
+
+When thinking about how to incorporate an LLM into this project, I realized that
+there's no need to integrate a model into the app. The I/O in each layer of the
+app requires regularity. But that doesn't mean I can't employ an LLM into the
+development process.
+
+## Forage App
+
+Now back to the project at hand. As I mentioned above, I'm going to give a quick
+highlight to the how/what/why of Next.js, React 19, and developing this app. For
+the most part, I stuck to a core features instead of reaching outwards to
+libraries.
+
+### Let's Talk AI
+
+I really wanted to integrate a LLM somewhere within this somewhat contrived app,
+but honestly, I couldn't find a reasonable "why." Each layer of the app was
+designed to be pure and layering in an LLM was just adding unpredictability,
+which typically cascades into instability. The app went roughly as follows:
+
+```
+-----------------------------
+|           Client          |
+-----------------------------
+              |
+              v
+-----------------------------
+|        Server Action      |
+-----------------------------
+              |
+              v
+-----------------------------
+|     External API call     |
+-----------------------------
+              |
+              v
+-----------------------------
+|           Client          |
+-----------------------------
+```
+
+Any LLM layer would just be plain silly and expensive considering how many
+tokens it would require. So instead, I integrated it into my workflow. This
+project required a lot of busy work via DOM selectors. Essentially, I would make
+a simple call to the recipe source, parse out the returned HTML, and then
+extract each recipe node. Since the returned HTML structure is more or less the
+same on each subsequent API call, I prompted an AI chatbot with the said
+document and request the selectors in return. To build in some resiliency, I
+also retrieved a set of query selectors, so if one failed, we'd simply move on
+to the next until we hit a match.
+
+### Server Actions and Server Components
+
+As we further evolve towards SSR, React
+[server actions](https://react.dev/reference/rsc/server-actions) are way to
+delineate the environment a function should be call. By using a `use server`
+directive inside a function, we are telling React to create a reference to the
+server function that's accessible to the client. In the following for the `/`
+route, I do a very minimal amount of form validation on the server:
+
+```tsx
+import { Text, TextInput, Title } from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
+
+import styles from "./home.module.css";
+import { redirect } from "next/navigation";
+
+export default function Home() {
+  async function search(formData: FormData) {
+    "use server";
+
+    const value = formData.get("q");
+
+    if (value) {
+      const searchParams = new URLSearchParams({ q: value });
+      redirect(`/search?${searchParams.toString()}`);
+    }
+  }
+
+  return (
+    <main className={styles.main}>
+      <Title>Forage!</Title>
+      <Text>Find your next meal</Text>
+      <form action={search}>
+        <TextInput leftSection={<IconSearch />} size="lg" radius="lg" />
+      </form>
+    </main>
+  );
+}
+```
+
+\*[Github link](https://github.com/blakenetz/Forage/blob/main/app/page.tsx)
+
+In this example, when a user submits the form, a network request to `search` is
+made, the `formData` is handled, and either returns `void` or performs a
+redirect (in which another RSC is rendered and sent to the client).
+
+There's a couple things to note here:
+
+There is no `use server` directive on the top level because Next.js has
+designated RSC as the default options, which means client components are opt-in
+only. Before being sent to the client, React will first "render" the component
+once and only once. During this process, it will see that the `search` function
+is server-only and will declare it in the server enviro and pass a reference to
+the `Home` function. If we excluded the directive, then the function would be
+declared within the scope of the `Home` function, or in other words, it would be
+treated as any other function declaration. Because I don't have any other state
+items and am relying on the browser to handle the form state, I can simply pass
+a single action to the form.
+
+This render-once behavior also allows for `async` components. Take the following
+example:
+
+```tsx
+import { param } from "@/util";
+import { redirect } from "next/navigation";
+
+import { fetchRecipeData } from "./actions";
+import View from "./components/view";
+
+export default async function Search({
+  searchParams,
+}: {
+  searchParams: { [param]: string };
+}) {
+  const query = searchParams[param];
+  if (!query) redirect("/");
+
+  const data = await fetchRecipeData(query);
+
+  return <View data={data} />;
+}
+```
+
+\*[Github link](https://github.com/blakenetz/Forage/blob/main/app/search/page.tsx)
+
+Again, no `use client` directive, so Next.js will render this once on the
+server, wait until all promises are resolved, and then send to the client.
+
+That pretty much sums it up. If you'd like to hear more, then please leave a
+comment below!

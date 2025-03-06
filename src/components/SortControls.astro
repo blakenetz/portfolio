@@ -1,0 +1,41 @@
+---
+import DownArrowIcon from "@tabler/icons/outline/arrow-down.svg";
+import UpArrowIcon from "@tabler/icons/outline/arrow-up.svg";
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"div">;
+
+const { class: className, ...props } = Astro.props as Props;
+---
+
+<div {...props} class:list={["flex items-center justify-end", className]}>
+  <span class="font-barrio mr-2 text-sm">Sort</span>
+  <button
+    type="button"
+    class="hover:text-primary group/iconBtn relative rounded-sm p-1 hover:cursor-pointer"
+    data-sort="asc"
+  >
+    <div
+      class:list={[
+        "invisible group-hover/iconBtn:visible",
+        "from-sunglow via-sunglow to-rose absolute -inset-1 rounded-2xl bg-gradient-to-tr opacity-70 blur-lg filter",
+      ]}
+    >
+    </div>
+    <UpArrowIcon />
+  </button>
+  <button
+    type="button"
+    class="hover:text-primary group/iconBtn relative rounded-sm p-1 hover:cursor-pointer"
+    data-sort="desc"
+  >
+    <div
+      class:list={[
+        "invisible group-hover/iconBtn:visible",
+        "from-sunglow via-sunglow to-rose absolute -inset-1 rounded-2xl bg-gradient-to-tr opacity-70 blur-lg filter",
+      ]}
+    >
+    </div>
+    <DownArrowIcon />
+  </button>
+</div>

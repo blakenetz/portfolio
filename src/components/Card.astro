@@ -1,0 +1,45 @@
+---
+import type { HTMLTag, Polymorphic } from "astro/types";
+
+type Props<Tag extends HTMLTag> = Polymorphic<{
+  as: Tag;
+  showHoverEffect?: boolean;
+}>;
+
+const {
+  as: Tag = "div",
+  class: className,
+  showHoverEffect = true,
+  ...props
+} = Astro.props;
+
+const gradientDirections = [
+  "bg-gradient-to-br",
+  "bg-gradient-to-tr",
+  "bg-gradient-to-bl",
+  "bg-gradient-to-tl",
+  "bg-gradient-to-r",
+  "bg-gradient-to-l",
+];
+
+function getRandomGradientDirection() {
+  return gradientDirections[
+    Math.floor(Math.random() * gradientDirections.length)
+  ];
+}
+---
+
+<Tag {...props} class:list={["group/card relative rounded-sm", className]}>
+  {
+    showHoverEffect && (
+      <div
+        class:list={[
+          "invisible group-hover/card:visible",
+          "from-sunglow via-aquamarine to-dodger-blue-300 absolute -inset-1 rounded-2xl opacity-70 blur-2xl filter",
+          getRandomGradientDirection(),
+        ]}
+      />
+    )
+  }
+  <slot />
+</Tag>

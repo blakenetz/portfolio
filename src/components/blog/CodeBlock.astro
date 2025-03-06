@@ -1,0 +1,45 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import CopyIcon from "@tabler/icons/outline/clipboard.svg";
+import IconButton from "~/components/IconButton.astro";
+import Snackbar from "~/components/Snackbar.astro";
+interface Props extends HTMLAttributes<"pre"> {
+  "data-language": string;
+}
+
+const props = Astro.props;
+
+const showCopy = !["http", "https", "plaintext"].includes(
+  props["data-language"],
+);
+---
+
+<section class="relative">
+  {
+    showCopy && (
+      <IconButton class="absolute right-1 top-1" data-copy>
+        <CopyIcon class="text-white" />
+      </IconButton>
+    )
+  }
+  <pre {...props}><slot /></pre>
+</section>
+<Snackbar />
+
+<script>
+  import type { SnackbarElement } from "~/types/webComponents";
+
+  const copyButtons = document.querySelectorAll("[data-copy]");
+  const snackbar = document.querySelector<SnackbarElement>("snackbar-wc");
+
+  copyButtons.forEach((copyBtn) => {
+    copyBtn.addEventListener("click", function (this: HTMLButtonElement) {
+      const code = this.parentElement?.querySelector("pre");
+      if (code) {
+        // copy text
+        navigator.clipboard.writeText(code.innerText);
+        snackbar?.show();
+      }
+    });
+  });
+</script>

@@ -1,0 +1,95 @@
+---
+import Button from "~/components/Button.astro";
+import GitHubProjectsGridItem from "~/components/projects/GitHubProjectsGridItem.astro";
+import Grid from "~/components/projects/Grid.astro";
+import type { RepoData } from "~/types/projects";
+
+interface Props {
+  data: RepoData;
+  name: "personal" | "work";
+}
+
+const { data, name } = Astro.props;
+---
+
+<gh-projects-wc>
+  <Grid>
+    {
+      data.map((repo, index) => (
+        <GitHubProjectsGridItem repo={repo} index={index} />
+      ))
+    }
+  </Grid>
+  <div class="flex items-center justify-end gap-1 py-2">
+    <span class="font-barrio mr-2 text-sm">Sort</span>
+    <Button
+      size="sm"
+      type="button"
+      data-sort="created"
+      data-name={name}
+      selector={name}>Created</Button
+    >
+    <Button
+      size="sm"
+      type="button"
+      data-sort="updated"
+      data-name={name}
+      selector={name}>Updated</Button
+    >
+  </div>
+</gh-projects-wc>
+
+<script>
+  import { actions } from "astro:actions";
+  import type { RepoData } from "~/types/projects";
+  import type { GitHubProjectsGridItem } from "~/types/webComponents";
+  import type { ButtonElement } from "~/types/webComponents";
+  export class GitHubProjects extends HTMLElement {
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      const sortButtons =
+        this.querySelectorAll<HTMLButtonElement>("[data-sort]");
+
+      sortButtons.forEach((button) => {
+        button.addEventListener("click", async (e) => {
+          if (e.currentTarget instanceof HTMLButtonElement) {
+            const { sort, name } = e.currentTarget.dataset;
+            if (!sort || !name) {
+              console.error("Unable to find dataset properties");
+              return;
+            }
+
+            const btns = this.querySelectorAll<ButtonElement>(`button-wc`);
+            btns.forEach((btn) => (btn.loading = true));
+
+            const { data, error } = await actions.sortGithubProjects({
+              sort,
+              name,
+            });
+
+            if (!error) {
+              this.updateItems(data);
+              btns.forEach((btn) => (btn.loading = false));
+            } else console.error(error);
+          }
+        });
+      });
+    }
+
+    updateItems(data: RepoData) {
+      data.forEach((repo, index) => {
+        const item = this.querySelector<GitHubProjectsGridItem>(
+          `gh-grid-item-wc[data-index="${index}"]`,
+        );
+        item?.update(repo);
+      });
+    }
+  }
+
+  if (!customElements.get("gh-projects-wc")) {
+    customElements.define("gh-projects-wc", GitHubProjects);
+  }
+</script>

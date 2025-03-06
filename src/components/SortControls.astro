@@ -3,7 +3,7 @@ import DownArrowIcon from "@tabler/icons/outline/arrow-down.svg";
 import UpArrowIcon from "@tabler/icons/outline/arrow-up.svg";
 import type { HTMLAttributes } from "astro/types";
 
-interface Props extends HTMLAttributes<"div"> {}
+type Props = HTMLAttributes<"div">;
 
 const { class: className, ...props } = Astro.props as Props;
 ---

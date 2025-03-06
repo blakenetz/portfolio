@@ -7,12 +7,13 @@ import { ANIMATE_COLORS_CLASSES } from "~/consts";
 import Layout from "~/layouts/Root.astro";
 import { getRepos } from "~/lib/projects.server";
 import { status } from "~/lib/utils";
+import { navigate } from "astro:transitions/client";
 
 const repos = await getRepos();
 
 // nothing to show :( redirect
 if (repos.every((r) => r.status === 400)) {
-  return redirect(`/?status=${status.octokit}`);
+  return navigate(`/?status=${status.octokit}`);
 }
 
 const personal = repos[0];

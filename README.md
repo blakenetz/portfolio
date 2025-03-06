@@ -4,6 +4,8 @@ My chunk of the internet.
 
 Live at [blakenetzeband . com](https://blakenetzeband.com)
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9a4607e6-979a-4bca-9eb0-560b505f3c9f/deploy-status)](https://app.netlify.com/sites/blake-netzeband-portfolio/deploys)
+
 ## Specs
 
 - [Remix](https://remix.run/)

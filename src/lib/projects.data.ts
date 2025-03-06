@@ -15,7 +15,7 @@ export const projects: ProjectItem[] = [
       "You're looking at it! This project has lived many lives, including as a Vue, Remix, and now Astro project.",
     techStack: ["Astro", "Tailwind", "TypeScript", "Web Components"],
     link: "https://github.com/blakenetz/portfolio",
-    image: await getImage({ src: Flower, type: "image/svg+xml", fit: "cover" }),
+    image: await getImage({ src: Flower, fit: "cover" }),
   },
   {
     title: "Discover Financial Services",
@@ -32,7 +32,7 @@ export const projects: ProjectItem[] = [
       "Jest",
       "Jenkins",
     ],
-    image: await getImage({ src: Discover, type: "image/png", fit: "cover" }),
+    image: await getImage({ src: Discover, fit: "cover" }),
   },
   {
     title: "The Signatry",
@@ -63,7 +63,7 @@ export const projects: ProjectItem[] = [
       "PostgreSQL",
       "PostGIS",
     ],
-    image: await getImage({ src: OnWater, type: "image/png", fit: "cover" }),
+    image: await getImage({ src: OnWater, fit: "cover" }),
   },
   {
     title: "CMS Environmental Services",
@@ -73,7 +73,7 @@ export const projects: ProjectItem[] = [
       "Alongside 2 other developers, we built an app that digitalized the processes around Colorado’s water regulations.",
     employer: "Kin + Carta",
     techStack: ["React", "Express", "Node.js", "PostgreSQL"],
-    image: await getImage({ src: Cms, type: "image/svg+xml", fit: "cover" }),
+    image: await getImage({ src: Cms, fit: "cover" }),
   },
   {
     title: "Banana Phone",

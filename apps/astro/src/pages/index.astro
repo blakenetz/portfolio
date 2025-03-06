@@ -29,12 +29,10 @@ import { ANIMATE_COLORS_CLASSES } from "~/consts";
     </p>
 
     <div class="flex w-full max-w-xs gap-4">
-      <a href="/projects" data-astro-prefetch="load">
-        <Button>Projects</Button>
-      </a>
-      <a href="/blog" data-astro-prefetch="load">
-        <Button>Blog</Button>
-      </a>
+      <Button as="a" href="/projects" data-astro-prefetch="load"
+        >Projects</Button
+      >
+      <Button as="a" href="/blog" data-astro-prefetch="load">Blog</Button>
     </div>
   </section>
 </RootLayout>

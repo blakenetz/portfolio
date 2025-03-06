@@ -22,11 +22,19 @@ const { data, name } = Astro.props;
   </Grid>
   <div class="flex items-center justify-end gap-1 py-2">
     <span class="font-barrio mr-2 text-sm">Sort</span>
-    <Button size="sm" type="button" data-sort="created" data-name={name}
-      >Created</Button
+    <Button
+      size="sm"
+      type="button"
+      data-sort="created"
+      data-name={name}
+      selector={name}>Created</Button
     >
-    <Button size="sm" type="button" data-sort="updated" data-name={name}
-      >Updated</Button
+    <Button
+      size="sm"
+      type="button"
+      data-sort="updated"
+      data-name={name}
+      selector={name}>Updated</Button
     >
   </div>
 </gh-projects-wc>
@@ -35,6 +43,7 @@ const { data, name } = Astro.props;
   import { actions } from "astro:actions";
   import { getItemByIndex } from "~/components/projects/GitHubProjectsGridItem.astro";
   import type { RepoData } from "~/types/projects";
+  import { getElements } from "~/components/Button.astro";
 
   export class GitHubProjects extends HTMLElement {
     constructor() {
@@ -48,15 +57,24 @@ const { data, name } = Astro.props;
       sortButtons.forEach((button) => {
         button.addEventListener("click", async (e) => {
           if (e.currentTarget instanceof HTMLButtonElement) {
-            const { dataset } = e.currentTarget;
+            const { sort, name } = e.currentTarget.dataset;
+            if (!sort || !name) {
+              console.error("Unable to find dataset properties");
+              return;
+            }
+
+            const btns = getElements(name);
+            btns.forEach((btn) => (btn.loading = true));
 
             const { data, error } = await actions.sortGithubProjects({
-              sort: dataset.sort!,
-              name: dataset.name!,
+              sort,
+              name,
             });
 
-            if (!error) this.updateItems(data);
-            else console.error(error);
+            if (!error) {
+              this.updateItems(data);
+              btns.forEach((btn) => (btn.loading = false));
+            } else console.error(error);
           }
         });
       });

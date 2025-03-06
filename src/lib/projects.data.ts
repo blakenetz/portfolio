@@ -1,4 +1,13 @@
 import type { ProjectItem } from "~/types/projects";
+import { getImage } from "astro:assets";
+import Flower from "~/assets/flower.svg";
+import Discover from "~/assets/projects/discover.png";
+import TheSignatry from "~/assets/projects/the-signatry.png";
+import OnWater from "~/assets/projects/onwater.png";
+import Cms from "~/assets/projects/cms.svg";
+import BananaPhone from "~/assets/projects/banana-phone.png";
+
+console.log(await getImage({ src: Flower, type: "image/svg+xml" }));
 
 export const projects: ProjectItem[] = [
   {
@@ -8,7 +17,7 @@ export const projects: ProjectItem[] = [
       "You're looking at it! This project has lived many lives, including as a Vue, Remix, and now Astro project.",
     techStack: ["Astro", "Tailwind", "TypeScript", "Web Components"],
     link: "https://github.com/blakenetz/portfolio",
-    image: import("~/assets/flower.svg"),
+    image: await getImage({ src: Flower, type: "image/svg+xml", fit: "cover" }),
   },
   {
     title: "Discover Financial Services",
@@ -25,7 +34,7 @@ export const projects: ProjectItem[] = [
       "Jest",
       "Jenkins",
     ],
-    image: import("~/assets/projects/discover.png"),
+    image: await getImage({ src: Discover, type: "image/png", fit: "cover" }),
   },
   {
     title: "The Signatry",
@@ -35,7 +44,11 @@ export const projects: ProjectItem[] = [
       "Onboarded to fight fires, I restored this project by unifying the dev team and promoting high quality code. I also generated numerous scripts to automate recurring SQL queries and facilitate knowledge-sharing.",
     employer: "Kin + Carta",
     techStack: ["React", "Typescript", "TypeORM", "GraphQL", "PostgreSQL"],
-    image: import("~/assets/projects/the-signatry.png"),
+    image: await getImage({
+      src: TheSignatry,
+      type: "image/png",
+      fit: "cover",
+    }),
   },
   {
     title: "OnWater",
@@ -52,7 +65,7 @@ export const projects: ProjectItem[] = [
       "PostgreSQL",
       "PostGIS",
     ],
-    image: import("~/assets/projects/onwater.png"),
+    image: await getImage({ src: OnWater, type: "image/png", fit: "cover" }),
   },
   {
     title: "CMS Environmental Services",
@@ -62,7 +75,7 @@ export const projects: ProjectItem[] = [
       "Alongside 2 other developers, we built an app that digitalized the processes around Colorado’s water regulations.",
     employer: "Kin + Carta",
     techStack: ["React", "Express", "Node.js", "PostgreSQL"],
-    image: import("~/assets/projects/cms.svg"),
+    image: await getImage({ src: Cms, type: "image/svg+xml", fit: "cover" }),
   },
   {
     title: "Banana Phone",
@@ -82,6 +95,10 @@ export const projects: ProjectItem[] = [
       "AWS Cloudfront",
     ],
     link: "https://github.com/blakenetz/banana-phone",
-    image: import("~/assets/projects/banana-phone.png"),
+    image: await getImage({
+      src: BananaPhone,
+      type: "image/png",
+      fit: "cover",
+    }),
   },
 ];

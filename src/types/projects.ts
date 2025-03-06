@@ -1,5 +1,5 @@
 import type { Endpoints } from "@octokit/types";
-
+import type { GetImageResult } from "astro";
 export type Sort = "updated" | "created";
 export type UserScope = "work" | "personal";
 
@@ -33,5 +33,5 @@ export type ProjectItem = {
   employer?: string;
   techStack?: string[];
   link?: string;
-  image: Promise<typeof import("*.png")>;
+  image: GetImageResult;
 };

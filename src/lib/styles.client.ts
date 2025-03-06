@@ -1,7 +1,12 @@
 import type { Color } from "~/types";
+import theme from "tailwindcss/defaultTheme";
 
 export function getCssVariable(name: string) {
   return getComputedStyle(document.documentElement).getPropertyValue(name);
+}
+
+function cssValueToInt(value: string) {
+  return parseInt(value.replace(/[^0-9]/g, ""));
 }
 
 export const white = getCssVariable("--color-white");
@@ -14,12 +19,8 @@ export const spacing = parseInt(checkerboardSize) / 2;
  * @see {@link file://./../components/Background.astro}
  * @see {@link file://./canvas.client.ts}
  * */
-const containerMax = parseInt(
-  getCssVariable("--breakpoint-lg").replace(/[^0-9]/g, ""),
-);
-const base = parseInt(
-  getComputedStyle(document.documentElement).fontSize.replace(/[^0-9]/g, ""),
-);
+const containerMax = cssValueToInt(theme.screens.lg);
+const base = cssValueToInt(getComputedStyle(document.documentElement).fontSize);
 export const mobileBreakpoint = containerMax * base;
 
 export function getLanguageColor(language: string) {

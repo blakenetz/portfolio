@@ -6,7 +6,7 @@ export const projects: ProjectItem[] = [
     timeFrame: 2025,
     description:
       "You're looking at it! This project has lived many lives, including as a Vue, Remix, and now Astro project.",
-    techStack: ["Astro", "Tailwind", "TypeScript"],
+    techStack: ["Astro", "Tailwind", "TypeScript", "Web Components"],
     link: "https://github.com/blakenetz/portfolio",
     image: import("~/assets/flower.svg"),
   },

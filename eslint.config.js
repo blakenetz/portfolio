@@ -2,11 +2,13 @@ import js from "@eslint/js";
 import typescript from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
 import globals from "globals";
+import eslintPluginAstro from "eslint-plugin-astro";
 
 export default [
   // Base JS config
   js.configs.recommended,
-  
+  ...eslintPluginAstro.configs.recommended,
+
   // Global settings
   { ignores: ["**/build/*", "**/node_modules/*"] },
   {

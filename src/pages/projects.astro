@@ -53,7 +53,7 @@ const work = repos[1];
     </section>
     <section>
       <SectionHeader>
-        <h2>
+        <h2 class="flex flex-col">
           <span class={`${ANIMATE_COLORS_CLASSES} text-clamp`}>Personal</span> GitHub
           Projects
         </h2>
@@ -73,14 +73,10 @@ const work = repos[1];
     </section>
     <section>
       <SectionHeader>
-        <h2>
-          <span class={`${ANIMATE_COLORS_CLASSES} text-clamp`}>Work</span> GitHub
+        <h2 class="flex flex-col">
+          <span class={`${ANIMATE_COLORS_CLASSES} text-clamp `}>Work</span> GitHub
           Projects
         </h2>
-        <p class="text-sm">
-          The following are typically CI items, POC, etc. and are aren't suited
-          for production
-        </p>
       </SectionHeader>
       <GitHubProjectsGrid data={work.data} server:defer name="work">
         <Grid slot="fallback" class="animate-pulse">

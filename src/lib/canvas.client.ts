@@ -55,12 +55,13 @@ function generateRandomPoints(index: number) {
 
 function getGradientStops(index: number) {
   const color = colors[index % colors.length]!;
+  const fallback = getCssVariable(`--color-${color}`);
 
   return [
     0,
-    getCssVariable(`--color-${color}-200`),
+    getCssVariable(`--color-${color}-200`) || fallback,
     1,
-    getCssVariable(`--color-${color}-500`),
+    getCssVariable(`--color-${color}-500`) || fallback,
   ];
 }
 

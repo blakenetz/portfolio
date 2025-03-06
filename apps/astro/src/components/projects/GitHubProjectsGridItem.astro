@@ -104,6 +104,7 @@ export function getItemByIndex(index: number): GitHubProjectsGridItem {
 
     constructor() {
       super();
+
       this.forkEl = this.querySelector("[data-fork]")!;
       this.nameEl = this.querySelector("[data-name]")!;
       this.descriptionEl = this.querySelector("[data-description]")!;
@@ -116,6 +117,14 @@ export function getItemByIndex(index: number): GitHubProjectsGridItem {
       this.languageNameEl = this.querySelector("[data-language-name]")!;
       this.createdAtEl = this.querySelector("[data-created-at]")!;
       this.updatedAtEl = this.querySelector("[data-updated-at]")!;
+    }
+
+    connectedCallback() {
+      if (this.languageNameEl.innerText) {
+        this.languageColorEl.style.backgroundColor = getLanguageColor(
+          this.languageNameEl.innerText,
+        );
+      }
     }
 
     update(repo: RepoData[number]) {

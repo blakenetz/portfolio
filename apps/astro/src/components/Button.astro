@@ -92,13 +92,11 @@ export function getElements(selector?: string): NodeListOf<ButtonElement> {
 
     set loading(value: boolean) {
       if (value) {
-        this.setAttribute("loading", "true");
         this.root.setAttribute("disabled", "true");
         this.root.setAttribute("aria-disabled", "true");
         this.contentContainer.innerHTML = "";
         this.contentContainer.appendChild(this.loader);
       } else {
-        this.removeAttribute("data-loading");
         this.root.removeAttribute("disabled");
         this.root.removeAttribute("aria-disabled");
         this.contentContainer.innerHTML = "";

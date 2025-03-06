@@ -1,5 +1,5 @@
 import { LRUCache } from "lru-cache";
-import path from "path";
+import path from "node:path";
 import { createStorage, type Storage } from "unstorage";
 import fsDriver from "unstorage/drivers/fs";
 

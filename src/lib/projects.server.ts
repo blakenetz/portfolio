@@ -6,9 +6,9 @@ import type {
   Sort,
   UserScope,
 } from "~/types/projects";
-
 import Api from "./projects.api";
 import { formatDate } from "./utils";
+
 const reg = /(:[\w\-+]+:)/g;
 function parseEmojis(text: string | null) {
   if (!text) return null;

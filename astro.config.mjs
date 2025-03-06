@@ -14,6 +14,22 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    ssr: {
+      external: [
+        "node:path",
+        "path",
+        "fs",
+        "fs/promises",
+        "node:fs",
+        "node:fs/promises",
+        "events",
+        "os",
+        "node:stream",
+      ],
+    },
+    build: {
+      minify: false,
+    },
   },
 
   experimental: {

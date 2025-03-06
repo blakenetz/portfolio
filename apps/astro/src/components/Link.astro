@@ -4,13 +4,23 @@ import type { HTMLAttributes } from "astro/types";
 interface Props extends HTMLAttributes<"a"> {
   containerProps?: HTMLAttributes<"span">;
   external?: boolean;
+  color?: "primary" | "dodger-blue";
 }
-const { containerProps, external = true, ...props } = Astro.props;
+const {
+  containerProps,
+  external = true,
+  color = "primary",
+  ...props
+} = Astro.props;
 ---
 
 <span
   {...containerProps}
-  class:list={["text-primary group/link relative", containerProps?.class]}
+  class:list={[
+    "text-primary group/link relative",
+    { "text-dodger-blue": color === "dodger-blue" },
+    containerProps?.class,
+  ]}
 >
   <a
     target={external ? "_blank" : undefined}
@@ -20,6 +30,9 @@ const { containerProps, external = true, ...props } = Astro.props;
     <slot />
   </a>
   <span
-    class="bg-primary absolute -bottom-1 left-0 h-1 w-0 transition-all group-hover/link:w-full"
-  ></span>
+    class:list={[
+      "absolute -bottom-1 left-0 h-1 w-0 transition-all group-hover/link:w-full",
+      { "bg-primary": color === "primary" },
+      { "bg-dodger-blue": color === "dodger-blue" },
+    ]}></span>
 </span>

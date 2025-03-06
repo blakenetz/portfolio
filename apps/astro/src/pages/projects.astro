@@ -2,12 +2,13 @@
 import GitHubProjectsGrid from "~/components/projects/GitHubProjectsGrid.astro";
 import Grid from "~/components/projects/Grid.astro";
 import ProjectsOverviewGrid from "~/components/projects/ProjectsOverviewGrid.astro";
+import SectionHeader from "~/components/projects/SectionHeader.astro";
+import { ANIMATE_COLORS_CLASSES } from "~/consts";
 import Layout from "~/layouts/Root.astro";
 import { getRepos } from "~/lib/projects.server";
 import { status } from "~/lib/utils";
-import { ANIMATE_COLORS_CLASSES } from "~/consts";
-import SectionHeader from "~/components/projects/SectionHeader.astro";
-const repos = await getRepos(Astro.request);
+
+const repos = await getRepos();
 
 // nothing to show :( redirect
 if (repos.every((r) => r.status === 400)) {

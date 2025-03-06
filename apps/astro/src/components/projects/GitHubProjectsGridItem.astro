@@ -1,0 +1,162 @@
+---
+import GitForkIcon from "@tabler/icons/outline/git-fork.svg";
+import UserCircleIcon from "@tabler/icons/outline/user-circle.svg";
+import type { HTMLAttributes } from "astro/types";
+import Divider from "~/components/Divider.astro";
+import Link from "~/components/Link.astro";
+import GridItem from "~/components/projects/GridItem.astro";
+import type { RepoData } from "~/types/projects";
+import type { GitHubProjectsGridItem } from "~/types/webComponents";
+
+interface Props extends HTMLAttributes<"div"> {
+  repo: RepoData[number];
+  index: number;
+}
+
+const { class: className, repo, index, ...props } = Astro.props;
+
+export function getItemByIndex(index: number): GitHubProjectsGridItem {
+  return document.querySelector(`[data-index="${index}"]`)!;
+}
+---
+
+<gh-grid-item-wc data-index={index}>
+  <GridItem
+    {...props}
+    index={index}
+    class:list={["justify-between", className]}
+  >
+    <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 font-bold">
+        <GitForkIcon
+          class:list={["h-4 w-4", { hidden: !repo.fork }]}
+          data-fork
+        />
+        <span class="font-barrio" data-name>{repo.name}</span>
+      </div>
+    </div>
+
+    <p class:list={["text-sm", { hidden: !repo.description }]} data-description>
+      {repo.description}
+    </p>
+
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center gap-2 text-sm">
+        <Link href={repo.html_url} data-gh-link>View on Github</Link>
+
+        <div
+          data-user
+          class:list={["flex items-center gap-2", { hidden: !repo.user }]}
+        >
+          <Divider />
+          <Link
+            class="flex flex-row items-center gap-1"
+            href={`https://github.com/${repo.user}`}
+            data-user-link
+          >
+            <UserCircleIcon class="h-4 w-4" />
+            <span data-user-name>{repo.user}</span>
+          </Link>
+        </div>
+      </div>
+      <div
+        class="flex w-full flex-col items-center justify-between gap-1 text-xs md:flex-row"
+      >
+        <div
+          {...props}
+          class:list={["flex items-center gap-2", { hidden: !repo.language }]}
+          data-language
+        >
+          <div class="h-2 w-2 rounded-full p-1" data-language-color></div>
+          <span data-language-name>{repo.language}</span>
+          <Divider />
+        </div>
+
+        <p class:list={[{ hidden: !repo.created_at }]}>
+          Created <span data-created-at>{repo.created_at}</span>
+        </p>
+        <Divider />
+        <p class:list={[{ hidden: !repo.updated_at }]}>
+          Updated <span data-updated-at>{repo.updated_at}</span>
+        </p>
+      </div>
+    </div>
+  </GridItem>
+</gh-grid-item-wc>
+
+<script>
+  import type { RepoData } from "~/types/projects";
+  import { getLanguageColor } from "~/lib/styles.client";
+
+  export class GitHubProjectsGridItem extends HTMLElement {
+    forkEl: SVGElement;
+    nameEl: HTMLSpanElement;
+    descriptionEl: HTMLParagraphElement;
+    ghLinkEl: HTMLAnchorElement;
+    userEl: HTMLDivElement;
+    userLinkEl: HTMLAnchorElement;
+    userNameEl: HTMLSpanElement;
+    languageEl: HTMLDivElement;
+    languageColorEl: HTMLDivElement;
+    languageNameEl: HTMLSpanElement;
+    createdAtEl: HTMLSpanElement;
+    updatedAtEl: HTMLSpanElement;
+
+    constructor() {
+      super();
+      this.forkEl = this.querySelector("[data-fork]")!;
+      this.nameEl = this.querySelector("[data-name]")!;
+      this.descriptionEl = this.querySelector("[data-description]")!;
+      this.ghLinkEl = this.querySelector("[data-gh-link]")!;
+      this.userEl = this.querySelector("[data-user]")!;
+      this.userLinkEl = this.querySelector("[data-user-link]")!;
+      this.userNameEl = this.querySelector("[data-user-name]")!;
+      this.languageEl = this.querySelector("[data-language]")!;
+      this.languageColorEl = this.querySelector("[data-language-color]")!;
+      this.languageNameEl = this.querySelector("[data-language-name]")!;
+      this.createdAtEl = this.querySelector("[data-created-at]")!;
+      this.updatedAtEl = this.querySelector("[data-updated-at]")!;
+    }
+
+    update(repo: RepoData[number]) {
+      this.forkEl.classList.toggle("hidden", !repo.fork);
+      this.nameEl.textContent = repo.name;
+      this.descriptionEl.textContent = repo.description;
+      this.ghLinkEl.href = repo.html_url;
+      if (repo.user) {
+        this.userLinkEl.href = `https://github.com/${repo.user}`;
+        this.userNameEl.textContent = repo.user;
+        this.userEl.classList.remove("hidden");
+      } else {
+        this.userEl.classList.add("hidden");
+      }
+      if (repo.language) {
+        this.languageColorEl.style.backgroundColor = getLanguageColor(
+          repo.language,
+        );
+        this.languageNameEl.textContent = repo.language;
+        this.languageEl.classList.remove("hidden");
+      } else {
+        this.languageEl.classList.add("hidden");
+      }
+
+      if (repo.created_at) {
+        this.createdAtEl.textContent = repo.created_at;
+        this.createdAtEl.classList.remove("hidden");
+      } else {
+        this.createdAtEl.classList.add("hidden");
+      }
+
+      if (repo.updated_at) {
+        this.updatedAtEl.textContent = repo.updated_at;
+        this.updatedAtEl.classList.remove("hidden");
+      } else {
+        this.updatedAtEl.classList.add("hidden");
+      }
+    }
+  }
+
+  if (!customElements.get("gh-grid-item-wc")) {
+    customElements.define("gh-grid-item-wc", GitHubProjectsGridItem);
+  }
+</script>

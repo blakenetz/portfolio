@@ -1,14 +1,9 @@
 ---
-import GitForkIcon from "@tabler/icons/outline/git-fork.svg";
-import UserCircleIcon from "@tabler/icons/outline/user-circle.svg";
-import Divider from "~/components/Divider.astro";
-import Link from "~/components/Link.astro";
-import CodeLanguage from "~/components/projects/CodeLanguage.astro";
-import Grid from "~/components/projects/Grid.astro";
-import GridItem from "~/components/projects/GridItem.astro";
-
-import type { RepoData } from "~/types/projects";
 import Button from "~/components/Button.astro";
+import GitHubProjectsGridItem from "~/components/projects/GitHubProjectsGridItem.astro";
+import Grid from "~/components/projects/Grid.astro";
+import type { RepoData } from "~/types/projects";
+
 interface Props {
   data: RepoData;
   name: "personal" | "work";
@@ -17,48 +12,11 @@ interface Props {
 const { data, name } = Astro.props;
 ---
 
-<section>
+<gh-projects-wc>
   <Grid>
     {
       data.map((repo, index) => (
-        <GridItem index={index} class="justify-between">
-          <div class="flex items-center gap-2">
-            <div class="flex items-center gap-2 font-bold">
-              {repo.fork && <GitForkIcon class="h-4 w-4" />}
-              <span class="font-barrio">{repo.name}</span>
-            </div>
-          </div>
-          {repo.description && <p class="text-sm">{repo.description}</p>}
-          <div class="flex flex-col gap-2">
-            <div class="flex items-center gap-2 text-sm">
-              <Link href={repo.html_url}>View on Github</Link>
-              {repo.user && (
-                <>
-                  <Divider />
-                  <Link
-                    class="flex flex-row items-center gap-1"
-                    href={`https://github.com/${repo.user}`}
-                  >
-                    <UserCircleIcon class="h-4 w-4" />
-                    <span>{repo.user}</span>
-                  </Link>
-                </>
-              )}
-            </div>
-            <div class="flex w-full flex-col items-center justify-between gap-1 text-xs md:flex-row">
-              {repo.language && (
-                <>
-                  <CodeLanguage language={repo.language} />
-                  <Divider />
-                </>
-              )}
-
-              <p>{`Created ${repo.created_at}`}</p>
-              <Divider />
-              <p>{`Updated ${repo.updated_at}`}</p>
-            </div>
-          </div>
-        </GridItem>
+        <GitHubProjectsGridItem repo={repo} index={index} />
       ))
     }
   </Grid>
@@ -71,36 +29,48 @@ const { data, name } = Astro.props;
       >Updated</Button
     >
   </div>
-</section>
+</gh-projects-wc>
 
 <script>
   import { actions } from "astro:actions";
+  import { getItemByIndex } from "~/components/projects/GitHubProjectsGridItem.astro";
+  import type { RepoData } from "~/types/projects";
 
-  // in place sort
-  function initializeSortHandler() {
-    const sortButtons =
-      document.querySelectorAll<HTMLButtonElement>("[data-sort]");
+  export class GitHubProjects extends HTMLElement {
+    constructor() {
+      super();
+    }
 
-    console.log(sortButtons);
+    connectedCallback() {
+      const sortButtons =
+        this.querySelectorAll<HTMLButtonElement>("[data-sort]");
 
-    sortButtons.forEach((button) => {
-      button.addEventListener(
-        "click",
-        async function (this: HTMLButtonElement) {
-          console.log("click", this);
-          const { data, error } = await actions.sortGithubProjects({
-            sort: this.dataset.sort,
-            name: this.dataset.name!,
-          });
+      sortButtons.forEach((button) => {
+        button.addEventListener("click", async (e) => {
+          if (e.currentTarget instanceof HTMLButtonElement) {
+            const { dataset } = e.currentTarget;
 
-          if (!error) {
-            console.log(data);
-          } else console.error(error);
-        },
-      );
-    });
+            const { data, error } = await actions.sortGithubProjects({
+              sort: dataset.sort!,
+              name: dataset.name!,
+            });
+
+            if (!error) this.updateItems(data);
+            else console.error(error);
+          }
+        });
+      });
+    }
+
+    updateItems(data: RepoData) {
+      data.forEach((repo, index) => {
+        const item = getItemByIndex(index);
+        item.update(repo);
+      });
+    }
   }
 
-  document.addEventListener("astro:page-load", initializeSortHandler);
-  initializeSortHandler();
+  if (!customElements.get("gh-projects-wc")) {
+    customElements.define("gh-projects-wc", GitHubProjects);
+  }
 </script>

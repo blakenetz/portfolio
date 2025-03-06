@@ -1,5 +1,7 @@
 {
-  "include": ["./apps/**/*"],
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"],
   "compilerOptions": {
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -9,6 +11,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "noEmit": true
+    "noEmit": true,
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+    "verbatimModuleSyntax": true
   }
 }

@@ -26,7 +26,7 @@ const paths = Astro.url.pathname
         <span>{path.title}</span>
       ) : (
         <Fragment>
-          <Link href={`/${path.href}`} color="dodger-blue" external={false}>
+          <Link href={`/${path.href}`} color="dodger-blue">
             {path.title}
           </Link>
           <span>/</span>

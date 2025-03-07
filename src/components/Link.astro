@@ -6,12 +6,7 @@ interface Props extends HTMLAttributes<"a"> {
   external?: boolean;
   color?: "primary" | "dodger-blue";
 }
-const {
-  containerProps,
-  external = true,
-  color = "primary",
-  ...props
-} = Astro.props;
+const { containerProps, external, color = "primary", ...props } = Astro.props;
 ---
 
 <span

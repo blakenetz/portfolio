@@ -5,9 +5,9 @@ import ClipboardIcon from "@tabler/icons/outline/clipboard.svg";
 import MailIcon from "@tabler/icons/outline/mail.svg";
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import CodeBlock from "~/components/blog/CodeBlock.astro";
+import ExternalLink from "~/components/blog/ExternalLink.astro";
 import SourceLink from "~/components/blog/SourceLink.astro";
 import Button from "~/components/Button.astro";
-import Link from "~/components/Link.astro";
 import Snackbar from "~/components/Snackbar.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
 import Layout from "~/layouts/Root.astro";
@@ -68,7 +68,12 @@ const emailHref =
     <div
       class="prose prose-h1:font-bold prose-h1:text-xl prose-a:text-primary prose-a:no-underline prose-p:text-justify prose-img:rounded-xl prose-headings:underline max-w-full px-2"
     >
-      <Content components={{ a: Link, pre: CodeBlock }} />
+      <Content
+        components={{
+          a: ExternalLink,
+          pre: CodeBlock,
+        }}
+      />
     </div>
     <div>
       Share on...

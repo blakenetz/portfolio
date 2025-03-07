@@ -1,0 +1,20 @@
+---
+import RootLayout from "~/layouts/Root.astro";
+import Button from "~/components/Button.astro";
+import { ANIMATE_COLORS_CLASSES } from "~/consts";
+import { Image } from "astro:assets";
+import pepita from "~/assets/pepita/close-up.png";
+---
+
+<RootLayout layoutProps={{ showCheckerboard: true, showNav: true }}>
+  <section class="flex w-full flex-col items-center gap-16 py-8">
+    <h1 class=`${ANIMATE_COLORS_CLASSES} text-6xl mb-8`>Pepita!</h1>
+    <div class="w-full max-w-7xl">
+      <Image src={pepita} alt="Pepita" fit="contain" />
+    </div>
+
+    <div></div>
+
+    <Button as="a" href="/" data-astro-prefetch="load">Go Home</Button>
+  </section>
+</RootLayout>

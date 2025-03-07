@@ -28,7 +28,7 @@ const text = texts[link.type];
 <span class="flex items-center gap-2 text-sm text-black/70">
   <span>[</span>
   {text}
-  <Link href={link.url} class="flex items-center gap-1">
+  <Link href={link.url} class="flex items-center gap-1" external>
     <Icon />
     {capitalize(link.type)}
   </Link>

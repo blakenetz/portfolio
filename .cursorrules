@@ -1,6 +1,8 @@
+# Cursor Rules
+
 You are an expert in JavaScript, TypeScript, and Astro framework for scalable web development.
 
-Key Principles
+## Key Principles
 
 - Write concise, technical responses with accurate Astro examples.
 - Leverage Astro's partial hydration and multi-framework support effectively.
@@ -8,60 +10,68 @@ Key Principles
 - Use descriptive variable names and follow Astro's naming conventions.
 - Organize files using Astro's file-based routing system.
 
-  Project Structure
+## Overview
 
-  This is a monorepo. There are 2 apps:
+This project uses the following tools/libraries:
 
-  - Astro
-  - Remix
+- TailwindCSS for styling
+- Netlify for static deployments
+- Astro as a framework
+- Prettier for code formatting
+- Eslint for code cleanliness and consistency
+- Unstorage as a caching layer
+- TypeScript
+- Konva for canvas implementations
 
-  Both apps are in "apps" directory. The remix app is the original app. We migrating it to Astro. It will not be a one-to-one migration. Instead, we are rebuilding it from scratch.
+Please refer to the package.json for further dependencies.
 
-  Remix Project Structure
+## Project Structure
 
-  The remix project uses Mantine as the UI library with css modules for additional styling.
+Use the recommended Astro project structure:
 
-  Astro Project Structure
+- src/
+  - actions/
+  - assets/
+  - components/
+  - content/blob/
+  - layouts/
+  - libs/
+  - pages/
+  - styles/
+  - types/
+  - content.config.ts
+- public/
+- astro.config.mjs
 
-- Use the recommended Astro project structure:
-
-  - src/
-    - components/
-    - layouts/
-    - pages/
-    - styles/
-  - public/
-  - astro.config.mjs
-
-  Component Development
+## Component Development
 
 - Create .astro files for Astro components.
-- Use framework-specific components (React, Vue, Svelte) when necessary.
+- Do _not_ use a UI library (instead, rely on web components)
 - Implement proper component composition and reusability.
 - Use Astro's component props for data passing.
-- Leverage Astro's built-in components like <Markdown /> when appropriate.
+- Leverage Astro's built-in components like `<Image />` when appropriate.
 
-  Routing and Pages
+## Routing and Pages
 
 - Utilize Astro's file-based routing system in the src/pages/ directory.
-- Implement dynamic routes using [...slug].astro syntax.
+- Implement dynamic routes using `[...slug].astro` syntax.
 - Use getStaticPaths() for generating static pages with dynamic routes.
 - Implement proper 404 handling with a 404.astro page.
 
-  Content Management
+## Content Management
 
 - Use Markdown (.md) or MDX (.mdx) files for content-heavy pages.
 - Leverage Astro's built-in support for frontmatter in Markdown files.
 - Implement content collections for organized content management.
 
-  Styling
+## Styling
 
-- Use Astro's scoped styling with <style> tags in .astro files.
+- Use Astro's scoped styling with `<style>` tags in .astro files.
 - Leverage global styles when necessary, importing them in layouts.
-- Utilize CSS preprocessing with Sass or Less if required.
 - Implement responsive design using CSS custom properties and media queries.
+- Utilize Tailwind
 
-  Performance Optimization
+## Performance Optimization
 
 - Minimize use of client-side JavaScript; leverage Astro's static generation.
 - Use the client:\* directives judiciously for partial hydration:
@@ -71,37 +81,36 @@ Key Principles
 - Implement proper lazy loading for images and other assets.
 - Utilize Astro's built-in asset optimization features.
 
-  Data Fetching
+## Data Fetching
 
 - Use Astro.props for passing data to components.
 - Implement getStaticPaths() for fetching data at build time.
 - Use Astro.glob() for working with local files efficiently.
 - Implement proper error handling for data fetching operations.
 
-  SEO and Meta Tags
+## SEO and Meta Tags
 
-- Use Astro's <head> tag for adding meta information.
+- Use Astro's `<head>` tag for adding meta information.
 - Implement canonical URLs for proper SEO.
-- Use the <SEO> component pattern for reusable SEO setups.
+- Use the `<SEO>` component pattern for reusable SEO setups.
 
-  Integrations and Plugins
+## Integrations and Plugins
 
 - Utilize Astro integrations for extending functionality (e.g., @astrojs/image).
 - Implement proper configuration for integrations in astro.config.mjs.
 - Use Astro's official integrations when available for better compatibility.
 
-  Build and Deployment
+## Build and Deployment
 
 - Optimize the build process using Astro's build command.
 - Implement proper environment variable handling for different environments.
-- Use static hosting platforms compatible with Astro (Netlify, Vercel, etc.).
 - Implement proper CI/CD pipelines for automated builds and deployments.
 
-  Styling with Tailwind CSS
+## Styling with Tailwind CSS
 
 - Integrate Tailwind CSS with Astro @astrojs/tailwind
 
-  Tailwind CSS Best Practices
+## Tailwind CSS Best Practices
 
 - Use Tailwind utility classes extensively in your Astro components.
 - Leverage Tailwind's responsive design utilities (sm:, md:, lg:, etc.).
@@ -109,30 +118,24 @@ Key Principles
 - Implement custom theme extensions in tailwind.config.cjs when necessary.
 - Never use the @apply directive
 
-  Testing
-
-- Implement unit tests for utility functions and helpers.
-- Use end-to-end testing tools like Cypress for testing the built site.
-- Implement visual regression testing if applicable.
-
-  Accessibility
+## Accessibility
 
 - Ensure proper semantic HTML structure in Astro components.
 - Implement ARIA attributes where necessary.
 - Ensure keyboard navigation support for interactive elements.
 
-  Key Conventions
+## Key Conventions
 
-  1. Follow Astro's Style Guide for consistent code formatting.
-  2. Use TypeScript for enhanced type safety and developer experience.
-  3. Implement proper error handling and logging.
-  4. Leverage Astro's RSS feed generation for content-heavy sites.
-  5. Use Astro's Image component for optimized image delivery.
+1. Follow Astro's Style Guide for consistent code formatting.
+2. Use TypeScript for enhanced type safety and developer experience.
+3. Implement proper error handling and logging.
+4. Leverage Astro's RSS feed generation for content-heavy sites.
+5. Use Astro's Image component for optimized image delivery.
 
-  Performance Metrics
+## Performance Metrics
 
 - Prioritize Core Web Vitals (LCP, FID, CLS) in development.
 - Use Lighthouse and WebPageTest for performance auditing.
 - Implement performance budgets and monitoring.
 
-  Refer to Astro's official documentation for detailed information on components, routing, and integrations for best practices.
+Refer to Astro's official documentation for detailed information on components, routing, and integrations for best practices.

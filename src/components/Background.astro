@@ -70,6 +70,7 @@ const { showCheckerboard, showNav, class: className, ...props } = Astro.props;
     CheckerboardBackgroundCanvas,
     CursorCanvas,
   } from "~/lib/canvas.client";
+  import { isTouchDevice } from "~/lib/utils.client";
 
   document.addEventListener("astro:page-load", () => {
     if (document.getElementById("checkerboard")) {
@@ -77,6 +78,6 @@ const { showCheckerboard, showNav, class: className, ...props } = Astro.props;
     }
 
     new BlobBackgroundCanvas("background");
-    new CursorCanvas("cursor");
+    if (!isTouchDevice()) new CursorCanvas("cursor");
   });
 </script>

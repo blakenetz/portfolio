@@ -1,10 +1,10 @@
 import type { ProjectItem } from "~/types/projects";
 import { getImage } from "astro:assets";
-import Flower from "~/assets/flower.svg";
+import Flower from "~/assets/projects/flower.png";
 import Discover from "~/assets/projects/discover.png";
 import TheSignatry from "~/assets/projects/the-signatry.png";
 import OnWater from "~/assets/projects/onwater.png";
-import Cms from "~/assets/projects/cms.svg";
+import Cms from "~/assets/projects/cms.png";
 import BananaPhone from "~/assets/projects/banana-phone.png";
 
 export const projects: ProjectItem[] = [

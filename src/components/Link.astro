@@ -17,7 +17,8 @@ const {
 <span
   {...containerProps}
   class:list={[
-    "text-primary group/link relative",
+    "group/link relative",
+    { "text-primary": color === "primary" },
     { "text-dodger-blue": color === "dodger-blue" },
     containerProps?.class,
   ]}

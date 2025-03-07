@@ -1,23 +1,13 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import Flower from "~/assets/flower.svg";
-import IconButton from "~/components/IconButton.astro";
-import Link from "~/components/Link.astro";
-import { titleCase } from "~/lib/utils";
+import Header from "~/components/Header.astro";
+
 interface Props extends HTMLAttributes<"main"> {
   showCheckerboard?: boolean;
   showNav?: boolean;
 }
 
 const { showCheckerboard, showNav, class: className, ...props } = Astro.props;
-
-const paths = Astro.url.pathname
-  .split("/")
-  .filter(Boolean)
-  .map((path) => ({
-    href: path,
-    title: titleCase(path),
-  }));
 ---
 
 <section id="background" class="fixed inset-0 -z-10" transition:persist>
@@ -38,32 +28,7 @@ const paths = Astro.url.pathname
   ]}
 >
   <div class="h-full overflow-auto">
-    {
-      showNav && (
-        <header class="font-barriecito text-dodger-blue fixed inset-2 z-10 flex h-fit w-fit items-center gap-2 text-2xl font-extrabold">
-          <IconButton as="a" href="/" bg="dodger-blue">
-            <Flower class="h-6 w-6 stroke-white" />
-          </IconButton>
-          <span>/</span>
-          {paths.map((path, i) =>
-            i === paths.length - 1 ? (
-              <span>{path.title}</span>
-            ) : (
-              <Fragment>
-                <Link
-                  href={`/${path.href}`}
-                  color="dodger-blue"
-                  external={false}
-                >
-                  {path.title}
-                </Link>
-                <span>/</span>
-              </Fragment>
-            ),
-          )}
-        </header>
-      )
-    }
+    {showNav && <Header />}
     <slot />
   </div>
 </main>

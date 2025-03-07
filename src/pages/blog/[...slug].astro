@@ -55,7 +55,7 @@ const emailHref =
     title: `BN | Blog | ${post.data.title}`,
     description: post.data.description,
   }}
-  layoutProps={{ showNav: true }}
+  layoutProps={{ showNav: true, class: "gap-4" }}
 >
   <div class="flex flex-col items-center gap-2">
     <h1 class={`${ANIMATE_COLORS_CLASSES} text-4xl font-bold inline-block`}>
@@ -65,7 +65,7 @@ const emailHref =
   </div>
 
   <div
-    class="prose prose-h1:font-bold prose-h1:text-xl prose-a:text-primary prose-a:no-underline prose-p:text-justify prose-img:rounded-xl prose-headings:underline mx-auto max-w-4xl px-2"
+    class="prose prose-h1:font-bold prose-h1:text-xl prose-a:text-primary prose-a:no-underline prose-p:text-justify prose-img:rounded-xl prose-headings:underline mx-auto w-full max-w-4xl px-2"
   >
     <Content
       components={{
@@ -74,9 +74,9 @@ const emailHref =
       }}
     />
   </div>
-  <div>
-    Share on...
-    <div class="flex gap-2">
+  <div class="mx-auto w-full max-w-4xl px-2">
+    <p>Share on...</p>
+    <div class="flex flex-wrap gap-2">
       <Button
         as="a"
         href={linkedinHref}
@@ -103,9 +103,9 @@ const emailHref =
         <ClipboardIcon />
         Copy
       </Button>
-      <Snackbar />
     </div>
   </div>
+  <Snackbar />
 </RootLayout>
 
 <script>

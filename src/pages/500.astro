@@ -1,7 +1,5 @@
 ---
-import RootLayout from "~/layouts/Root.astro";
-import Button from "~/components/Button.astro";
-import { ANIMATE_COLORS_CLASSES } from "~/consts";
+import ErrorLayout from "~/layouts/Error.astro";
 
 interface Props {
   error: unknown;
@@ -10,15 +8,18 @@ interface Props {
 const { error } = Astro.props;
 ---
 
-<RootLayout layoutProps={{ showCheckerboard: true }}>
-  <section class="flex h-full w-full flex-col items-center justify-center p-8">
-    <div class="mb-8 text-center">
-      <h1 class=`${ANIMATE_COLORS_CLASSES} text-6xl`>Oh no!</h1>
-      <p class="text-lg">
-        {error instanceof Error ? error.message : "Unknown error"}
-      </p>
-    </div>
-
-    <Button as="a" href="/" data-astro-prefetch="load">Go Home</Button>
-  </section>
-</RootLayout>
+<ErrorLayout>
+  <p class="text-lg">Here's what we know:</p>
+  {
+    error instanceof Error ? (
+      <div>
+        <p class="font-neutral-600">{error.name}</p>
+        <p>
+          Message: <span class="from-neutral-600">{error.message}</span>
+        </p>
+      </div>
+    ) : (
+      <p>Unknown error</p>
+    )
+  }
+</ErrorLayout>

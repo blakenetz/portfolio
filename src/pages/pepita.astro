@@ -2,7 +2,6 @@
 import type { HTMLAttributes } from "astro/types";
 import { Image } from "astro:assets";
 import pepita from "~/assets/pepita/close-up.png";
-import Button from "~/components/Button.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
 import RootLayout from "~/layouts/Root.astro";
 
@@ -17,34 +16,32 @@ const images = Object.values<{ default: HTMLAttributes<"img"> }>(
 }, []);
 ---
 
-<RootLayout layoutProps={{ showCheckerboard: true, showNav: true }}>
-  <section class="flex w-full flex-col items-center py-8">
-    <h1 class="text-xl font-bold">
-      <span class=`${ANIMATE_COLORS_CLASSES} text-6xl`>Pepita!</span> (and friends)
-    </h1>
+<RootLayout
+  layoutProps={{ showCheckerboard: true, showNav: true, class: "items-center" }}
+>
+  <h1 class="text-xl font-bold">
+    <span class=`${ANIMATE_COLORS_CLASSES} text-6xl`>Pepita!</span> (and friends)
+  </h1>
 
-    <div class="w-full max-w-7xl">
-      <Image src={pepita} alt="Pepita" fit="contain" />
-    </div>
+  <div class="w-full max-w-7xl">
+    <Image src={pepita} alt="Pepita" fit="contain" />
+  </div>
 
-    <div class="grid grid-cols-2 gap-2 p-2 md:grid-cols-3 lg:grid-cols-4">
-      {
-        images.map((column) => (
-          <div class="grid gap-2">
-            {column.map((image) => (
-              <div class="aspect-auto overflow-hidden rounded-sm">
-                <img
-                  {...image}
-                  alt=""
-                  class="h-full w-full rounded-sm object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        ))
-      }
-    </div>
-
-    <Button as="a" href="/" data-astro-prefetch="load">Go Home</Button>
-  </section>
+  <div class="grid grid-cols-2 gap-2 p-2 md:grid-cols-3 lg:grid-cols-4">
+    {
+      images.map((column) => (
+        <div class="grid gap-2">
+          {column.map((image) => (
+            <div class="aspect-auto overflow-hidden rounded-sm">
+              <img
+                {...image}
+                alt=""
+                class="h-full w-full rounded-sm object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      ))
+    }
+  </div>
 </RootLayout>

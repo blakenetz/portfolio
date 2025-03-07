@@ -1,0 +1,16 @@
+---
+import RootLayout from "~/layouts/Root.astro";
+import Button from "~/components/Button.astro";
+import { ANIMATE_COLORS_CLASSES } from "~/consts";
+---
+
+<RootLayout layoutProps={{ showCheckerboard: true }}>
+  <section class="flex h-full w-full flex-col items-center justify-center p-8">
+    <div class="mb-8 text-center">
+      <h1 class=`${ANIMATE_COLORS_CLASSES} text-6xl`>Oh no!</h1>
+      <p class="text-lg">This page doesn't exist.</p>
+    </div>
+
+    <Button as="a" href="/" data-astro-prefetch="load">Go Home</Button>
+  </section>
+</RootLayout>

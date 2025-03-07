@@ -5,9 +5,18 @@ import Header from "~/components/Header.astro";
 interface Props extends HTMLAttributes<"main"> {
   showCheckerboard?: boolean;
   showNav?: boolean;
+  rootProps?: HTMLAttributes<"main">;
+  withPadding?: boolean;
 }
 
-const { showCheckerboard, showNav, class: className, ...props } = Astro.props;
+const {
+  showCheckerboard,
+  showNav,
+  class: className,
+  rootProps = {},
+  withPadding = true,
+  ...props
+} = Astro.props;
 ---
 
 <section id="background" class="fixed inset-0 -z-10" transition:persist>
@@ -20,17 +29,26 @@ const { showCheckerboard, showNav, class: className, ...props } = Astro.props;
 >
 </div>
 <main
-  {...props}
+  {...rootProps}
   class:list={[
-    "fixed inset-0 cursor-default overflow-hidden",
-    { "h-100dvh w-100dvw lg:p-checkerboard-size": showCheckerboard },
-    className,
+    "flex h-dvh w-dvw cursor-default overflow-hidden",
+    { "lg:p-checkerboard-size": showCheckerboard },
+    rootProps.class,
   ]}
 >
-  <div class="h-full overflow-auto">
-    {showNav && <Header />}
+  {showNav && <Header />}
+  <section
+    {...props}
+    class:list={[
+      "flex h-full w-full flex-col overflow-y-auto",
+      { "pt-16": showNav && !showCheckerboard },
+      { "pt-16 lg:pt-0": showNav && showCheckerboard },
+      { "p-4 lg:p-8": withPadding },
+      className,
+    ]}
+  >
     <slot />
-  </div>
+  </section>
 </main>
 <section
   id="cursor"

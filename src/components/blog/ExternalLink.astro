@@ -1,0 +1,11 @@
+---
+import type { ComponentProps } from "astro/types";
+import Link from "~/components/Link.astro";
+
+type Props = ComponentProps<typeof Link>;
+const props = Astro.props;
+---
+
+<Link {...props} external>
+  <slot />
+</Link>

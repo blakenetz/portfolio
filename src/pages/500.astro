@@ -1,0 +1,25 @@
+---
+import ErrorLayout from "~/layouts/Error.astro";
+
+interface Props {
+  error: unknown;
+}
+
+const { error } = Astro.props;
+---
+
+<ErrorLayout>
+  <p class="text-lg">Here's what we know:</p>
+  {
+    error instanceof Error ? (
+      <div>
+        <p class="font-neutral-600">{error.name}</p>
+        <p>
+          Message: <span class="from-neutral-600">{error.message}</span>
+        </p>
+      </div>
+    ) : (
+      <p>Unknown error</p>
+    )
+  }
+</ErrorLayout>

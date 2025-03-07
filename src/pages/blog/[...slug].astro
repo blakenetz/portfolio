@@ -5,12 +5,12 @@ import ClipboardIcon from "@tabler/icons/outline/clipboard.svg";
 import MailIcon from "@tabler/icons/outline/mail.svg";
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import CodeBlock from "~/components/blog/CodeBlock.astro";
+import ExternalLink from "~/components/blog/ExternalLink.astro";
 import SourceLink from "~/components/blog/SourceLink.astro";
 import Button from "~/components/Button.astro";
-import Link from "~/components/Link.astro";
 import Snackbar from "~/components/Snackbar.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
-import Layout from "~/layouts/Root.astro";
+import RootLayout from "~/layouts/Root.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -50,65 +50,63 @@ const emailHref =
     .replace(/\+/g, "%20");
 ---
 
-<Layout
+<RootLayout
   headProps={{
     title: `BN | Blog | ${post.data.title}`,
     description: post.data.description,
   }}
-  layoutProps={{ showNav: true }}
+  layoutProps={{ showNav: true, class: "gap-4" }}
 >
-  <section class="mx-auto flex max-w-4xl flex-col items-center gap-8 py-16">
-    <div class="flex flex-col items-center gap-2">
-      <h1 class={`${ANIMATE_COLORS_CLASSES} text-4xl font-bold inline-block`}>
-        {post.data.title}
-      </h1>
-      {post.data.link && <SourceLink link={post.data.link} />}
-    </div>
+  <div class="flex flex-col items-center gap-2">
+    <h1 class={`${ANIMATE_COLORS_CLASSES} text-4xl font-bold inline-block`}>
+      {post.data.title}
+    </h1>
+    {post.data.link && <SourceLink link={post.data.link} />}
+  </div>
 
-    <div
-      class="prose prose-h1:font-bold prose-h1:text-xl prose-a:text-primary prose-a:no-underline prose-p:text-justify prose-img:rounded-xl prose-headings:underline max-w-full px-2"
-    >
-      <Content components={{ a: Link, pre: CodeBlock }} />
+  <div
+    class="prose prose-h1:font-bold prose-h1:text-xl prose-a:text-primary prose-a:no-underline prose-p:text-justify prose-img:rounded-xl prose-headings:underline mx-auto w-full max-w-4xl px-2"
+  >
+    <Content
+      components={{
+        a: ExternalLink,
+        pre: CodeBlock,
+      }}
+    />
+  </div>
+  <div class="mx-auto w-full max-w-4xl px-2">
+    <p>Share on...</p>
+    <div class="flex flex-wrap gap-2">
+      <Button
+        as="a"
+        href={linkedinHref}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <LinkedInIcon />
+        LinkedIn
+      </Button>
+      <Button
+        as="a"
+        href={redditHref}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <RedditIcon />
+        Reddit
+      </Button>
+      <Button as="a" href={emailHref} target="_blank" rel="noopener noreferrer">
+        <MailIcon />
+        Email
+      </Button>
+      <Button data-share>
+        <ClipboardIcon />
+        Copy
+      </Button>
     </div>
-    <div>
-      Share on...
-      <div class="flex gap-2">
-        <Button
-          as="a"
-          href={linkedinHref}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <LinkedInIcon />
-          LinkedIn
-        </Button>
-        <Button
-          as="a"
-          href={redditHref}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <RedditIcon />
-          Reddit
-        </Button>
-        <Button
-          as="a"
-          href={emailHref}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <MailIcon />
-          Email
-        </Button>
-        <Button data-share>
-          <ClipboardIcon />
-          Copy
-        </Button>
-        <Snackbar />
-      </div>
-    </div>
-  </section>
-</Layout>
+  </div>
+  <Snackbar />
+</RootLayout>
 
 <script>
   import type { SnackbarElement } from "~/types/webComponents";

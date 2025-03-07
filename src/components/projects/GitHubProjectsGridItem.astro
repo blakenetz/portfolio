@@ -37,7 +37,7 @@ const { class: className, repo, index, ...props } = Astro.props;
 
     <div class="flex flex-col gap-2">
       <div class="flex items-center gap-2 text-sm">
-        <Link href={repo.html_url} data-gh-link>View on Github</Link>
+        <Link href={repo.html_url} data-gh-link external>View on Github</Link>
 
         <div
           data-user
@@ -48,6 +48,7 @@ const { class: className, repo, index, ...props } = Astro.props;
             class="flex flex-row items-center gap-1"
             href={`https://github.com/${repo.user}`}
             data-user-link
+            external
           >
             <UserCircleIcon class="h-4 w-4" />
             <span data-user-name>{repo.user}</span>

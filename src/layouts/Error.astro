@@ -1,0 +1,23 @@
+---
+import RootLayout from "~/layouts/Root.astro";
+import Button from "~/components/Button.astro";
+import { ANIMATE_COLORS_CLASSES } from "~/consts";
+import Divider from "~/components/Divider.astro";
+---
+
+<RootLayout
+  layoutProps={{
+    showCheckerboard: true,
+    class: "items-center justify-center gap-8 self-center",
+  }}
+>
+  <div class="mb-8 flex items-center gap-2 text-center">
+    <h1 class=`${ANIMATE_COLORS_CLASSES} text-6xl`>Oh no!</h1>
+    <Divider size="lg" />
+    <div class="flex flex-col items-start text-left">
+      <slot />
+    </div>
+  </div>
+
+  <Button as="a" href="/" data-astro-prefetch="load">Go Home</Button>
+</RootLayout>

@@ -63,7 +63,7 @@ const blanks = missingItems === 4 ? [] : Array(missingItems).fill(null);
           {project.link && (
             <div class="flex items-center">
               <LinkIcon class="mr-2 h-4 w-4 flex-shrink-0" />
-              <Link href={project.link} class="flex-1">
+              <Link href={project.link} class="flex-1" external>
                 View Project
               </Link>
             </div>

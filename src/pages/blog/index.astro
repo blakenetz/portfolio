@@ -10,26 +10,28 @@ import Layout from "~/layouts/Root.astro";
     title: "BN | Blog",
     description: "My thoughts. some complete... others not... 😜",
   }}
-  layoutProps={{ showCheckerboard: true, showNav: true }}
+  layoutProps={{
+    showCheckerboard: true,
+    showNav: true,
+    class: "gap-8 items-center",
+  }}
 >
-  <section class="mx-auto flex max-w-xl flex-col gap-8 py-8">
-    <h1 class={`text-6xl text-center font-bold ${ANIMATE_COLORS_CLASSES}`}>
-      Blog
-    </h1>
-    <section class="flex flex-col gap-2">
-      <SortControls />
+  <h1 class={`text-6xl text-center font-bold ${ANIMATE_COLORS_CLASSES}`}>
+    Blog
+  </h1>
+  <section class="flex max-w-xl flex-col gap-2">
+    <SortControls />
 
-      <List server:defer>
-        <div class="flex animate-pulse flex-col gap-2" slot="fallback">
-          <div class="bg-dodger-blue/20 h-32 w-full rounded-xs"></div>
-          <div class="bg-aquamarine/20 h-32 w-full rounded-xs"></div>
-          <div class="bg-sunglow/20 h-32 w-full rounded-xs"></div>
-          <div class="bg-rose/20 h-32 w-full rounded-xs"></div>
-          <div class="bg-dodger-blue/20 h-32 w-full rounded-xs"></div>
-          <div class="bg-aquamarine/20 h-32 w-full rounded-xs"></div>
-        </div>
-      </List>
-    </section>
+    <List server:defer>
+      <div class="flex animate-pulse flex-col gap-2" slot="fallback">
+        <div class="bg-dodger-blue/20 h-32 w-full rounded-xs"></div>
+        <div class="bg-aquamarine/20 h-32 w-full rounded-xs"></div>
+        <div class="bg-sunglow/20 h-32 w-full rounded-xs"></div>
+        <div class="bg-rose/20 h-32 w-full rounded-xs"></div>
+        <div class="bg-dodger-blue/20 h-32 w-full rounded-xs"></div>
+        <div class="bg-aquamarine/20 h-32 w-full rounded-xs"></div>
+      </div>
+    </List>
   </section>
 </Layout>
 

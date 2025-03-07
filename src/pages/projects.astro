@@ -4,7 +4,7 @@ import Grid from "~/components/projects/Grid.astro";
 import ProjectsOverviewGrid from "~/components/projects/ProjectsOverviewGrid.astro";
 import SectionHeader from "~/components/projects/SectionHeader.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
-import Layout from "~/layouts/Root.astro";
+import RootLayout from "~/layouts/Root.astro";
 import { getRepos } from "~/lib/projects.server";
 import { status } from "~/lib/utils";
 import { navigate } from "astro:transitions/client";
@@ -27,7 +27,7 @@ const work = repos[1];
   }
 </style>
 
-<Layout
+<RootLayout
   headProps={{
     title: "BN | Projects",
     description: "A selection of my GitHub projects",
@@ -91,4 +91,4 @@ const work = repos[1];
       </Grid>
     </GitHubProjectsGrid>
   </section>
-</Layout>
+</RootLayout>

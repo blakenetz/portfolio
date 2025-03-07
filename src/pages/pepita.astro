@@ -18,6 +18,10 @@ const images = Object.values<{ default: HTMLAttributes<"img"> }>(
 
 <RootLayout
   layoutProps={{ showCheckerboard: true, showNav: true, class: "items-center" }}
+  headProps={{
+    title: "BN | Pepita",
+    description: "Pepita's gallery",
+  }}
 >
   <h1 class="text-xl font-bold">
     <span class=`${ANIMATE_COLORS_CLASSES} text-6xl`>Pepita!</span> (and friends)

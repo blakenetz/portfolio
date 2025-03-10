@@ -8,10 +8,10 @@ Live at [blakenetzeband . com](https://blakenetzeband.com)
 
 ## Specs
 
-- [Remix](https://remix.run/)
-- [Mantine](https://mantine.dev/)
-- [MongoDB](https://www.mongodb.com/)
+- [Astro](https://astro.build)
 - [Mdx](https://mdxjs.com/)
+- [TailwindCSS](https://tailwindcss.com)
+- [Netflify](https://www.netlify.com)
 
 ### Caching
 
@@ -23,5 +23,5 @@ Live at [blakenetzeband . com](https://blakenetzeband.com)
 
 ## Callouts
 
-Fully accessible with ADA toggle;
-plus respects browser's [prefer-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) setting.
+- Full accessibly
+- [View Transitions](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API)

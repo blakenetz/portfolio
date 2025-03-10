@@ -223,13 +223,13 @@
   --font-josefin-sans: "Josefin Sans", sans-serif;
 
   /* Barriecito */
-  --font-barriecito: "Barriecito", cursive;
+  --font-barriecito: "Barriecito", "Barrio", sans-serif;
 
   /* Barrio */
-  --font-barrio: "Barrio", cursive;
+  --font-barrio: "Barrio", "Barriecito", sans-serif;
 
   /* Danfo */
-  --font-danfo: "Danfo", cursive;
+  --font-danfo: "Danfo", monospace;
 
   --spacing-checkerboard-size: 110px;
 }

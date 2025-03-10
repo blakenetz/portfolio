@@ -110,7 +110,11 @@ class BaseCanvas {
       mouseleave: (e: MouseEvent, el: HTMLElement) => void;
     }>,
   ) {
-    window.addEventListener("unload", () => this.abortController.abort());
+    window.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        this.abortController.abort();
+      }
+    });
 
     /**
      * adjust stage dimensions

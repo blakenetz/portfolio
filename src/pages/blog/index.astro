@@ -23,7 +23,10 @@ import RootLayout from "~/layouts/Root.astro";
     <SortControls />
 
     <List server:defer>
-      <div class="flex animate-pulse flex-col gap-2" slot="fallback">
+      <div
+        class="flex w-xl animate-pulse flex-col gap-2 overflow-hidden"
+        slot="fallback"
+      >
         <div class="bg-dodger-blue/20 h-32 w-full rounded-xs"></div>
         <div class="bg-aquamarine/20 h-32 w-full rounded-xs"></div>
         <div class="bg-sunglow/20 h-32 w-full rounded-xs"></div>

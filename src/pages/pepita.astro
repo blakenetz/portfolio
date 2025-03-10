@@ -1,26 +1,18 @@
 ---
-import type { HTMLAttributes } from "astro/types";
 import { Image } from "astro:assets";
 import pepita from "~/assets/pepita/close-up.png";
+import ImageGallery from "~/components/pepita/ImageGallery.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
 import RootLayout from "~/layouts/Root.astro";
 
-const images = Object.values<{ default: HTMLAttributes<"img"> }>(
-  import.meta.glob("/src/assets/pepita/gallery/*.{jpg,jpeg,png}", {
-    eager: true,
-  }),
-).reduce<HTMLAttributes<"img">[][]>((acc, image, i) => {
-  if (i % 2 === 0) acc.push([]);
-  acc[acc.length - 1].push(image.default);
-  return acc;
-}, []);
+const placeholders = Array.from({ length: 16 }, (_, i) => i);
 ---
 
 <RootLayout
   layoutProps={{ showCheckerboard: true, showNav: true, class: "items-center" }}
   headProps={{
     title: "BN | Pepita",
-    description: "Pepita's gallery",
+    description: "Good doggo",
   }}
 >
   <h1 class="text-xl font-bold">
@@ -28,24 +20,19 @@ const images = Object.values<{ default: HTMLAttributes<"img"> }>(
   </h1>
 
   <div class="w-full max-w-7xl">
-    <Image src={pepita} alt="Pepita" fit="contain" />
+    <Image src={pepita} alt="Pepita" fit="contain" fetchpriority="high" />
   </div>
 
-  <div class="grid grid-cols-2 gap-2 p-2 md:grid-cols-3 lg:grid-cols-4">
-    {
-      images.map((column) => (
-        <div class="grid gap-2">
-          {column.map((image) => (
-            <div class="aspect-auto overflow-hidden rounded-sm">
-              <img
-                {...image}
-                alt=""
-                class="h-full w-full rounded-sm object-cover"
-              />
-            </div>
-          ))}
-        </div>
-      ))
-    }
+  <div class="grid w-full grid-cols-2 gap-2 p-2 md:grid-cols-3 lg:grid-cols-4">
+    <ImageGallery server:defer>
+      {
+        placeholders.map(() => (
+          <div
+            slot="fallback"
+            class="bg-dodger-blue/50 h-[300px] w-[350px] rounded-sm"
+          />
+        ))
+      }
+    </ImageGallery>
   </div>
 </RootLayout>

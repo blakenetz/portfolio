@@ -2,10 +2,10 @@
 import SortControls from "~/components/SortControls.astro";
 import List from "~/components/blog/List.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
-import Layout from "~/layouts/Root.astro";
+import RootLayout from "~/layouts/Root.astro";
 ---
 
-<Layout
+<RootLayout
   headProps={{
     title: "BN | Blog",
     description: "My thoughts. some complete... others not... 😜",
@@ -33,7 +33,7 @@ import Layout from "~/layouts/Root.astro";
       </div>
     </List>
   </section>
-</Layout>
+</RootLayout>
 
 <script>
   function getContainer() {

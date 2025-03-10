@@ -11,6 +11,7 @@ Live at [blakenetzeband . com](https://blakenetzeband.com)
 - [Astro](https://astro.build)
 - [Mdx](https://mdxjs.com/)
 - [TailwindCSS](https://tailwindcss.com)
+- [Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
 - [Netflify](https://www.netlify.com)
 
 ### Caching
@@ -25,3 +26,5 @@ Live at [blakenetzeband . com](https://blakenetzeband.com)
 
 - Full accessibly
 - [View Transitions](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API)
+- Link prefetching
+- SSR, SSG, and on-demand rendering with [https://docs.astro.build/en/guides/server-islands/](Astro's Server Island)

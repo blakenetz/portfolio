@@ -7,6 +7,8 @@ import { defineConfig } from "astro/config";
 
 import netlify from "@astrojs/netlify";
 
+import cloudflare from "@astrojs/cloudflare";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://blakenetzeband.com",
@@ -14,7 +16,8 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    ssr: { external: ["node:buffer"] },
   },
 
-  adapter: netlify(),
+  adapter: cloudflare(),
 });

@@ -20,10 +20,14 @@ const images = Object.values(
   images.map((column) => (
     <div class="grid gap-2">
       {column.map((image) => (
-        <div class="relative aspect-auto overflow-hidden rounded-sm">
+        <div class="relative aspect-square min-h-0 w-full overflow-hidden rounded-sm">
           <Image
             src={image()}
             alt=""
+            width={400}
+            height={400}
+            widths={[400, 600, 800]}
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
             class="h-full w-full rounded-sm object-cover"
           />
           <span

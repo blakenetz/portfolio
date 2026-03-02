@@ -20,7 +20,16 @@ const placeholders = Array.from({ length: 16 }, (_, i) => i);
   </h1>
 
   <div class="w-full max-w-7xl">
-    <Image src={pepita} alt="Pepita" fit="contain" fetchpriority="high" />
+    <Image
+      src={pepita}
+      alt="Pepita"
+      width={800}
+      height={600}
+      widths={[400, 800, 1200]}
+      sizes="(max-width: 1024px) 100vw, 896px"
+      fit="contain"
+      fetchpriority="high"
+    />
   </div>
 
   <div class="grid w-full grid-cols-2 gap-2 p-2 md:grid-cols-3 lg:grid-cols-4">
@@ -29,7 +38,7 @@ const placeholders = Array.from({ length: 16 }, (_, i) => i);
         placeholders.map(() => (
           <div
             slot="fallback"
-            class="bg-dodger-blue/50 h-[300px] w-[350px] rounded-sm"
+            class="bg-dodger-blue/50 aspect-square w-full min-h-0 rounded-sm"
           />
         ))
       }

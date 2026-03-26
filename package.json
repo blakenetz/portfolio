@@ -32,7 +32,7 @@
     "@astrojs/sitemap": "^3.7.0",
     "@tabler/icons": "^3.38.0",
     "@tailwindcss/vite": "^4.2.1",
-    "astro": "^5.18.0",
+    "astro": "^5.18.1",
     "date-fns": "^4.1.0",
     "konva": "^10.2.0",
     "lru-cache": "^11.2.6",

@@ -19,5 +19,5 @@ export default defineConfig({
     ssr: { external: ["node:buffer"] },
   },
 
-  adapter: cloudflare(),
+  adapter: cloudflare({ imageService: "compile" }),
 });

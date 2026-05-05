@@ -7,7 +7,9 @@
       "Bash(pnpm build *)",
       "Bash(curl -s http://localhost:4321/pepita)",
       "Bash(pnpm install *)",
-      "Bash(pnpm preview *)"
+      "Bash(pnpm preview *)",
+      "Bash(gh pr *)",
+      "WebFetch(domain:deploy-preview-97--blake-netzeband-portfolio.netlify.app)"
     ]
   }
 }

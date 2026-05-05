@@ -9,7 +9,7 @@
     "prepreview": "astro build",
     "preview": "wrangler pages dev ./dist",
     "astro": "astro",
-    "lint": "eslint 'src/**'"
+    "lint": "oxlint src/"
   },
   "repository": {
     "type": "git",
@@ -42,24 +42,14 @@
     "unstorage": "^1.17.4"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
     "@octokit/types": "^16.0.0",
     "@tailwindcss/typography": "^0.5.19",
-    "@typescript-eslint/eslint-plugin": "^8.56.1",
-    "@typescript-eslint/parser": "^8.56.1",
-    "eslint": "^10.0.2",
-    "eslint-import-resolver-typescript": "^4.4.4",
-    "eslint-plugin-astro": "^1.6.0",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "globals": "^17.4.0",
+    "oxlint": "^1.63.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tsc": "^2.0.4",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1",
     "wrangler": "^4.69.0"
   },
   "pnpm": {

@@ -5,7 +5,6 @@ import ImageGallery from "~/components/pepita/ImageGallery.astro";
 import { ANIMATE_COLORS_CLASSES } from "~/consts";
 import RootLayout from "~/layouts/Root.astro";
 
-const placeholders = Array.from({ length: 16 }, (_, i) => i);
 ---
 
 <RootLayout
@@ -32,15 +31,6 @@ const placeholders = Array.from({ length: 16 }, (_, i) => i);
   </div>
 
   <div class="grid w-full grid-cols-2 gap-2 p-2 md:grid-cols-3 lg:grid-cols-4">
-    <ImageGallery server:defer>
-      {
-        placeholders.map(() => (
-          <div
-            slot="fallback"
-            class="bg-dodger-blue/50 aspect-square w-full min-h-0 rounded-sm"
-          />
-        ))
-      }
-    </ImageGallery>
+    <ImageGallery />
   </div>
 </RootLayout>

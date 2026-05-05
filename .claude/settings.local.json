@@ -6,7 +6,8 @@
       "Bash(pnpm lint *)",
       "Bash(pnpm build *)",
       "Bash(curl -s http://localhost:4321/pepita)",
-      "Bash(pnpm install *)"
+      "Bash(pnpm install *)",
+      "Bash(pnpm preview *)"
     ]
   }
 }

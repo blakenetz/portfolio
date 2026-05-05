@@ -7,7 +7,7 @@ import type {
   UserScope,
 } from "~/types/projects";
 
-import Api from "./projects.api";
+import getApi from "./projects.api";
 import { formatDate } from "./utils";
 const reg = /(:[\w\-+]+:)/g;
 function parseEmojis(text: string | null) {
@@ -15,7 +15,7 @@ function parseEmojis(text: string | null) {
 
   return text.replace(reg, (match) => {
     const name = match.replace(/:/g, "");
-    const emoji = Api.getEmoji(name);
+    const emoji = getApi().getEmoji(name);
 
     if (!emoji) return "";
 
@@ -49,7 +49,7 @@ async function getRepoForUser(
   username: string,
   sort: Sort,
 ): Promise<Pick<OctoResponse, "data" | "status">> {
-  const { status, data } = await Api.request(username, sort);
+  const { status, data } = await getApi().request(username, sort);
 
   if (status < 200 || status > 300) {
     return { status, data: [] };
@@ -66,7 +66,7 @@ export async function getRepoByScope(
   sort: Sort = "updated",
 ): Promise<RepoResponse> {
   if (scope === "personal") {
-    const username = Api.getUsername("personal");
+    const username = getApi().getUsername("personal");
     const response = await getRepoForUser(username, sort);
 
     return {
@@ -77,7 +77,7 @@ export async function getRepoByScope(
 
   // work scope
   const repos = await Promise.all(
-    Api.getUsername("work").map((username) => getRepoForUser(username, sort)),
+    getApi().getUsername("work").map((username) => getRepoForUser(username, sort)),
   );
 
   // expecting 12 results

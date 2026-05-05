@@ -3,7 +3,8 @@
     "allow": [
       "Bash(pnpm oxlint *)",
       "Bash(gh issue *)",
-      "Bash(pnpm lint *)"
+      "Bash(pnpm lint *)",
+      "Bash(pnpm build *)"
     ]
   }
 }

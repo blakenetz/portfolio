@@ -9,7 +9,7 @@
     "prepreview": "astro build",
     "preview": "wrangler pages dev ./dist",
     "astro": "astro",
-    "lint": "oxlint src/"
+    "lint": "oxlint src/ && eslint src/"
   },
   "repository": {
     "type": "git",
@@ -44,6 +44,10 @@
   "devDependencies": {
     "@octokit/types": "^16.0.0",
     "@tailwindcss/typography": "^0.5.19",
+    "@typescript-eslint/parser": "^8.59.2",
+    "eslint": "^10.3.0",
+    "eslint-plugin-astro": "^1.7.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "oxlint": "^1.63.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",

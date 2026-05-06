@@ -10,7 +10,9 @@
       "Bash(pnpm preview *)",
       "Bash(gh pr *)",
       "WebFetch(*)",
-      "Bash(grep *)"
+      "Bash(grep *)",
+      "Bash(pnpm patch *)",
+      "Bash(pnpm patch-commit *)"
     ]
   }
 }

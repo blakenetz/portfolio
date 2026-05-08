@@ -9,7 +9,8 @@
     "prepreview": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "oxlint src/ && eslint src/"
+    "lint": "oxlint src/ && eslint src/",
+    "generate-types": "wrangler types"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,7 @@
   },
   "homepage": "https://blakenetzeband.com",
   "dependencies": {
-    "@astrojs/cloudflare": "^13.3.1",
+    "@astrojs/cloudflare": "^13.5.0",
     "@astrojs/mdx": "^5.0.4",
     "@astrojs/netlify": "^7.0.8",
     "@astrojs/rss": "^4.0.18",
@@ -54,6 +55,9 @@
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tsc": "^2.0.4",
     "typescript": "^6.0.3",
-    "wrangler": "^4.87.0"
+    "wrangler": "^4.90.0"
+  },
+  "overrides": {
+    "vite": "^7"
   }
 }

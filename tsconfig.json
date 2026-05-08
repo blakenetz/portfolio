@@ -1,12 +1,20 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"],
+  "include": [
+    ".astro/types.d.ts",
+    "**/*",
+    "./worker-configuration.d.ts"
+  ],
+  "exclude": [
+    "dist"
+  ],
   "compilerOptions": {
     "isolatedModules": true,
     "esModuleInterop": true,
     "target": "ES2022",
-    "lib": ["ES2023.Array"],
+    "lib": [
+      "ES2023.Array"
+    ],
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -16,7 +24,9 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": [
+        "./src/*"
+      ]
     },
     "verbatimModuleSyntax": true
   }

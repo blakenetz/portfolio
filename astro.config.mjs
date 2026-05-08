@@ -1,13 +1,9 @@
-// @ts-check
-
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
 import netlify from "@astrojs/netlify";
-
-import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,5 +15,5 @@ export default defineConfig({
     ssr: { external: ["node:buffer"] },
   },
 
-  adapter: cloudflare({ imageService: "compile" }),
+  adapter: netlify(),
 });

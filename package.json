@@ -26,7 +26,6 @@
   },
   "homepage": "https://blakenetzeband.com",
   "dependencies": {
-    "@astrojs/cloudflare": "^13.5.0",
     "@astrojs/mdx": "^5.0.4",
     "@astrojs/netlify": "^7.0.8",
     "@astrojs/rss": "^4.0.18",

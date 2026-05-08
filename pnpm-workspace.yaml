@@ -3,3 +3,8 @@ allowBuilds:
   esbuild: true
   sharp: true
   workerd: true
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - sharp
+  - workerd

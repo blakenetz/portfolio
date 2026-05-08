@@ -1,5 +1,5 @@
 {
-         "main": "@astrojs/cloudflare/entrypoints/server",
+  "main": "@astrojs/cloudflare/entrypoints/server",
   "name": "portfolio",
   "compatibility_date": "2026-05-07",
   "compatibility_flags": [

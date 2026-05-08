@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm oxlint *)",
+      "Bash(gh issue *)",
+      "Bash(pnpm lint *)",
+      "Bash(pnpm build *)",
+      "Bash(curl -s http://localhost:4321/pepita)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm preview *)",
+      "Bash(gh pr *)",
+      "WebFetch(*)",
+      "Bash(grep *)",
+      "Bash(pnpm patch *)",
+      "Bash(pnpm patch-commit *)"
+    ]
+  }
+}

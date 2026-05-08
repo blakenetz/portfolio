@@ -104,5 +104,11 @@ class ProjectsApi {
   }
 }
 
-const singleton = Object.freeze(new ProjectsApi());
-export default singleton;
+let _singleton: ProjectsApi | null = null;
+
+export default function getApi(): ProjectsApi {
+  if (!_singleton) {
+    _singleton = Object.freeze(new ProjectsApi());
+  }
+  return _singleton;
+}
